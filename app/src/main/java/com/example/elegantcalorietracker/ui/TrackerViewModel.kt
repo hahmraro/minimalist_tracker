@@ -82,19 +82,10 @@ class TrackerViewModel(application: Application) :
         }
     }
 
-    fun getFoods(query: String): String? =
-        runBlocking {
-            _status.value = ApiStatus.LOADING
-            try {
-                val foods = _repository.searchFood(query, listType)
-                setHistory(foods)
-                _status.value = ApiStatus.DONE
-                null
-            } catch (e: Exception) {
-                _status.value = ApiStatus.ERROR
-                e.toString()
-            }
-        }
+    suspend fun getFoods(query: String) {
+        val foods = _repository.searchFood(query, listType)
+        setHistory(foods)
+    }
 
     fun getFood(food: Food, servingSize: Double) {
         val newFood = food.copy(id = Random.nextInt())

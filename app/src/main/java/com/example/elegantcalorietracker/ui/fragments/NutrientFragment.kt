@@ -24,6 +24,8 @@ class NutrientFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentNutrientBinding.inflate(inflater, container, false)
+        activity?.actionBar?.setHomeButtonEnabled(true)
+        activity?.actionBar?.setDisplayHomeAsUpEnabled(true)
         return binding.root
     }
 

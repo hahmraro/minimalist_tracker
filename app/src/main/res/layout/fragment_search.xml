@@ -11,31 +11,41 @@
             type="com.example.elegantcalorietracker.ui.TrackerViewModel" />
     </data>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="@dimen/default_padding">
+        android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/search_field"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:imeOptions="actionSend"
-            android:inputType="text" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/history_list"
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/search_loading"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/snacks_text"
-            app:listData="@{viewModel.historyList}"
-            tools:itemCount="1"
-            tools:listitem="@layout/recycler_view_food_item" />
+            android:indeterminate="true" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/body_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/default_padding">
+
+            <EditText
+                android:id="@+id/search_field"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:imeOptions="actionSend"
+                android:inputType="text" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/history_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:listData="@{viewModel.historyList}"
+                tools:itemCount="1"
+                tools:listitem="@layout/recycler_view_food_item" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </LinearLayout>
 </layout>

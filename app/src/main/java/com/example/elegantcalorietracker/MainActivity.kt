@@ -3,7 +3,6 @@ package com.example.elegantcalorietracker
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -34,16 +33,25 @@ class MainActivity :
         navView.setNavigationItemSelectedListener(this)
 
         drawerLayout = findViewById(R.id.drawer_layout)
-        appBarConfiguration =
-            AppBarConfiguration(navController.graph, drawerLayout)
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.trackerFragment,
+                R.id.nutrientFragment,
+                R.id.settingsFragment
+            ),
+            drawerLayout
+        )
 
         // Set up action bar for use with NavController
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        drawerLayout.closeDrawer(GravityCompat.START, true)
-        return item.onNavDestinationSelected(navController)
+        // I'm unsure to whether or not to close the drawer after navigating
+        // Uncomment the line below to close the drawer after navigating
+        // drawerLayout.closeDrawer(GravityCompat.START, true)
+        return item.onNavDestinationSelected(navController) ||
+            super.onOptionsItemSelected(item)
     }
 
     /**

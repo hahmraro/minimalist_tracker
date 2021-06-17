@@ -1,12 +1,14 @@
 package com.example.elegantcalorietracker.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.elegantcalorietracker.R
 import com.example.elegantcalorietracker.data.model.Food
@@ -15,6 +17,7 @@ import com.example.elegantcalorietracker.ui.ModType
 import com.example.elegantcalorietracker.ui.TrackerViewModel
 import com.example.elegantcalorietracker.ui.adapters.FoodListAdapter
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 
 private const val TAG = "SearchFragment"
 
@@ -49,21 +52,32 @@ class SearchFragment : Fragment() {
             historyList.adapter =
                 FoodListAdapter(clickListener, longClickListener)
             //
+            searchField.setOnFocusChangeListener { v, hasFocus ->
+                if (!hasFocus) v.hideKeyboard()
+            }
+
             searchField.setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_SEND) {
-                    val query = searchField.text.toString()
-                    searchField.text.clear()
-                    searchField.isEnabled = false
-                    val errorMessage = sharedViewModel.getFoods(query)
-                    if (errorMessage == null) {
-                        this@SearchFragment.findNavController()
-                            .navigate(R.id.action_searchFragment_to_trackerFragment)
-                    } else {
-                        Snackbar.make(
-                            view, errorMessage,
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                        searchField.isEnabled = true
+                    searchLoading.show()
+                    bodySearch.alpha = 0.5f
+                    lifecycleScope.launch {
+                        val query = searchField.text.toString()
+                        searchField.text.clear()
+                        searchField.isEnabled = false
+                        try {
+                            sharedViewModel.getFoods(query)
+                            this@SearchFragment.findNavController()
+                                .navigate(R.id.action_searchFragment_to_trackerFragment)
+                        } catch (e: Exception) {
+                            Snackbar.make(
+                                view,
+                                e.toString(),
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                            searchField.isEnabled = true
+                            searchLoading.hide()
+                            bodySearch.alpha = 1.0f
+                        }
                     }
                     true
                 } else {
@@ -88,6 +102,12 @@ class SearchFragment : Fragment() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun View.hideKeyboard() {
+        val imm =
+            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
     private val clickListener: (Food) -> (Unit) = {
