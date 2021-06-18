@@ -36,7 +36,6 @@ class MainActivity :
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.trackerFragment,
-                R.id.nutrientFragment,
                 R.id.settingsFragment
             ),
             drawerLayout
