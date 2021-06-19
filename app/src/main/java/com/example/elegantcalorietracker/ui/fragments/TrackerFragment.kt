@@ -3,6 +3,7 @@ package com.example.elegantcalorietracker.ui.fragments
 import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -159,8 +160,13 @@ class TrackerFragment : Fragment() {
         }
 
     private fun navigateToNutrients() {
-        this@TrackerFragment.findNavController()
-            .navigate(R.id.action_trackerFragment_to_nutrientFragment)
+        val argument = bundleOf("upButtonNeeded" to true)
+        this@TrackerFragment
+            .findNavController()
+            .navigate(
+                R.id.action_trackerFragment_to_nutrientFragment,
+                argument
+            )
     }
 
     private fun navigateToSearch(listType: ListType) {

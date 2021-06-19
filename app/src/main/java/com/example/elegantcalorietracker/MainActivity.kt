@@ -19,6 +19,9 @@ class MainActivity :
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var drawerLayout: DrawerLayout
 
+    // If true, disable drawer and enable back/up button
+    private var isUpButton = false
+
     // Binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +39,7 @@ class MainActivity :
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.trackerFragment,
+                R.id.nutrientFragment,
                 R.id.settingsFragment
             ),
             drawerLayout
@@ -43,6 +47,31 @@ class MainActivity :
 
         // Set up action bar for use with NavController
         setupActionBarWithNavController(navController, appBarConfiguration)
+    }
+
+    // Disable drawer and enable the up button
+    fun useUpButton() {
+        supportActionBar?.setHomeAsUpIndicator(
+            androidx.appcompat.R.drawable.abc_ic_ab_back_material
+        )
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        isUpButton = true
+    }
+
+    // Enable the drawer and disable up button
+    private fun useHamburgerButton() {
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+        isUpButton = false
+    }
+
+    // If isUpButton is true, and the home button is clicked, navigate up and
+    // enable drawer again, if false, just normal drawer behaviour
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return if (isUpButton && item.itemId == android.R.id.home) {
+            navController.navigateUp()
+            useHamburgerButton()
+            true
+        } else super.onOptionsItemSelected(item)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

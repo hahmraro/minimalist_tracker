@@ -52,6 +52,10 @@
         <action
             android:id="@+id/action_nutrientFragment_to_trackerFragment"
             app:destination="@id/trackerFragment" />
+        <argument
+            android:name="upButtonNeeded"
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
