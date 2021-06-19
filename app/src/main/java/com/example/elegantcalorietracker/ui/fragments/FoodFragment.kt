@@ -41,6 +41,11 @@ class FoodFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
             //
             val fragmentFood = sharedViewModel.selectedFood
+            if (fragmentFood == null) {
+                this@FoodFragment.findNavController()
+                    .navigate(R.id.action_foodFragment_to_trackerFragment)
+                onDestroy()
+            }
             food = fragmentFood
             //
             if (sharedViewModel.modType == ModType.ADD) {
