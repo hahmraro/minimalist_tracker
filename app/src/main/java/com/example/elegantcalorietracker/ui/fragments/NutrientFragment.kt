@@ -38,4 +38,11 @@ class NutrientFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.food = sharedViewModel.getDailyNutrition()
     }
+
+    override fun onDestroy() {
+        if (upButtonNeeded) {
+            (activity as MainActivity).useHamburgerButton()
+        }
+        super.onDestroy()
+    }
 }

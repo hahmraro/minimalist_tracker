@@ -59,16 +59,17 @@ class MainActivity :
         isUpButton = true
     }
 
-    fun lockDrawerSlide(boolean: Boolean) {
+    fun lockDrawerSlide(boolean: Boolean): MainActivity {
         if (boolean) {
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         } else {
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
         }
+        return this
     }
 
     // Enable the drawer and disable up button
-    private fun useHamburgerButton() {
+    fun useHamburgerButton() {
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
         isUpButton = false
     }
@@ -80,7 +81,6 @@ class MainActivity :
             when {
                 isUpButton -> {
                     navController.navigateUp()
-                    useHamburgerButton()
                 }
                 drawerLayout.isDrawerOpen(GravityCompat.START) -> {
                     drawerLayout.closeDrawers()
