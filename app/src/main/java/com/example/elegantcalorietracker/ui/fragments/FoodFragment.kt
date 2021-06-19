@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.example.elegantcalorietracker.MainActivity
 import com.example.elegantcalorietracker.R
 import com.example.elegantcalorietracker.databinding.FragmentFoodBinding
 import com.example.elegantcalorietracker.ui.ModType
@@ -27,6 +28,7 @@ class FoodFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentFoodBinding.inflate(inflater, container, false)
+        (activity as MainActivity).lockDrawerSlide(true)
         return binding.root
     }
 
@@ -66,5 +68,10 @@ class FoodFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        (activity as MainActivity).lockDrawerSlide(false)
     }
 }

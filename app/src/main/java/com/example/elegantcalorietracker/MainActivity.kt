@@ -3,6 +3,7 @@ package com.example.elegantcalorietracker
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -54,8 +55,16 @@ class MainActivity :
         supportActionBar?.setHomeAsUpIndicator(
             androidx.appcompat.R.drawable.abc_ic_ab_back_material
         )
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        lockDrawerSlide(true)
         isUpButton = true
+    }
+
+    fun lockDrawerSlide(boolean: Boolean) {
+        if (boolean) {
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        } else {
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+        }
     }
 
     // Enable the drawer and disable up button
@@ -67,9 +76,17 @@ class MainActivity :
     // If isUpButton is true, and the home button is clicked, navigate up and
     // enable drawer again, if false, just normal drawer behaviour
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (isUpButton && item.itemId == android.R.id.home) {
-            navController.navigateUp()
-            useHamburgerButton()
+        return if (item.itemId == android.R.id.home) {
+            when {
+                isUpButton -> {
+                    navController.navigateUp()
+                    useHamburgerButton()
+                }
+                drawerLayout.isDrawerOpen(GravityCompat.START) -> {
+                    drawerLayout.closeDrawers()
+                }
+                else -> drawerLayout.openDrawer(GravityCompat.START)
+            }
             true
         } else super.onOptionsItemSelected(item)
     }

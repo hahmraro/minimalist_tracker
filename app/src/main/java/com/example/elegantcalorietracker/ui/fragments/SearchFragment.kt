@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.elegantcalorietracker.MainActivity
 import com.example.elegantcalorietracker.R
 import com.example.elegantcalorietracker.data.model.Food
 import com.example.elegantcalorietracker.databinding.FragmentSearchBinding
@@ -34,6 +35,7 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
+        (activity as MainActivity).lockDrawerSlide(true)
         setHasOptionsMenu(true)
         return binding.root
     }
@@ -102,6 +104,11 @@ class SearchFragment : Fragment() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        (activity as MainActivity).lockDrawerSlide(false)
     }
 
     private fun View.hideKeyboard() {
