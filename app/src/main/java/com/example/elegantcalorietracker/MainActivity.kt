@@ -3,7 +3,6 @@ package com.example.elegantcalorietracker
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -76,15 +75,9 @@ class MainActivity :
     // If isUpButton is true, and the home button is clicked, navigate up and
     // enable drawer again, if false, just normal drawer behaviour
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (item.itemId == android.R.id.home) {
-            when {
-                isUpButton -> {
-                    navController.navigateUp()
-                }
-                drawerLayout.isDrawerOpen(GravityCompat.START) -> {
-                    drawerLayout.closeDrawers()
-                }
-                else -> drawerLayout.openDrawer(GravityCompat.START)
+        return if (isUpButton) {
+            if (item.itemId == android.R.id.home) {
+                navController.navigateUp()
             }
             true
         } else super.onOptionsItemSelected(item)
