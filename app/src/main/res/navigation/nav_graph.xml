@@ -26,13 +26,17 @@
     <fragment
         android:id="@+id/foodFragment"
         android:name="com.example.elegantcalorietracker.ui.fragments.FoodFragment"
-        android:label="@string/food"
+        android:label="{foodName}"
         tools:layout="@layout/fragment_food">
         <action
             android:id="@+id/action_foodFragment_to_trackerFragment"
             app:destination="@id/trackerFragment"
             app:popUpTo="@id/trackerFragment"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="foodName"
+            android:defaultValue="Food"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"

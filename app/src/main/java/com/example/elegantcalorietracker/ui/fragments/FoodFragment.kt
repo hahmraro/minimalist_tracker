@@ -28,6 +28,7 @@ class FoodFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentFoodBinding.inflate(inflater, container, false)
+
         (activity as MainActivity).lockDrawerSlide(true)
         return binding.root
     }
@@ -35,16 +36,11 @@ class FoodFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val fragmentFood = sharedViewModel.selectedFood
-        if (fragmentFood == null) {
-            this@FoodFragment.findNavController()
-                .navigate(R.id.action_foodFragment_to_trackerFragment)
-        }
-
         binding.apply {
             // Specify the fragment as the lifecycle owner
             lifecycleOwner = viewLifecycleOwner
             //
+            val fragmentFood = sharedViewModel.selectedFood
             food = fragmentFood
             //
             if (sharedViewModel.modType == ModType.ADD) {

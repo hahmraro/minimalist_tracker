@@ -14,6 +14,7 @@ import com.example.elegantcalorietracker.databinding.FragmentTrackerBinding
 import com.example.elegantcalorietracker.ui.ModType
 import com.example.elegantcalorietracker.ui.TrackerViewModel
 import com.example.elegantcalorietracker.ui.adapters.FoodListAdapter
+import java.util.*
 
 private const val TAG = "TrackerFragment"
 
@@ -108,13 +109,20 @@ class TrackerFragment : Fragment() {
         }
     }
 
-    private fun clickListener(listType: ListType): (Food) -> (Unit) = {
+    private fun clickListener(listType: ListType): (Food) -> (Unit) = { food ->
         sharedViewModel.apply {
-            selectedFood = it
+            selectedFood = food
             this.listType = listType.ordinal
         }
+        val argument = bundleOf(
+            "foodName" to food.name.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(
+                    Locale.getDefault()
+                ) else it.toString()
+            }
+        )
         this@TrackerFragment.findNavController()
-            .navigate(R.id.action_trackerFragment_to_foodFragment)
+            .navigate(R.id.action_trackerFragment_to_foodFragment, argument)
     }
 
     private val longClickListener: (PopupMenu, Food, View) -> (Boolean) =

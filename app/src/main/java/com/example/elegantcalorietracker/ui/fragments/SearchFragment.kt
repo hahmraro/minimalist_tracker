@@ -6,6 +6,7 @@ import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +20,7 @@ import com.example.elegantcalorietracker.ui.TrackerViewModel
 import com.example.elegantcalorietracker.ui.adapters.FoodListAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
+import java.util.*
 
 private const val TAG = "SearchFragment"
 
@@ -117,12 +119,19 @@ class SearchFragment : Fragment() {
         imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
-    private val clickListener: (Food) -> (Unit) = {
+    private val clickListener: (Food) -> (Unit) = { food ->
         sharedViewModel.apply {
-            selectedFood = it
+            selectedFood = food
         }
+        val argument = bundleOf(
+            "foodName" to food.name.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(
+                    Locale.getDefault()
+                ) else it.toString()
+            }
+        )
         this@SearchFragment.findNavController()
-            .navigate(R.id.action_searchFragment_to_foodFragment)
+            .navigate(R.id.action_searchFragment_to_foodFragment, argument)
     }
 
     private val longClickListener: (PopupMenu, Food, View) -> (Boolean) =
