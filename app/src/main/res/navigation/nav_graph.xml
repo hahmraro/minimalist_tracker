@@ -30,7 +30,9 @@
         tools:layout="@layout/fragment_food">
         <action
             android:id="@+id/action_foodFragment_to_trackerFragment"
-            app:destination="@id/trackerFragment" />
+            app:destination="@id/trackerFragment"
+            app:popUpTo="@id/trackerFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -39,7 +41,9 @@
         tools:layout="@layout/fragment_search">
         <action
             android:id="@+id/action_searchFragment_to_trackerFragment"
-            app:destination="@id/trackerFragment" />
+            app:destination="@id/trackerFragment"
+            app:popUpTo="@id/trackerFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_searchFragment_to_foodFragment"
             app:destination="@id/foodFragment" />
@@ -51,7 +55,9 @@
         tools:layout="@layout/fragment_nutrient">
         <action
             android:id="@+id/action_nutrientFragment_to_trackerFragment"
-            app:destination="@id/trackerFragment" />
+            app:destination="@id/trackerFragment"
+            app:popUpTo="@id/trackerFragment"
+            app:popUpToInclusive="true" />
         <argument
             android:name="upButtonNeeded"
             android:defaultValue="false"
@@ -64,6 +70,8 @@
         tools:layout="@layout/fragment_settings">
         <action
             android:id="@+id/action_settingsFragment_to_trackerFragment"
-            app:destination="@id/trackerFragment" />
+            app:destination="@id/trackerFragment"
+            app:popUpTo="@id/trackerFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>
