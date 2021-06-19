@@ -59,13 +59,12 @@ class MainActivity :
         isUpButton = true
     }
 
-    fun lockDrawerSlide(boolean: Boolean): MainActivity {
+    fun lockDrawerSlide(boolean: Boolean) {
         if (boolean) {
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         } else {
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
         }
-        return this
     }
 
     // Enable the drawer and disable up button
