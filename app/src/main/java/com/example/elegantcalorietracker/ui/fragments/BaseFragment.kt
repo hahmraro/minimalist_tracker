@@ -56,6 +56,9 @@ abstract class BaseFragment<BindingType : ViewDataBinding>(
         if (upButtonNeeded) {
             (activity as MainActivity).useHamburgerButton()
         }
+        if (lockDrawer) {
+            (activity as MainActivity).lockDrawerSlide(false)
+        }
         super.onDestroy()
     }
 

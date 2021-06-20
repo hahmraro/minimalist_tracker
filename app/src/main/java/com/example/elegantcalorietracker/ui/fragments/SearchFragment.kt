@@ -9,7 +9,6 @@ import android.widget.PopupMenu
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.elegantcalorietracker.MainActivity
 import com.example.elegantcalorietracker.R
 import com.example.elegantcalorietracker.data.model.Food
 import com.example.elegantcalorietracker.databinding.FragmentSearchBinding
@@ -91,11 +90,6 @@ class SearchFragment :
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        (activity as MainActivity).lockDrawerSlide(false)
     }
 
     private fun View.hideKeyboard() {
