@@ -12,22 +12,35 @@ import androidx.fragment.app.activityViewModels
 import com.example.elegantcalorietracker.MainActivity
 import com.example.elegantcalorietracker.ui.TrackerViewModel
 
+typealias ApplyTo<T> = T.() -> Unit
+
 abstract class BaseFragment<BindingType : ViewDataBinding>(
     @LayoutRes private val layoutId: Int,
     private val lockDrawer: Boolean = false,
     private val hasOptionsMenu: Boolean = false,
+    private val isTopLevelAndNeedUpButton: Boolean = false
 ) : Fragment() {
     // Binding
-    private lateinit var binding: BindingType
+    protected lateinit var binding: BindingType
 
     // ViewModel
-    private val sharedViewModel: TrackerViewModel by activityViewModels()
+    protected val sharedViewModel: TrackerViewModel by activityViewModels()
+
+    // 
+    private var upButtonNeeded = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        if (isTopLevelAndNeedUpButton) {
+            upButtonNeeded =
+                arguments?.getBoolean("upButtonNeeded") ?: false
+            if (upButtonNeeded) {
+                (activity as MainActivity).useUpButton()
+            }
+        }
         binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
         setHasOptionsMenu(hasOptionsMenu)
         (activity as MainActivity).lockDrawerSlide(lockDrawer)
@@ -36,9 +49,15 @@ abstract class BaseFragment<BindingType : ViewDataBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        applyBinding(binding)
+        binding.apply(applyBinding())
     }
 
-    private fun applyBinding(binding: ViewDataBinding) {
+    override fun onDestroy() {
+        if (upButtonNeeded) {
+            (activity as MainActivity).useHamburgerButton()
+        }
+        super.onDestroy()
     }
+
+    protected open fun applyBinding(): ApplyTo<BindingType> = {}
 }
