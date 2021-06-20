@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.fragments.TrackerFragment">
 
@@ -15,9 +14,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:padding="@dimen/default_padding">
 
             <TextView
@@ -29,9 +29,6 @@
                 android:text="@string/calories"
                 android:textSize="25sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/breakfast"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/calories" />
 
             <TextView
@@ -42,176 +39,37 @@
                 android:text="@{viewModel.calories.toString() + `kcal`}"
                 android:textSize="25sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/calories_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/calories_text"
                 tools:text="1230.0 kcal" />
 
-            <com.google.android.material.card.MaterialCardView
+
+            <com.example.elegantcalorietracker.ui.widgets.FoodListView
                 android:id="@+id/breakfast"
+                listData="@{viewModel.breakfastList}"
+                listText="@{`BREAKFAST`}"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/calories_text">
+                android:layout_height="wrap_content" />
 
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="@dimen/default_padding">
-
-
-                    <TextView
-                        android:id="@+id/breakfast_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="BREAKFAST"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/breakfast_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:listData="@{viewModel.breakfastList}"
-                        tools:itemCount="1"
-                        tools:listitem="@layout/item_food" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/breakfast_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Add Food" />
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
+            <com.example.elegantcalorietracker.ui.widgets.FoodListView
                 android:id="@+id/lunch"
+                listData="@{viewModel.lunchList}"
+                listText="@{`LUNCH`}"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/breakfast">
+                android:layout_height="wrap_content" />
 
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="@dimen/default_padding">
-
-
-                    <TextView
-                        android:id="@+id/lunch_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="LUNCH"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/lunch_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:listData="@{viewModel.lunchList}"
-                        tools:itemCount="1"
-                        tools:listitem="@layout/item_food" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/lunch_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Add Food" />
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
+            <com.example.elegantcalorietracker.ui.widgets.FoodListView
                 android:id="@+id/dinner"
+                listData="@{viewModel.dinnerList}"
+                listText="@{`DINNER`}"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/lunch">
+                android:layout_height="wrap_content" />
 
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="@dimen/default_padding">
-
-
-                    <TextView
-                        android:id="@+id/dinner_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="DINNER"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/dinner_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:listData="@{viewModel.dinnerList}"
-                        tools:itemCount="1"
-                        tools:listitem="@layout/item_food" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/dinner_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Add Food" />
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
+            <com.example.elegantcalorietracker.ui.widgets.FoodListView
                 android:id="@+id/snacks"
+                listData="@{viewModel.snacksList}"
+                listText="@{`SNACKS`}"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dinner">
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="@dimen/default_padding">
-
-
-                    <TextView
-                        android:id="@+id/snacks_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="SNACKS"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/snacks_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:listData="@{viewModel.snacksList}"
-                        tools:itemCount="1"
-                        tools:listitem="@layout/item_food" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/snacks_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Add Food" />
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-            </com.google.android.material.card.MaterialCardView>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_height="wrap_content" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </ScrollView>
 

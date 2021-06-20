@@ -4,6 +4,7 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.elegantcalorietracker.data.model.Food
 import com.example.elegantcalorietracker.ui.adapters.FoodListAdapter
+import com.example.elegantcalorietracker.ui.widgets.FoodListView
 
 @BindingAdapter("listData")
 fun bindRecyclerView(recyclerView: RecyclerView, data: MutableList<Food>?) {

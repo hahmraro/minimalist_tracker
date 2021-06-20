@@ -11,6 +11,7 @@ import com.example.elegantcalorietracker.data.model.ListType
 import com.example.elegantcalorietracker.databinding.FragmentTrackerBinding
 import com.example.elegantcalorietracker.ui.ModType
 import com.example.elegantcalorietracker.ui.adapters.FoodListAdapter
+import com.example.elegantcalorietracker.ui.widgets.FoodListView
 import java.util.*
 
 private const val TAG = "TrackerFragment"
@@ -31,26 +32,10 @@ class TrackerFragment : BaseFragment<FragmentTrackerBinding>(
         // Assign the TrackerViewModel to the binding viewModel property
         viewModel = sharedViewModel
         //
-        breakfastList.adapter =
-            FoodListAdapter(
-                clickListener(ListType.BREAKFAST),
-                longClickListener
-            )
-        lunchList.adapter =
-            FoodListAdapter(
-                clickListener(ListType.LUNCH),
-                longClickListener
-            )
-        dinnerList.adapter =
-            FoodListAdapter(
-                clickListener(ListType.DINNER),
-                longClickListener
-            )
-        snacksList.adapter =
-            FoodListAdapter(
-                clickListener(ListType.SNACKS),
-                longClickListener
-            )
+        applyFoodListView(breakfast, ListType.BREAKFAST)
+        applyFoodListView(lunch, ListType.LUNCH)
+        applyFoodListView(dinner, ListType.DINNER)
+        applyFoodListView(snacks, ListType.SNACKS)
         //
         caloriesText.setOnClickListener {
             navigateToNutrients()
@@ -58,18 +43,22 @@ class TrackerFragment : BaseFragment<FragmentTrackerBinding>(
         caloriesValue.setOnClickListener {
             navigateToNutrients()
         }
-        //
-        breakfastButton.setOnClickListener {
-            navigateToSearch(ListType.BREAKFAST)
-        }
-        lunchButton.setOnClickListener {
-            navigateToSearch(ListType.LUNCH)
-        }
-        dinnerButton.setOnClickListener {
-            navigateToSearch(ListType.DINNER)
-        }
-        snacksButton.setOnClickListener {
-            navigateToSearch(ListType.SNACKS)
+    }
+
+    private fun applyFoodListView(
+        foodListView: FoodListView,
+        listType: ListType
+    ) {
+        foodListView.apply {
+            setButtonClickListener {
+                navigateToSearch(listType)
+            }
+            setAdapter(
+                FoodListAdapter(
+                    clickListener(listType),
+                    longClickListener
+                )
+            )
         }
     }
 

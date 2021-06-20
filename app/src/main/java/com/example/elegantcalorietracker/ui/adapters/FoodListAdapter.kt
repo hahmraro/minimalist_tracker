@@ -10,9 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.elegantcalorietracker.data.model.Food
 import com.example.elegantcalorietracker.databinding.ItemFoodBinding
 
+typealias FoodClickListener = (Food) -> Unit
+typealias FoodLongClickListener = (PopupMenu, Food, View) -> Boolean
+
 class FoodListAdapter(
-    private val clickListener: ((Food) -> Unit)? = null,
-    private val longClickListener: ((PopupMenu, Food, View) -> Boolean)? = null
+    private val clickListener: FoodClickListener? = null,
+    private val longClickListener: FoodLongClickListener? = null
 ) :
     ListAdapter<Food, FoodListAdapter.FoodViewHolder>(DiffCallback) {
 
