@@ -7,8 +7,6 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.elegantcalorietracker.MainActivity
@@ -16,7 +14,6 @@ import com.example.elegantcalorietracker.R
 import com.example.elegantcalorietracker.data.model.Food
 import com.example.elegantcalorietracker.databinding.FragmentSearchBinding
 import com.example.elegantcalorietracker.ui.ModType
-import com.example.elegantcalorietracker.ui.TrackerViewModel
 import com.example.elegantcalorietracker.ui.adapters.FoodListAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
@@ -24,69 +21,57 @@ import java.util.*
 
 private const val TAG = "SearchFragment"
 
-class SearchFragment : Fragment() {
-
-    private lateinit var binding: FragmentSearchBinding
-
-    // Use the 'by activityViewModels()' Kotlin property delegate from the fragment-ktx artifact
-    private val sharedViewModel: TrackerViewModel by activityViewModels()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
-        (activity as MainActivity).lockDrawerSlide(true)
-        setHasOptionsMenu(true)
-        return binding.root
-    }
+class SearchFragment :
+    BaseFragment<FragmentSearchBinding>(
+        R.layout.fragment_search,
+        lockDrawer = true,
+        hasOptionsMenu = true
+    ) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
         sharedViewModel.modType = ModType.ADD
+        super.onViewCreated(view, savedInstanceState)
+    }
 
-        binding.apply {
-            // Specify the fragment as the lifecycle owner
-            lifecycleOwner = viewLifecycleOwner
-            // Assign the TrackerViewModel to the binding viewModel property
-            viewModel = sharedViewModel
-            //
-            historyList.adapter =
-                FoodListAdapter(clickListener, longClickListener)
-            //
-            searchField.setOnFocusChangeListener { v, hasFocus ->
-                if (!hasFocus) v.hideKeyboard()
-            }
+    override fun applyBinding(v: View): ApplyTo<FragmentSearchBinding> = {
+        // Specify the fragment as the lifecycle owner
+        lifecycleOwner = viewLifecycleOwner
+        // Assign the TrackerViewModel to the binding viewModel property
+        viewModel = sharedViewModel
+        //
+        historyList.adapter =
+            FoodListAdapter(clickListener, longClickListener)
+        //
+        searchField.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) v.hideKeyboard()
+        }
 
-            searchField.setOnEditorActionListener { _, actionId, _ ->
-                if (actionId == EditorInfo.IME_ACTION_SEND) {
-                    searchLoading.show()
-                    bodySearch.alpha = 0.5f
-                    lifecycleScope.launch {
-                        val query = searchField.text.toString()
-                        searchField.text.clear()
-                        searchField.isEnabled = false
-                        try {
-                            sharedViewModel.getFoods(query)
-                            this@SearchFragment.findNavController()
-                                .navigate(R.id.action_searchFragment_to_trackerFragment)
-                        } catch (e: Exception) {
-                            Snackbar.make(
-                                view,
-                                e.toString(),
-                                Snackbar.LENGTH_LONG
-                            ).show()
-                            searchField.isEnabled = true
-                            searchLoading.hide()
-                            bodySearch.alpha = 1.0f
-                        }
+        searchField.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEND) {
+                searchLoading.show()
+                bodySearch.alpha = 0.5f
+                lifecycleScope.launch {
+                    val query = searchField.text.toString()
+                    searchField.text.clear()
+                    searchField.isEnabled = false
+                    try {
+                        sharedViewModel.getFoods(query)
+                        this@SearchFragment.findNavController()
+                            .navigate(R.id.action_searchFragment_to_trackerFragment)
+                    } catch (e: Exception) {
+                        Snackbar.make(
+                            v,
+                            e.toString(),
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                        searchField.isEnabled = true
+                        searchLoading.hide()
+                        bodySearch.alpha = 1.0f
                     }
-                    true
-                } else {
-                    false
                 }
+                true
+            } else {
+                false
             }
         }
     }

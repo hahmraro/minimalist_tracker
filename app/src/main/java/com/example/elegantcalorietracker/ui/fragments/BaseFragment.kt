@@ -49,7 +49,7 @@ abstract class BaseFragment<BindingType : ViewDataBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.apply(applyBinding())
+        binding.apply(applyBinding(view))
     }
 
     override fun onDestroy() {
@@ -59,5 +59,5 @@ abstract class BaseFragment<BindingType : ViewDataBinding>(
         super.onDestroy()
     }
 
-    protected open fun applyBinding(): ApplyTo<BindingType> = {}
+    protected open fun applyBinding(v: View): ApplyTo<BindingType> = {}
 }

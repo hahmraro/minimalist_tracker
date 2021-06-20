@@ -25,7 +25,7 @@ class TrackerFragment : BaseFragment<FragmentTrackerBinding>(
         super.onViewCreated(view, savedInstanceState)
     }
 
-    override fun applyBinding(): ApplyTo<FragmentTrackerBinding> = {
+    override fun applyBinding(v: View): ApplyTo<FragmentTrackerBinding> = {
         // Specify the fragment as the lifecycle owner
         lifecycleOwner = viewLifecycleOwner
         // Assign the TrackerViewModel to the binding viewModel property
