@@ -44,7 +44,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:listData="@{viewModel.historyList}"
                 tools:itemCount="1"
-                tools:listitem="@layout/recycler_view_food_item" />
+                tools:listitem="@layout/item_food" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
     </LinearLayout>

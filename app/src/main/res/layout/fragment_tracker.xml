@@ -77,7 +77,7 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:listData="@{viewModel.breakfastList}"
                         tools:itemCount="1"
-                        tools:listitem="@layout/recycler_view_food_item" />
+                        tools:listitem="@layout/item_food" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/breakfast_button"
@@ -118,7 +118,7 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:listData="@{viewModel.lunchList}"
                         tools:itemCount="1"
-                        tools:listitem="@layout/recycler_view_food_item" />
+                        tools:listitem="@layout/item_food" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/lunch_button"
@@ -159,7 +159,7 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:listData="@{viewModel.dinnerList}"
                         tools:itemCount="1"
-                        tools:listitem="@layout/recycler_view_food_item" />
+                        tools:listitem="@layout/item_food" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/dinner_button"
@@ -200,7 +200,7 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:listData="@{viewModel.snacksList}"
                         tools:itemCount="1"
-                        tools:listitem="@layout/recycler_view_food_item" />
+                        tools:listitem="@layout/item_food" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/snacks_button"

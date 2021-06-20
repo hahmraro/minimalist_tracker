@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.elegantcalorietracker.data.model.Food
-import com.example.elegantcalorietracker.databinding.RecyclerViewFoodItemBinding
+import com.example.elegantcalorietracker.databinding.ItemFoodBinding
 
 class FoodListAdapter(
     private val clickListener: ((Food) -> Unit)? = null,
@@ -17,7 +17,7 @@ class FoodListAdapter(
     ListAdapter<Food, FoodListAdapter.FoodViewHolder>(DiffCallback) {
 
     class FoodViewHolder(
-        private var binding: RecyclerViewFoodItemBinding,
+        private var binding: ItemFoodBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(food: Food) {
             binding.food = food
@@ -52,7 +52,7 @@ class FoodListAdapter(
         parent: ViewGroup,
         viewType: Int
     ): FoodViewHolder {
-        val view = RecyclerViewFoodItemBinding.inflate(
+        val view = ItemFoodBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
