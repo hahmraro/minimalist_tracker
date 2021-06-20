@@ -9,7 +9,7 @@ private const val TAG = "NutrientFragment"
 class NutrientFragment :
     BaseFragment<FragmentNutrientBinding>(
         R.layout.fragment_nutrient,
-        isTopLevelAndNeedUpButton = true
+        topLevelAndCanHaveUpButton = true
     ) {
 
     override fun applyBinding(v: View): ApplyTo<FragmentNutrientBinding> = {

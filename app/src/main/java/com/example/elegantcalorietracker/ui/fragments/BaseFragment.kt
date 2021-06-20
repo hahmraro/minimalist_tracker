@@ -18,7 +18,7 @@ abstract class BaseFragment<BindingType : ViewDataBinding>(
     @LayoutRes private val layoutId: Int,
     private val lockDrawer: Boolean = false,
     private val hasOptionsMenu: Boolean = false,
-    private val isTopLevelAndNeedUpButton: Boolean = false
+    private val topLevelAndCanHaveUpButton: Boolean = false
 ) : Fragment() {
     // Binding
     protected lateinit var binding: BindingType
@@ -34,7 +34,7 @@ abstract class BaseFragment<BindingType : ViewDataBinding>(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if (isTopLevelAndNeedUpButton) {
+        if (topLevelAndCanHaveUpButton) {
             upButtonNeeded =
                 arguments?.getBoolean("upButtonNeeded") ?: false
             if (upButtonNeeded) {
