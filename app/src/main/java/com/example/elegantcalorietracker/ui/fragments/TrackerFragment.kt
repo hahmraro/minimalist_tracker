@@ -4,89 +4,72 @@ import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.elegantcalorietracker.R
 import com.example.elegantcalorietracker.data.model.Food
 import com.example.elegantcalorietracker.data.model.ListType
 import com.example.elegantcalorietracker.databinding.FragmentTrackerBinding
 import com.example.elegantcalorietracker.ui.ModType
-import com.example.elegantcalorietracker.ui.TrackerViewModel
 import com.example.elegantcalorietracker.ui.adapters.FoodListAdapter
 import java.util.*
 
 private const val TAG = "TrackerFragment"
 
-class TrackerFragment : Fragment() {
-
-    private lateinit var binding: FragmentTrackerBinding
-
-    // Use the 'by activityViewModels()' Kotlin property delegate from the fragment-ktx artifact
-    private val sharedViewModel: TrackerViewModel by activityViewModels()
-    //
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentTrackerBinding.inflate(inflater, container, false)
-        setHasOptionsMenu(true)
-        return binding.root
-    }
+class TrackerFragment : BaseFragment<FragmentTrackerBinding>(
+    R.layout.fragment_tracker,
+    hasOptionsMenu = true
+) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
         sharedViewModel.modType = ModType.EDIT
+        super.onViewCreated(view, savedInstanceState)
+    }
 
-        binding.apply {
-            // Specify the fragment as the lifecycle owner
-            lifecycleOwner = viewLifecycleOwner
-            // Assign the TrackerViewModel to the binding viewModel property
-            viewModel = sharedViewModel
-            //
-            breakfastList.adapter =
-                FoodListAdapter(
-                    clickListener(ListType.BREAKFAST),
-                    longClickListener
-                )
-            lunchList.adapter =
-                FoodListAdapter(
-                    clickListener(ListType.LUNCH),
-                    longClickListener
-                )
-            dinnerList.adapter =
-                FoodListAdapter(
-                    clickListener(ListType.DINNER),
-                    longClickListener
-                )
-            snacksList.adapter =
-                FoodListAdapter(
-                    clickListener(ListType.SNACKS),
-                    longClickListener
-                )
-            //
-            caloriesText.setOnClickListener {
-                navigateToNutrients()
-            }
-            caloriesValue.setOnClickListener {
-                navigateToNutrients()
-            }
-            //
-            breakfastButton.setOnClickListener {
-                navigateToSearch(ListType.BREAKFAST)
-            }
-            lunchButton.setOnClickListener {
-                navigateToSearch(ListType.LUNCH)
-            }
-            dinnerButton.setOnClickListener {
-                navigateToSearch(ListType.DINNER)
-            }
-            snacksButton.setOnClickListener {
-                navigateToSearch(ListType.SNACKS)
-            }
+    override fun applyBinding(): ApplyTo<FragmentTrackerBinding> = {
+        // Specify the fragment as the lifecycle owner
+        lifecycleOwner = viewLifecycleOwner
+        // Assign the TrackerViewModel to the binding viewModel property
+        viewModel = sharedViewModel
+        //
+        breakfastList.adapter =
+            FoodListAdapter(
+                clickListener(ListType.BREAKFAST),
+                longClickListener
+            )
+        lunchList.adapter =
+            FoodListAdapter(
+                clickListener(ListType.LUNCH),
+                longClickListener
+            )
+        dinnerList.adapter =
+            FoodListAdapter(
+                clickListener(ListType.DINNER),
+                longClickListener
+            )
+        snacksList.adapter =
+            FoodListAdapter(
+                clickListener(ListType.SNACKS),
+                longClickListener
+            )
+        //
+        caloriesText.setOnClickListener {
+            navigateToNutrients()
+        }
+        caloriesValue.setOnClickListener {
+            navigateToNutrients()
+        }
+        //
+        breakfastButton.setOnClickListener {
+            navigateToSearch(ListType.BREAKFAST)
+        }
+        lunchButton.setOnClickListener {
+            navigateToSearch(ListType.LUNCH)
+        }
+        dinnerButton.setOnClickListener {
+            navigateToSearch(ListType.DINNER)
+        }
+        snacksButton.setOnClickListener {
+            navigateToSearch(ListType.SNACKS)
         }
     }
 
