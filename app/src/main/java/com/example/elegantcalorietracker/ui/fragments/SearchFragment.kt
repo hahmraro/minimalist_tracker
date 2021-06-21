@@ -38,8 +38,9 @@ class SearchFragment :
         // Assign the TrackerViewModel to the binding viewModel property
         viewModel = sharedViewModel
         //
-        historyList.adapter =
+        historyList.setAdapter(
             FoodListAdapter(clickListener, longClickListener)
+        )
         //
         searchField.setOnFocusChangeListener { v, hasFocus ->
             if (!hasFocus) v.hideKeyboard()

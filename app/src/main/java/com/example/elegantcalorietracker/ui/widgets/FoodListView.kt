@@ -24,6 +24,12 @@ class FoodListView(
         adapter.submitList(data)
     }
 
+    fun setButtonInvisible(boolean: Boolean) {
+        if (boolean) {
+            binding.listButton.visibility = GONE
+        }
+    }
+
     fun setButtonClickListener(buttonClickListener: OnClickListener) {
         binding.listButton.setOnClickListener(buttonClickListener)
     }
