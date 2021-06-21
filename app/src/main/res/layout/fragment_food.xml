@@ -17,14 +17,6 @@
         android:padding="@dimen/default_padding">
 
         <TextView
-            android:id="@+id/food_name"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:autoSizeTextType="uniform"
-            android:text="@{food.name.toUpperCase()}"
-            tools:text="Pizza" />
-
-        <TextView
             android:id="@+id/serving_size"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,80 +24,16 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/serving_edit"
-            android:layout_width="50dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{food.servingSize}"
             tools:text="100" />
 
-        <TextView
-            android:id="@+id/food_calories"
+        <com.example.elegantcalorietracker.ui.widgets.NutritionView
+            android:id="@+id/food_nutrition_ll"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{food.calories + `kcal`}"
-            tools:text="Calories: 190kcal" />
+            android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/food_sugar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{food.sugar + `g`}"
-            tools:text="Sugar: 10g" />
-
-        <TextView
-            android:id="@+id/food_fiber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{food.fiber + `g`}"
-            tools:text="Fiber: 12g" />
-
-        <TextView
-            android:id="@+id/food_carbs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{food.totalCarbs + `g`}"
-            tools:text="Total Carbs: 35g" />
-
-        <TextView
-            android:id="@+id/food_saturated_fat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{food.saturatedFat + `g`}"
-            tools:text="Saturated Fat: 13g" />
-
-        <TextView
-            android:id="@+id/food_fat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{food.totalFat + `g`}"
-            tools:text="Fat: 20g" />
-
-        <TextView
-            android:id="@+id/food_protein"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{food.protein + `g`}"
-            tools:text="Protein: 15g" />
-
-        <TextView
-            android:id="@+id/food_sodium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{food.sodium + `mg`}"
-            tools:text="Sodium: 350mg" />
-
-        <TextView
-            android:id="@+id/food_potassium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{food.potassium + `mg`}"
-            tools:text="Potassium: 221mg" />
-
-        <TextView
-            android:id="@+id/food_cholesterol"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{food.cholesterol + `mg`}"
-            tools:text="Cholesterol: 750mg" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/add_button"

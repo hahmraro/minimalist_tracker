@@ -13,6 +13,18 @@ class NutrientFragment :
     ) {
 
     override fun applyBinding(v: View): ApplyTo<FragmentNutrientBinding> = {
-        food = sharedViewModel.getDailyNutrition()
+        val food = sharedViewModel.getDailyNutrition()
+        nutrientNutritionLl.apply {
+            setCalories(food.calories)
+            setFiber(food.fiber)
+            setSugar(food.sugar)
+            setCarbs(food.totalCarbs)
+            setSaturatedFat(food.saturatedFat)
+            setFat(food.totalFat)
+            setProtein(food.protein)
+            setSodium(food.sodium)
+            setPotassium(food.potassium)
+            setCholesterol(food.cholesterol)
+        }
     }
 }

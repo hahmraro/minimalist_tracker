@@ -10,7 +10,7 @@ import com.example.elegantcalorietracker.ui.adapters.FoodListAdapter
 
 class FoodListView(
     context: Context,
-    attributeSet: AttributeSet
+    attributeSet: AttributeSet?
 ) : LinearLayoutCompat(context, attributeSet) {
 
     private val binding: RvFoodListBinding = RvFoodListBinding.inflate(

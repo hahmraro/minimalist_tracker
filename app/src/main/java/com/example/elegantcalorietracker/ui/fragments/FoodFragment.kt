@@ -22,27 +22,40 @@ class FoodFragment : BaseFragment<FragmentFoodBinding>(
             this@FoodFragment.findNavController()
                 .navigate(R.id.action_foodFragment_to_trackerFragment)
             onDestroy()
-        }
-        food = fragmentFood
-        //
-        if (sharedViewModel.modType == ModType.ADD) {
-            addButton.text = "Add Food"
-            addButton.setOnClickListener {
-                val newServingSize = servingEdit.text.toString().toDouble()
-                sharedViewModel.getFood(
-                    fragmentFood!!,
-                    newServingSize
-                )
-                this@FoodFragment.findNavController()
-                    .navigate(R.id.action_foodFragment_to_trackerFragment)
-            }
         } else {
-            addButton.text = "Edit Food"
-            addButton.setOnClickListener {
-                val newServingSize = servingEdit.text.toString().toDouble()
-                sharedViewModel.editFood(fragmentFood!!, newServingSize)
-                this@FoodFragment.findNavController()
-                    .navigate(R.id.action_foodFragment_to_trackerFragment)
+            foodNutritionLl.apply {
+                setCalories(fragmentFood.calories)
+                setFiber(fragmentFood.fiber)
+                setSugar(fragmentFood.sugar)
+                setCarbs(fragmentFood.totalCarbs)
+                setSaturatedFat(fragmentFood.saturatedFat)
+                setFat(fragmentFood.totalFat)
+                setProtein(fragmentFood.protein)
+                setSodium(fragmentFood.sodium)
+                setPotassium(fragmentFood.potassium)
+                setCholesterol(fragmentFood.cholesterol)
+            }
+            food = fragmentFood
+            //
+            if (sharedViewModel.modType == ModType.ADD) {
+                addButton.text = "Add Food"
+                addButton.setOnClickListener {
+                    val newServingSize = servingEdit.text.toString().toDouble()
+                    sharedViewModel.getFood(
+                        fragmentFood,
+                        newServingSize
+                    )
+                    this@FoodFragment.findNavController()
+                        .navigate(R.id.action_foodFragment_to_trackerFragment)
+                }
+            } else {
+                addButton.text = "Edit Food"
+                addButton.setOnClickListener {
+                    val newServingSize = servingEdit.text.toString().toDouble()
+                    sharedViewModel.editFood(fragmentFood, newServingSize)
+                    this@FoodFragment.findNavController()
+                        .navigate(R.id.action_foodFragment_to_trackerFragment)
+                }
             }
         }
     }
