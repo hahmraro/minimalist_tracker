@@ -23,8 +23,9 @@ class FoodListAdapter(
         private var binding: ItemFoodBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(food: Food) {
-            binding.food = food
-            binding.executePendingBindings()
+            binding.foodName.text = food.name.uppercase()
+            binding.foodCalories.text = "${food.calories} kcal"
+            binding.servingSize.text = "${food.servingSize} g"
         }
     }
 

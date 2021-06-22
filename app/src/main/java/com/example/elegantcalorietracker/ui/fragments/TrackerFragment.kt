@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
 import androidx.core.os.bundleOf
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.elegantcalorietracker.R
 import com.example.elegantcalorietracker.data.model.Food
@@ -17,7 +18,7 @@ import java.util.*
 private const val TAG = "TrackerFragment"
 
 class TrackerFragment : BaseFragment<FragmentTrackerBinding>(
-    R.layout.fragment_tracker,
+    FragmentTrackerBinding::inflate,
     hasOptionsMenu = true
 ) {
 
@@ -27,39 +28,15 @@ class TrackerFragment : BaseFragment<FragmentTrackerBinding>(
     }
 
     override fun applyBinding(v: View): ApplyTo<FragmentTrackerBinding> = {
-        // Specify the fragment as the lifecycle owner
-        lifecycleOwner = viewLifecycleOwner
         // Assign the TrackerViewModel to the binding viewModel property
-        viewModel = sharedViewModel
+        counter.apply {
+            setOnClickListener { navigateToNutrients() }
+        }
         //
         applyFoodListView(breakfast, ListType.BREAKFAST)
         applyFoodListView(lunch, ListType.LUNCH)
         applyFoodListView(dinner, ListType.DINNER)
         applyFoodListView(snacks, ListType.SNACKS)
-        //
-        caloriesText.setOnClickListener {
-            navigateToNutrients()
-        }
-        caloriesValue.setOnClickListener {
-            navigateToNutrients()
-        }
-    }
-
-    private fun applyFoodListView(
-        foodListView: FoodListView,
-        listType: ListType
-    ) {
-        foodListView.apply {
-            setButtonClickListener {
-                navigateToSearch(listType)
-            }
-            setAdapter(
-                FoodListAdapter(
-                    clickListener(listType),
-                    longClickListener
-                )
-            )
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -138,6 +115,30 @@ class TrackerFragment : BaseFragment<FragmentTrackerBinding>(
             }
             true
         }
+
+    private fun applyFoodListView(
+        foodListView: FoodListView,
+        listType: ListType
+    ) {
+        foodListView.apply {
+            setButtonClickListener {
+                navigateToSearch(listType)
+            }
+            val listObserver = Observer<List<Food>> { list ->
+                setListData(list)
+            }
+            sharedViewModel.getList(listType).observe(
+                viewLifecycleOwner,
+                listObserver
+            )
+            setAdapter(
+                FoodListAdapter(
+                    clickListener(listType),
+                    longClickListener
+                )
+            )
+        }
+    }
 
     private fun navigateToNutrients() {
         val argument = bundleOf("upButtonNeeded" to true)

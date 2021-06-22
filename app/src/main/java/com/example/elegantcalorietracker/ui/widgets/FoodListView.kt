@@ -19,7 +19,7 @@ class FoodListView(
         true
     )
 
-    fun setListData(data: MutableList<Food>?) {
+    fun setListData(data: List<Food>?) {
         val adapter = binding.listRecycler.adapter as FoodListAdapter
         adapter.submitList(data)
     }
@@ -34,8 +34,8 @@ class FoodListView(
         binding.listButton.setOnClickListener(buttonClickListener)
     }
 
-    fun setListText(text: String) {
-        binding.listText.text = text
+    fun setListText(listText: String) {
+        binding.listText.text = listText
     }
 
     fun setAdapter(adapter: FoodListAdapter) {

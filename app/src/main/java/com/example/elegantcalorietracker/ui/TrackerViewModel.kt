@@ -23,6 +23,8 @@ class TrackerViewModel(application: Application) :
     // Repository
     private val _repository = FoodRepository(application)
 
+    private val defaultFood = Food()
+
     // Selected food
     var selectedFood: Food? = null
 
@@ -42,21 +44,22 @@ class TrackerViewModel(application: Application) :
     // Food lists
     private val _breakfastList =
         _repository.getFoodList(ListType.BREAKFAST.ordinal)
-    val breakfastList: LiveData<List<Food>> = _breakfastList
-
     private val _lunchList = _repository.getFoodList(ListType.LUNCH.ordinal)
-    val lunchList: LiveData<List<Food>> = _lunchList
-
     private val _dinnerList = _repository.getFoodList(ListType.DINNER.ordinal)
-    val dinnerList: LiveData<List<Food>> = _dinnerList
-
     private val _snacksList = _repository.getFoodList(ListType.SNACKS.ordinal)
-    val snacksList: LiveData<List<Food>> = _snacksList
-
     private val _historyList = _repository.getFoodList(ListType.HISTORY.ordinal)
-    val historyList: LiveData<List<Food>> = _historyList
 
     // Public methods
+    fun getList(listType: ListType): LiveData<List<Food>> {
+        return when (listType) {
+            ListType.BREAKFAST -> _breakfastList
+            ListType.LUNCH -> _lunchList
+            ListType.DINNER -> _dinnerList
+            ListType.SNACKS -> _snacksList
+            ListType.HISTORY -> _historyList
+        }
+    }
+
     fun clearFoods() {
         viewModelScope.launch {
             _repository.clearFoods()
@@ -144,5 +147,5 @@ class TrackerViewModel(application: Application) :
     }
 
     private fun List<Food>.sum(): Food = takeIf { it.isNotEmpty() }
-        ?.reduce { acc: Food, food: Food -> acc + food } ?: Food()
+        ?.reduce { acc: Food, food: Food -> acc + food } ?: defaultFood
 }

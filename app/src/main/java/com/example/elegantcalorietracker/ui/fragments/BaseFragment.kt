@@ -4,18 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.viewbinding.ViewBinding
 import com.example.elegantcalorietracker.MainActivity
 import com.example.elegantcalorietracker.ui.TrackerViewModel
 
 typealias ApplyTo<T> = T.() -> Unit
+typealias Inflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
 
-abstract class BaseFragment<BindingType : ViewDataBinding>(
-    @LayoutRes private val layoutId: Int,
+abstract class BaseFragment<BindingType : ViewBinding>(
+    private val bindingInflater: Inflate<BindingType>,
     private val lockDrawer: Boolean = false,
     private val hasOptionsMenu: Boolean = false,
     private val topLevelAndCanHaveUpButton: Boolean = false
@@ -41,7 +40,7 @@ abstract class BaseFragment<BindingType : ViewDataBinding>(
                 (activity as MainActivity).useUpButton()
             }
         }
-        binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
+        binding = bindingInflater.invoke(inflater, container, false)
         setHasOptionsMenu(hasOptionsMenu)
         (activity as MainActivity).lockDrawerSlide(lockDrawer)
         return binding.root

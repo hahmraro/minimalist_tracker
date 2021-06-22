@@ -22,7 +22,7 @@ private const val TAG = "SearchFragment"
 
 class SearchFragment :
     BaseFragment<FragmentSearchBinding>(
-        R.layout.fragment_search,
+        FragmentSearchBinding::inflate,
         lockDrawer = true,
         hasOptionsMenu = true
     ) {
@@ -33,10 +33,6 @@ class SearchFragment :
     }
 
     override fun applyBinding(v: View): ApplyTo<FragmentSearchBinding> = {
-        // Specify the fragment as the lifecycle owner
-        lifecycleOwner = viewLifecycleOwner
-        // Assign the TrackerViewModel to the binding viewModel property
-        viewModel = sharedViewModel
         //
         historyList.setAdapter(
             FoodListAdapter(clickListener, longClickListener)

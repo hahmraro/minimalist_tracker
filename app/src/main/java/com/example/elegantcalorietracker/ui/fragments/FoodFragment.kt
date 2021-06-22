@@ -9,13 +9,11 @@ import com.example.elegantcalorietracker.ui.ModType
 private const val TAG = "FoodFragment"
 
 class FoodFragment : BaseFragment<FragmentFoodBinding>(
-    R.layout.fragment_food,
+    FragmentFoodBinding::inflate,
     lockDrawer = true
 ) {
 
     override fun applyBinding(v: View): ApplyTo<FragmentFoodBinding> = {
-        // Specify the fragment as the lifecycle owner
-        lifecycleOwner = viewLifecycleOwner
         //
         val fragmentFood = sharedViewModel.selectedFood
         if (fragmentFood == null) {
@@ -35,7 +33,6 @@ class FoodFragment : BaseFragment<FragmentFoodBinding>(
                 setPotassium(fragmentFood.potassium)
                 setCholesterol(fragmentFood.cholesterol)
             }
-            food = fragmentFood
             //
             if (sharedViewModel.modType == ModType.ADD) {
                 addButton.text = "Add Food"

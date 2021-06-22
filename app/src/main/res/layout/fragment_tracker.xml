@@ -1,74 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context=".ui.fragments.TrackerFragment">
 
-    <data>
-
-        <variable
-            name="viewModel"
-            type="com.example.elegantcalorietracker.ui.TrackerViewModel" />
-    </data>
-
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/default_padding">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <com.example.elegantcalorietracker.ui.widgets.Counter
+            android:id="@+id/counter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/default_padding">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/calories_text"
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:layout_marginBottom="@dimen/default_padding"
-                android:autoSizeTextType="uniform"
-                android:text="@string/calories"
-                android:textSize="25sp"
-                android:textStyle="bold"
-                tools:text="@string/calories" />
+        <com.example.elegantcalorietracker.ui.widgets.FoodListView
+            android:id="@+id/breakfast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/counter" />
 
-            <TextView
-                android:id="@+id/calories_value"
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:autoSizeTextType="uniform"
-                android:text="@{viewModel.calories.toString() + `kcal`}"
-                android:textSize="25sp"
-                android:textStyle="bold"
-                tools:text="1230.0 kcal" />
+        <com.example.elegantcalorietracker.ui.widgets.FoodListView
+            android:id="@+id/lunch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/breakfast" />
 
+        <com.example.elegantcalorietracker.ui.widgets.FoodListView
+            android:id="@+id/dinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lunch" />
 
-            <com.example.elegantcalorietracker.ui.widgets.FoodListView
-                android:id="@+id/breakfast"
-                listData="@{viewModel.breakfastList}"
-                listText="@{`BREAKFAST`}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <com.example.elegantcalorietracker.ui.widgets.FoodListView
-                android:id="@+id/lunch"
-                listData="@{viewModel.lunchList}"
-                listText="@{`LUNCH`}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <com.example.elegantcalorietracker.ui.widgets.FoodListView
-                android:id="@+id/dinner"
-                listData="@{viewModel.dinnerList}"
-                listText="@{`DINNER`}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <com.example.elegantcalorietracker.ui.widgets.FoodListView
-                android:id="@+id/snacks"
-                listData="@{viewModel.snacksList}"
-                listText="@{`SNACKS`}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
-    </ScrollView>
-</layout>
+        <com.example.elegantcalorietracker.ui.widgets.FoodListView
+            android:id="@+id/snacks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dinner" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
