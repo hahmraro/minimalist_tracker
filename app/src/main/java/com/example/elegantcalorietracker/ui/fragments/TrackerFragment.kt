@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
 import androidx.core.os.bundleOf
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.elegantcalorietracker.R
 import com.example.elegantcalorietracker.data.model.Food
@@ -31,6 +30,11 @@ class TrackerFragment : BaseFragment<FragmentTrackerBinding>(
         // Assign the TrackerViewModel to the binding viewModel property
         counter.apply {
             setOnClickListener { navigateToNutrients() }
+            sharedViewModel.calories.observe(viewLifecycleOwner) { calories ->
+                setCalories(calories)
+                setCaloriesGoal(calories * 3)
+                setCaloriesRemaining(calories * 2)
+            }
         }
         //
         applyFoodListView(breakfast, ListType.BREAKFAST)
@@ -124,13 +128,11 @@ class TrackerFragment : BaseFragment<FragmentTrackerBinding>(
             setButtonClickListener {
                 navigateToSearch(listType)
             }
-            val listObserver = Observer<List<Food>> { list ->
-                setListData(list)
-            }
-            sharedViewModel.getList(listType).observe(
-                viewLifecycleOwner,
-                listObserver
-            )
+            setListText(listType.toString())
+            sharedViewModel.getList(listType)
+                .observe(viewLifecycleOwner) { list ->
+                    setListData(list)
+                }
             setAdapter(
                 FoodListAdapter(
                     clickListener(listType),

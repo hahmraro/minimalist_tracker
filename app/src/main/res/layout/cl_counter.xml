@@ -7,12 +7,11 @@
     tools:context='.ui.widgets.Counter'>
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/calories_value"
+        android:id="@+id/calories_goal"
         style="@style/TextAppearance.MaterialComponents.Headline5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:autoSizeTextType="uniform"
-        android:text="@{viewModel.calories.toString()}"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/minus"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,18 +26,17 @@
         android:autoSizeTextType="uniform"
         android:text="-"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/calories_goal"
-        app:layout_constraintStart_toEndOf="@id/calories_value"
+        app:layout_constraintEnd_toStartOf="@id/calories_value"
+        app:layout_constraintStart_toEndOf="@id/calories_goal"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="-" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/calories_goal"
+        android:id="@+id/calories_value"
         style="@style/TextAppearance.MaterialComponents.Headline5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:autoSizeTextType="uniform"
-        android:text="@{viewModel.calories.toString()}"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/equals"
         app:layout_constraintStart_toEndOf="@id/minus"
@@ -54,7 +52,7 @@
         android:text="="
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/calories_remaining"
-        app:layout_constraintStart_toEndOf="@id/calories_goal"
+        app:layout_constraintStart_toEndOf="@id/calories_value"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="=" />
 
@@ -64,7 +62,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:autoSizeTextType="uniform"
-        android:text="@{viewModel.calories.toString()}"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/equals"
