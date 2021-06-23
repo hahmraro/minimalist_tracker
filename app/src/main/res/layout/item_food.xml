@@ -5,32 +5,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/default_padding"
-    android:layout_marginBottom="@dimen/default_padding">
+    android:background="?android:attr/selectableItemBackground"
+    android:paddingBottom="@dimen/default_small_padding"
+    android:clickable="true"
+    android:focusable="true">
+
+    <View
+        android:id="@+id/divider"
+        style="@style/Divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/food_name"
+        style="@style/TextAppearance.AppCompat.Body2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
+        android:layout_marginTop="@dimen/default_small_padding"
+        android:paddingLeft="@dimen/default_padding"
+        app:layout_constraintBottom_toTopOf="@id/serving_size"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider"
         tools:text="Pizza" />
 
     <TextView
         android:id="@+id/food_calories"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingRight="@dimen/default_padding"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider"
         tools:text="350 kcal" />
 
     <TextView
         android:id="@+id/serving_size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/default_padding"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/food_name"
         tools:text="150g" />

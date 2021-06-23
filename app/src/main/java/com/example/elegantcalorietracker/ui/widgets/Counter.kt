@@ -1,6 +1,7 @@
 package com.example.elegantcalorietracker.ui.widgets
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -23,6 +24,11 @@ class Counter(context: Context, attributeSet: AttributeSet) :
 
     fun setCaloriesRemaining(calories: Double) {
         binding.caloriesRemaining.text = formatDouble(calories) + " kcal"
+        if (calories >= 0) {
+            binding.caloriesRemaining.setTextColor(Color.parseColor("#99cc01"))
+        } else {
+            binding.caloriesRemaining.setTextColor(Color.parseColor("#fe4445"))
+        }
     }
 
     private fun formatDouble(double: Double): String {

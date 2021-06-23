@@ -21,6 +21,7 @@ class FoodFragment : BaseFragment<FragmentFoodBinding>(
                 .navigate(R.id.action_foodFragment_to_trackerFragment)
             onDestroy()
         } else {
+            servingEdit.setText(fragmentFood.servingSize)
             foodNutritionLl.apply {
                 setCalories(fragmentFood.calories)
                 setFiber(fragmentFood.fiber)

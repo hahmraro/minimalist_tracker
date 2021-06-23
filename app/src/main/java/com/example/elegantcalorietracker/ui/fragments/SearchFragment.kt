@@ -3,14 +3,16 @@ package com.example.elegantcalorietracker.ui.fragments
 import android.content.Context
 import android.os.Bundle
 import android.view.*
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
+import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.elegantcalorietracker.R
 import com.example.elegantcalorietracker.data.model.Food
+import com.example.elegantcalorietracker.data.model.ListType
 import com.example.elegantcalorietracker.databinding.FragmentSearchBinding
 import com.example.elegantcalorietracker.ui.ModType
 import com.example.elegantcalorietracker.ui.adapters.FoodListAdapter
@@ -27,6 +29,8 @@ class SearchFragment :
         hasOptionsMenu = true
     ) {
 
+    private var searchQuery = MutableLiveData<String?>()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         sharedViewModel.modType = ModType.ADD
         super.onViewCreated(view, savedInstanceState)
@@ -34,49 +38,56 @@ class SearchFragment :
 
     override fun applyBinding(v: View): ApplyTo<FragmentSearchBinding> = {
         //
-        historyList.setAdapter(
-            FoodListAdapter(clickListener, longClickListener)
-        )
-        //
-        searchField.setOnFocusChangeListener { v, hasFocus ->
-            if (!hasFocus) v.hideKeyboard()
+        historyList.apply {
+            sharedViewModel.getList(ListType.HISTORY)
+                .observe(viewLifecycleOwner) { list ->
+                    val adapter = this.adapter as FoodListAdapter
+                    adapter.submitList(list)
+                }
+            adapter = FoodListAdapter(clickListener, longClickListener)
         }
-
-        searchField.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_SEND) {
+        searchQuery.observe(viewLifecycleOwner) { query ->
+            if (query != null) {
                 searchLoading.show()
-                bodySearch.alpha = 0.5f
+                historyList.alpha = 0.5f
                 lifecycleScope.launch {
-                    val query = searchField.text.toString()
-                    searchField.text.clear()
-                    searchField.isEnabled = false
                     try {
                         sharedViewModel.getFoods(query)
                         this@SearchFragment.findNavController()
                             .navigate(R.id.action_searchFragment_to_trackerFragment)
                     } catch (e: Exception) {
                         Snackbar.make(
-                            v,
+                            requireView(),
                             e.toString(),
                             Snackbar.LENGTH_LONG
                         ).show()
-                        searchField.isEnabled = true
                         searchLoading.hide()
-                        bodySearch.alpha = 1.0f
+                        historyList.alpha = 1.0f
                     }
                 }
-                true
-            } else {
-                false
             }
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.bar_menu, menu)
-        menu.findItem(R.id.bar_button).isVisible = false
-        menu.findItem(R.id.clear_button).title = "Clear history foods"
+        inflater.inflate(R.menu.search_bar_menu, menu)
+        val searchIcon = menu.findItem(R.id.search_icon)
+        val searchView = searchIcon.actionView as SearchView
+        searchView.apply {
+            queryHint = "Ex: 100g of Cheddar"
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    searchQuery.value = query
+                    searchIcon.collapseActionView()
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    return true
+                }
+            })
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

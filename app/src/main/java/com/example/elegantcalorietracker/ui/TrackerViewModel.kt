@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.elegantcalorietracker.data.model.Food
 import com.example.elegantcalorietracker.data.model.ListType
 import com.example.elegantcalorietracker.data.repository.FoodRepository
+import com.example.elegantcalorietracker.utils.sum
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlin.random.Random
@@ -23,8 +24,6 @@ class TrackerViewModel(application: Application) :
     // Repository
     private val _repository = FoodRepository(application)
 
-    private val defaultFood = Food()
-
     // Selected food
     var selectedFood: Food? = null
 
@@ -33,6 +32,7 @@ class TrackerViewModel(application: Application) :
 
     // Calories
     val calories = _repository.getKcal()
+    val caloriesGoal = 2560.0
 
     // Meal
     var listType = ListType.BREAKFAST.ordinal
@@ -145,7 +145,4 @@ class TrackerViewModel(application: Application) :
             }
         }
     }
-
-    private fun List<Food>.sum(): Food = takeIf { it.isNotEmpty() }
-        ?.reduce { acc: Food, food: Food -> acc + food } ?: defaultFood
 }

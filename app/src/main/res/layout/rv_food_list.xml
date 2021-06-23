@@ -1,33 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/default_padding"
-    android:orientation="vertical"
+    app:cardUseCompatPadding="true"
     tools:context=".ui.widgets.FoodListView">
 
-    <TextView
-        android:id="@+id/list_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        tools:text="BREAKFAST" />
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list_recycler"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:itemCount="1"
-        tools:listitem="@layout/item_food" />
+        android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/list_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add Food" />
-</androidx.appcompat.widget.LinearLayoutCompat>
+        <TextView
+            android:id="@+id/list_text"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/default_padding"
+            android:paddingLeft="@dimen/default_padding"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="BREAKFAST" />
+
+
+        <ImageView
+            android:id="@+id/list_button"
+            android:layout_width="wrap_content"
+            android:paddingVertical="@dimen/default_padding"
+            android:paddingRight="@dimen/default_padding"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/list_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/list_text"
+            app:srcCompat="@drawable/ic_add" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/list_text"
+            tools:itemCount="1"
+            tools:listitem="@layout/item_food" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

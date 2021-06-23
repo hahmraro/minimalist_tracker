@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/default_padding">
+        android:paddingVertical="@dimen/default_padding">
 
         <com.example.elegantcalorietracker.ui.widgets.Counter
             android:id="@+id/counter"
