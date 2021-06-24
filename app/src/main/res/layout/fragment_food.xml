@@ -1,34 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<com.example.elegantcalorietracker.ui.widgets.NutritionView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/food_nutrition_ll"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/default_padding"
     android:orientation="vertical"
-    android:padding="@dimen/default_padding"
-    tools:context=".ui.fragments.FoodFragment">
-
-    <TextView
-        android:id="@+id/serving_size"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Serving Size:" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/serving_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="100" />
-
-    <com.example.elegantcalorietracker.ui.widgets.NutritionView
-        android:id="@+id/food_nutrition_ll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/add_button"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        tools:text="Add Food" />
-
-</androidx.appcompat.widget.LinearLayoutCompat>
+    tools:context=".ui.fragments.FoodFragment" />

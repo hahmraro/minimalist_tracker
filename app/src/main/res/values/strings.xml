@@ -6,6 +6,6 @@
     <string name="edit_food">Edit Food</string>
     <string name="food">Food</string>
     <string name="search_food">Search Food</string>
-    <string name="nutrients">Nutrients</string>
+    <string name="daily_nutrition">Daily Nutrition</string>
     <string name="settings">Settings</string>
 </resources>

@@ -9,6 +9,12 @@ import com.example.elegantcalorietracker.databinding.ItemNutrientBinding
 class NutrientAdapter(private val nutrients: List<Nutrient>) :
     RecyclerView.Adapter<NutrientAdapter.NutrientViewHolder>() {
 
+    fun getCalories(): Double = if (nutrients.size > 9) {
+        nutrients.first().second
+    } else {
+        throw Exception()
+    }
+
     class NutrientViewHolder(
         private var binding: ItemNutrientBinding,
     ) : RecyclerView.ViewHolder(binding.root) {

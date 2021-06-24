@@ -1,5 +1,9 @@
 package com.example.elegantcalorietracker.ui.fragments
 
+import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.example.elegantcalorietracker.R
@@ -8,6 +12,8 @@ import com.example.elegantcalorietracker.databinding.FragmentFoodBinding
 import com.example.elegantcalorietracker.ui.ModType
 import com.example.elegantcalorietracker.ui.TrackerViewModel
 import com.example.elegantcalorietracker.ui.widgets.FoodListView
+
+private const val TAG = "FoodFragment"
 
 /**
  * The screen that shows when the user selects a food item from [FoodListView]
@@ -18,7 +24,8 @@ import com.example.elegantcalorietracker.ui.widgets.FoodListView
  */
 class FoodFragment : BaseFragment<FragmentFoodBinding>(
     FragmentFoodBinding::inflate,
-    lockDrawer = true
+    lockDrawer = true,
+    hasOptionsMenu = true
 ) {
 
     /**
@@ -29,19 +36,27 @@ class FoodFragment : BaseFragment<FragmentFoodBinding>(
     override fun applyBinding(v: View): ApplyTo<FragmentFoodBinding> = {
         // Assigns the selected food and the default serving size editText value
         selectedFood = sharedViewModel.selectedFood
-        servingEdit.setText(selectedFood.servingSize)
+        // servingEdit.setText(selectedFood.servingSize)
 
         // Set up the NutritionView
-        val nutrients = selectedFood.getNutrients()
+        val nutrients = mutableListOf<Double>()
+        nutrients.add(selectedFood.servingSize.toDouble())
+        nutrients.addAll(selectedFood.getNutrients())
         foodNutritionLl.setNutrients(nutrients)
+    }
 
-        // Set up the button text and click listener
-        if (sharedViewModel.modType == ModType.ADD) {
-            addButton.text = getString(R.string.add_food)
-            setAddButtonClickListener(this, ModType.ADD)
-        } else {
-            addButton.text = getString(R.string.edit_food)
-            setAddButtonClickListener(this, ModType.EDIT)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.food_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.done_button -> {
+                setAddButtonClickListener(binding, sharedViewModel.modType)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -54,13 +69,16 @@ class FoodFragment : BaseFragment<FragmentFoodBinding>(
         binding: FragmentFoodBinding,
         modType: ModType
     ) {
-        binding.addButton.setOnClickListener {
-            val newServingSize = binding.servingEdit.text.toString().toDouble()
+        try {
+            val newServingSize = binding.foodNutritionLl.getServingSize()
             if (modType == ModType.ADD)
                 sharedViewModel.getFood(selectedFood, newServingSize)
             else {
                 sharedViewModel.editFood(selectedFood, newServingSize)
             }
+        } catch (e: Exception) {
+            Log.d(TAG, e.toString())
+        } finally {
             this@FoodFragment.findNavController()
                 .navigate(R.id.action_foodFragment_to_trackerFragment)
         }

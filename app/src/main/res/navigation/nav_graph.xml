@@ -55,7 +55,7 @@
     <fragment
         android:id="@+id/nutrientFragment"
         android:name="com.example.elegantcalorietracker.ui.fragments.NutrientFragment"
-        android:label="@string/nutrients"
+        android:label="@string/daily_nutrition"
         tools:layout="@layout/fragment_nutrient">
         <action
             android:id="@+id/action_nutrientFragment_to_trackerFragment"

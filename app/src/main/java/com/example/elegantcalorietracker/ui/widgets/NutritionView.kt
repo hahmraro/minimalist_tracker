@@ -17,19 +17,28 @@ class NutritionView(context: Context, attributeSet: AttributeSet?) :
     )
 
     fun setNutrients(nutrients: List<Double>) {
-        val nutrientsNames = listOf(
-            "Sugar",
-            "Fiber",
-            "Total Carbs",
-            "Saturated Fat",
-            "Total Fat",
-            "Protein",
-            "Sodium",
-            "Potassium",
-            "Cholesterol"
+        val nutrientsNames = mutableListOf<String>()
+        if (nutrients.size > 9) nutrientsNames.add("Serving Size")
+        nutrientsNames.addAll(
+            listOf(
+                "Sugar",
+                "Fiber",
+                "Total Carbs",
+                "Saturated Fat",
+                "Total Fat",
+                "Protein",
+                "Sodium",
+                "Potassium",
+                "Cholesterol"
+            )
         )
         val nutrientInformation = nutrientsNames.zip(nutrients)
         val adapter = NutrientAdapter(nutrientInformation)
         binding.nutrientList.adapter = adapter
+    }
+
+    fun getServingSize(): Double {
+        val adapter = binding.nutrientList.adapter as NutrientAdapter
+        return adapter.getCalories()
     }
 }
