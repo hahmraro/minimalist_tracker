@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:padding="@dimen/default_padding"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/text_field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:layout_gravity="center"
+        android:inputType="number"
+        android:paddingHorizontal="@dimen/default_padding"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="100.0"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        style="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintStart_toEndOf="@id/text_field"
+        android:paddingHorizontal="@dimen/default_padding"
+        app:layout_constraintTop_toTopOf="@id/text_field"
+        app:layout_constraintBottom_toBottomOf="@id/text_field"
+        android:layout_height="wrap_content"
+        android:text="grams" />
+</androidx.constraintlayout.widget.ConstraintLayout>

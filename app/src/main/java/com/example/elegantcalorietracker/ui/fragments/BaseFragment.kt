@@ -21,6 +21,7 @@ abstract class BaseFragment<BindingType : ViewBinding>(
 ) : Fragment() {
     // Binding
     protected lateinit var binding: BindingType
+    protected var container: ViewGroup? = null
 
     // ViewModel
     protected val sharedViewModel: TrackerViewModel by activityViewModels()
@@ -40,6 +41,7 @@ abstract class BaseFragment<BindingType : ViewBinding>(
                 (activity as MainActivity).useUpButton()
             }
         }
+        this.container = container
         binding = bindingInflater.invoke(inflater, container, false)
         setHasOptionsMenu(hasOptionsMenu)
         (activity as MainActivity).lockDrawerSlide(lockDrawer)

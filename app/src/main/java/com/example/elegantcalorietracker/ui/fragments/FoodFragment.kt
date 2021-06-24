@@ -1,13 +1,12 @@
 package com.example.elegantcalorietracker.ui.fragments
 
 import android.app.AlertDialog
-import android.text.InputType
 import android.util.Log
 import android.view.*
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.navigation.fragment.findNavController
 import com.example.elegantcalorietracker.R
 import com.example.elegantcalorietracker.data.model.Food
+import com.example.elegantcalorietracker.databinding.FoodDialogBinding
 import com.example.elegantcalorietracker.databinding.FragmentFoodBinding
 import com.example.elegantcalorietracker.ui.ModType
 import com.example.elegantcalorietracker.ui.TrackerViewModel
@@ -90,11 +89,15 @@ class FoodFragment : BaseFragment<FragmentFoodBinding>(
     }
 
     private fun showDialog(): NutrientClickListener = {
-        val servingEditText = AppCompatEditText(requireContext())
-        servingEditText.inputType = InputType.TYPE_CLASS_NUMBER
-        AlertDialog.Builder(requireContext())
+        val servingEditText = FoodDialogBinding
+            .inflate(LayoutInflater.from(requireContext())).textField
+        servingEditText.apply {
+            hint = "%.1f".format(selectedFood.servingSize.toDouble())
+            requestFocus()
+        }
+        val dialog = AlertDialog.Builder(requireContext())
             .setTitle("Serving Size")
-            .setView(servingEditText)
+            .setView(servingEditText.rootView)
             .setPositiveButton("Save") { _, _ ->
                 val newServingSize = servingEditText.text.toString().toDouble()
                 val newFood = selectedFood.copy().edit(newServingSize)
@@ -106,6 +109,13 @@ class FoodFragment : BaseFragment<FragmentFoodBinding>(
             }
             .setNegativeButton("Cancel", null)
             .create()
-            .show()
+        dialog.window?.clearFlags(
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM
+        )
+        dialog.window?.setSoftInputMode(
+            WindowManager.LayoutParams
+                .SOFT_INPUT_STATE_VISIBLE
+        )
+        dialog.show()
     }
 }
