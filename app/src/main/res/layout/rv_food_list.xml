@@ -18,19 +18,21 @@
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/default_padding"
-            android:paddingLeft="@dimen/default_padding"
+            android:padding="@dimen/default_padding"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="BREAKFAST" />
 
-
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/list_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/default_padding"
-            android:paddingRight="@dimen/default_padding"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:contentDescription="@string/add_food"
+            android:outlineProvider="background"
+            android:focusable="true"
+            android:padding="@dimen/default_padding"
             app:layout_constraintBottom_toBottomOf="@id/list_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/list_text"
