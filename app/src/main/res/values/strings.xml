@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Elegant Calorie Tracker</string>
     <string name="calories">Calories</string>
-    <string name="nav_open">Open</string>
-    <string name="nav_close">Close</string>
     <string name="diary">Diary</string>
+    <string name="add_food">Add Food</string>
+    <string name="edit_food">Edit Food</string>
     <string name="food">Food</string>
     <string name="search_food">Search Food</string>
     <string name="nutrients">Nutrients</string>

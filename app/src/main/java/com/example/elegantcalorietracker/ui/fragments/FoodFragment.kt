@@ -8,62 +8,76 @@ import com.example.elegantcalorietracker.databinding.FragmentFoodBinding
 import com.example.elegantcalorietracker.ui.ModType
 import com.example.elegantcalorietracker.ui.widgets.NutritionView
 
-private const val TAG = "FoodFragment"
-
+/**
+ * The screen that shows when the user selects a food item from [FoodListView]
+ *
+ * Displays the complete nutritional information for the food, the option to
+ * change its serving size, and a button that calls [TrackerViewModel] to
+ * either save or edit it
+ */
 class FoodFragment : BaseFragment<FragmentFoodBinding>(
     FragmentFoodBinding::inflate,
     lockDrawer = true
 ) {
 
+    /**
+     * The [Food] linked to the selected food item
+     */
     private lateinit var selectedFood: Food
 
     override fun applyBinding(v: View): ApplyTo<FragmentFoodBinding> = {
-        //
+        // Assigns the selected food and the default serving size editText value
         selectedFood = sharedViewModel.selectedFood
         servingEdit.setText(selectedFood.servingSize)
-        foodNutritionLl.apply(applyFoodNutrition(selectedFood))
-        //
+
+        // Set up the NutritionView
+        foodNutritionLl.apply(applyFoodNutrition())
+
+        // Set up the button text and click listener
         if (sharedViewModel.modType == ModType.ADD) {
-            addAction(this)
+            addButton.text = getString(R.string.add_food)
+            setAddButtonClickListener(this, ModType.ADD)
         } else {
-            editAction(this)
+            addButton.text = getString(R.string.edit_food)
+            setAddButtonClickListener(this, ModType.EDIT)
         }
     }
 
-    private fun addAction(binding: FragmentFoodBinding) {
-        binding.addButton.text = "Add Food"
+    // Helper Methods
+
+    /**
+     * Set the [FragmentFoodBinding] *add button* click listener
+     */
+    private fun setAddButtonClickListener(
+        binding: FragmentFoodBinding,
+        modType: ModType
+    ) {
         binding.addButton.setOnClickListener {
             val newServingSize = binding.servingEdit.text.toString().toDouble()
-            sharedViewModel.getFood(
-                selectedFood,
-                newServingSize
-            )
+            if (modType == ModType.ADD)
+                sharedViewModel.getFood(selectedFood, newServingSize)
+            else {
+                sharedViewModel.editFood(selectedFood, newServingSize)
+            }
             this@FoodFragment.findNavController()
                 .navigate(R.id.action_foodFragment_to_trackerFragment)
         }
     }
 
-    private fun editAction(binding: FragmentFoodBinding) {
-        binding.addButton.text = "Edit Food"
-        binding.addButton.setOnClickListener {
-            val newServingSize = binding.servingEdit.text.toString().toDouble()
-            sharedViewModel.editFood(selectedFood, newServingSize)
-            this@FoodFragment.findNavController()
-                .navigate(R.id.action_foodFragment_to_trackerFragment)
-        }
-    }
-
-    private fun applyFoodNutrition(fragmentFood: Food): ApplyTo<NutritionView> =
+    /**
+     * Fills the [NutritionView] with the [selectedFood] properties
+     */
+    private fun applyFoodNutrition(): ApplyTo<NutritionView> =
         {
-            setCalories(fragmentFood.calories)
-            setFiber(fragmentFood.fiber)
-            setSugar(fragmentFood.sugar)
-            setCarbs(fragmentFood.totalCarbs)
-            setSaturatedFat(fragmentFood.saturatedFat)
-            setFat(fragmentFood.totalFat)
-            setProtein(fragmentFood.protein)
-            setSodium(fragmentFood.sodium)
-            setPotassium(fragmentFood.potassium)
-            setCholesterol(fragmentFood.cholesterol)
+            setCalories(selectedFood.calories)
+            setFiber(selectedFood.fiber)
+            setSugar(selectedFood.sugar)
+            setCarbs(selectedFood.totalCarbs)
+            setSaturatedFat(selectedFood.saturatedFat)
+            setFat(selectedFood.totalFat)
+            setProtein(selectedFood.protein)
+            setSodium(selectedFood.sodium)
+            setPotassium(selectedFood.potassium)
+            setCholesterol(selectedFood.cholesterol)
         }
 }
