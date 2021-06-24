@@ -123,7 +123,10 @@ class TrackerViewModel(application: Application) :
         this.listType = mealType
     }
 
-    fun getDailyNutrition() = runBlocking { _repository.getAll() }.sum()
+    fun getDailyNutrition(): List<Double> {
+        val totalNutrition = runBlocking { _repository.getAll() }.sum()
+        return totalNutrition.getNutrients()
+    }
 
     // Private methods
     private fun setHistory(foodList: List<Food>) {

@@ -8,6 +8,8 @@ import kotlin.random.Random
 
 enum class ListType { BREAKFAST, LUNCH, DINNER, SNACKS, HISTORY }
 
+typealias Nutrient = Pair<String, Double>
+
 data class FoodList(val items: List<Food>)
 
 @Entity(tableName = "saved_foods_table")
@@ -91,6 +93,18 @@ data class Food(
             cholesterol = (this.cholesterol.toDouble() + food.cholesterol.toDouble())
                 .toString(),
         )
+
+    fun getNutrients() = listOf(
+        sugar.toDouble(),
+        fiber.toDouble(),
+        totalCarbs.toDouble(),
+        saturatedFat.toDouble(),
+        totalFat.toDouble(),
+        protein.toDouble(),
+        sodium.toDouble(),
+        potassium.toDouble(),
+        cholesterol.toDouble()
+    )
 
     fun edit(newServingSize: Double, newListType: Int? = null):
         Food {

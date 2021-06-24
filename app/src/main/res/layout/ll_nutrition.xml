@@ -1,69 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.widgets.NutritionView">
+    android:layout_height="wrap_content"
+    app:cardUseCompatPadding="true">
 
-    <TextView
-        android:id="@+id/food_calories"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="Calories: 190kcal" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.widgets.NutritionView">
 
-    <TextView
-        android:id="@+id/food_sugar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="Sugar: 10g" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/nutrient_list"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_nutrient" />
 
-    <TextView
-        android:id="@+id/food_fiber"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="Fiber: 12g" />
-
-    <TextView
-        android:id="@+id/food_carbs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="Total Carbs: 35g" />
-
-    <TextView
-        android:id="@+id/food_saturated_fat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="Saturated Fat: 13g" />
-
-    <TextView
-        android:id="@+id/food_fat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="Fat: 20g" />
-
-    <TextView
-        android:id="@+id/food_protein"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="Protein: 15g" />
-
-    <TextView
-        android:id="@+id/food_sodium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="Sodium: 350mg" />
-
-    <TextView
-        android:id="@+id/food_potassium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="Potassium: 221mg" />
-
-    <TextView
-        android:id="@+id/food_cholesterol"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="Cholesterol: 750mg" />
-
-</androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.cardview.widget.CardView>

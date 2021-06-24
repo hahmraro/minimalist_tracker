@@ -8,7 +8,6 @@ import com.example.elegantcalorietracker.databinding.FragmentFoodBinding
 import com.example.elegantcalorietracker.ui.ModType
 import com.example.elegantcalorietracker.ui.TrackerViewModel
 import com.example.elegantcalorietracker.ui.widgets.FoodListView
-import com.example.elegantcalorietracker.ui.widgets.NutritionView
 
 /**
  * The screen that shows when the user selects a food item from [FoodListView]
@@ -33,7 +32,8 @@ class FoodFragment : BaseFragment<FragmentFoodBinding>(
         servingEdit.setText(selectedFood.servingSize)
 
         // Set up the NutritionView
-        foodNutritionLl.apply(applyFoodNutrition())
+        val nutrients = selectedFood.getNutrients()
+        foodNutritionLl.setNutrients(nutrients)
 
         // Set up the button text and click listener
         if (sharedViewModel.modType == ModType.ADD) {
@@ -65,21 +65,4 @@ class FoodFragment : BaseFragment<FragmentFoodBinding>(
                 .navigate(R.id.action_foodFragment_to_trackerFragment)
         }
     }
-
-    /**
-     * Fills the [NutritionView] with the [selectedFood] properties
-     */
-    private fun applyFoodNutrition(): ApplyTo<NutritionView> =
-        {
-            setCalories(selectedFood.calories)
-            setFiber(selectedFood.fiber)
-            setSugar(selectedFood.sugar)
-            setCarbs(selectedFood.totalCarbs)
-            setSaturatedFat(selectedFood.saturatedFat)
-            setFat(selectedFood.totalFat)
-            setProtein(selectedFood.protein)
-            setSodium(selectedFood.sodium)
-            setPotassium(selectedFood.potassium)
-            setCholesterol(selectedFood.cholesterol)
-        }
 }
