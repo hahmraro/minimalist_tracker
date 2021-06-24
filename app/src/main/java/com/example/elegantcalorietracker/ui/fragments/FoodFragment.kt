@@ -6,6 +6,8 @@ import com.example.elegantcalorietracker.R
 import com.example.elegantcalorietracker.data.model.Food
 import com.example.elegantcalorietracker.databinding.FragmentFoodBinding
 import com.example.elegantcalorietracker.ui.ModType
+import com.example.elegantcalorietracker.ui.TrackerViewModel
+import com.example.elegantcalorietracker.ui.widgets.FoodListView
 import com.example.elegantcalorietracker.ui.widgets.NutritionView
 
 /**
