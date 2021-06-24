@@ -25,7 +25,7 @@ class TrackerViewModel(application: Application) :
     private val _repository = FoodRepository(application)
 
     // Selected food
-    var selectedFood: Food? = null
+    var selectedFood: Food = Food()
 
     // Mod type
     var modType = ModType.EDIT
