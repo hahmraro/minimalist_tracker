@@ -4,14 +4,14 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.appcompat.widget.LinearLayoutCompat
-import com.example.elegantcalorietracker.databinding.LlNutritionBinding
+import com.example.elegantcalorietracker.databinding.CardViewNutritionBinding
 import com.example.elegantcalorietracker.ui.adapters.NutrientAdapter
 import com.example.elegantcalorietracker.ui.adapters.NutrientClickListener
 
 class NutritionView(context: Context, attributeSet: AttributeSet?) :
     LinearLayoutCompat(context, attributeSet) {
 
-    private val binding = LlNutritionBinding.inflate(
+    private val binding = CardViewNutritionBinding.inflate(
         LayoutInflater.from(context),
         this,
         true
