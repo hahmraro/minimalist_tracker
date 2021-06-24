@@ -1,16 +1,17 @@
 package com.example.elegantcalorietracker.ui.fragments
 
+import android.app.AlertDialog
+import android.text.InputType
 import android.util.Log
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.navigation.fragment.findNavController
 import com.example.elegantcalorietracker.R
 import com.example.elegantcalorietracker.data.model.Food
 import com.example.elegantcalorietracker.databinding.FragmentFoodBinding
 import com.example.elegantcalorietracker.ui.ModType
 import com.example.elegantcalorietracker.ui.TrackerViewModel
+import com.example.elegantcalorietracker.ui.adapters.NutrientClickListener
 import com.example.elegantcalorietracker.ui.widgets.FoodListView
 
 private const val TAG = "FoodFragment"
@@ -36,13 +37,10 @@ class FoodFragment : BaseFragment<FragmentFoodBinding>(
     override fun applyBinding(v: View): ApplyTo<FragmentFoodBinding> = {
         // Assigns the selected food and the default serving size editText value
         selectedFood = sharedViewModel.selectedFood
-        // servingEdit.setText(selectedFood.servingSize)
 
         // Set up the NutritionView
-        val nutrients = mutableListOf<Double>()
-        nutrients.add(selectedFood.servingSize.toDouble())
-        nutrients.addAll(selectedFood.getNutrients())
-        foodNutritionLl.setNutrients(nutrients)
+        val nutrients = makeNutrients(selectedFood)
+        foodNutritionLl.makeAdapter(nutrients, true, showDialog())
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -82,5 +80,32 @@ class FoodFragment : BaseFragment<FragmentFoodBinding>(
             this@FoodFragment.findNavController()
                 .navigate(R.id.action_foodFragment_to_trackerFragment)
         }
+    }
+
+    private fun makeNutrients(food: Food): MutableList<Double> {
+        val nutrients = mutableListOf<Double>()
+        nutrients.add(food.servingSize.toDouble())
+        nutrients.addAll(food.getNutrients())
+        return nutrients
+    }
+
+    private fun showDialog(): NutrientClickListener = {
+        val servingEditText = AppCompatEditText(requireContext())
+        servingEditText.inputType = InputType.TYPE_CLASS_NUMBER
+        AlertDialog.Builder(requireContext())
+            .setTitle("Serving Size")
+            .setView(servingEditText)
+            .setPositiveButton("Save") { _, _ ->
+                val newServingSize = servingEditText.text.toString().toDouble()
+                val newFood = selectedFood.copy().edit(newServingSize)
+                val nutrients = makeNutrients(newFood)
+                binding.foodNutritionLl.makeAdapter(
+                    nutrients, true,
+                    showDialog(), true
+                )
+            }
+            .setNegativeButton("Cancel", null)
+            .create()
+            .show()
     }
 }

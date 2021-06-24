@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.example.elegantcalorietracker.databinding.LlNutritionBinding
 import com.example.elegantcalorietracker.ui.adapters.NutrientAdapter
+import com.example.elegantcalorietracker.ui.adapters.NutrientClickListener
 
 class NutritionView(context: Context, attributeSet: AttributeSet?) :
     LinearLayoutCompat(context, attributeSet) {
@@ -16,25 +17,35 @@ class NutritionView(context: Context, attributeSet: AttributeSet?) :
         true
     )
 
-    fun setNutrients(nutrients: List<Double>) {
+    private val defaultNames = listOf(
+        "Sugar",
+        "Fiber",
+        "Total Carbs",
+        "Saturated Fat",
+        "Total Fat",
+        "Protein",
+        "Sodium",
+        "Potassium",
+        "Cholesterol"
+    )
+
+    fun makeAdapter(
+        nutrients: List<Double>,
+        requireCalories: Boolean = false,
+        clickListener: NutrientClickListener? = null,
+        swap: Boolean = false,
+    ) {
         val nutrientsNames = mutableListOf<String>()
         if (nutrients.size > 9) nutrientsNames.add("Serving Size")
-        nutrientsNames.addAll(
-            listOf(
-                "Sugar",
-                "Fiber",
-                "Total Carbs",
-                "Saturated Fat",
-                "Total Fat",
-                "Protein",
-                "Sodium",
-                "Potassium",
-                "Cholesterol"
-            )
-        )
+        nutrientsNames.addAll(defaultNames)
         val nutrientInformation = nutrientsNames.zip(nutrients)
-        val adapter = NutrientAdapter(nutrientInformation)
-        binding.nutrientList.adapter = adapter
+        val adapter =
+            NutrientAdapter(nutrientInformation, requireCalories, clickListener)
+        if (swap) {
+            binding.nutrientList.swapAdapter(adapter, false)
+        } else {
+            binding.nutrientList.adapter = adapter
+        }
     }
 
     fun getServingSize(): Double {

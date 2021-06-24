@@ -6,10 +6,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.elegantcalorietracker.data.model.Nutrient
 import com.example.elegantcalorietracker.databinding.ItemNutrientBinding
 
-class NutrientAdapter(private val nutrients: List<Nutrient>) :
+typealias NutrientClickListener = (Double) -> Unit
+
+class NutrientAdapter(
+    private val nutrients: List<Nutrient>,
+    private val requireCalories: Boolean = false,
+    private val clickListener: NutrientClickListener? = null
+) :
     RecyclerView.Adapter<NutrientAdapter.NutrientViewHolder>() {
 
-    fun getCalories(): Double = if (nutrients.size > 9) {
+    fun getCalories(): Double = if (requireCalories) {
         nutrients.first().second
     } else {
         throw Exception()
@@ -42,6 +48,12 @@ class NutrientAdapter(private val nutrients: List<Nutrient>) :
 
     override fun onBindViewHolder(holder: NutrientViewHolder, position: Int) {
         val nutrient = nutrients[position]
+        if (position == 0 && requireCalories) {
+            holder.itemView.setOnClickListener {
+                clickListener?.invoke(nutrient.second)
+                true
+            }
+        }
         holder.bind(nutrient)
     }
 }
