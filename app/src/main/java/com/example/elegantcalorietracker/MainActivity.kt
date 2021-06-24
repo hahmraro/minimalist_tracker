@@ -92,9 +92,7 @@ class MainActivity :
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // I'm unsure to whether or not to close the drawer after navigating
-        // Uncomment the line below to close the drawer after navigating
-        // drawerLayout.closeDrawer(GravityCompat.START, true)
+        drawerLayout.closeDrawer(GravityCompat.START, true)
         return item.onNavDestinationSelected(navController) ||
             super.onOptionsItemSelected(item)
     }
