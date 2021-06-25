@@ -1,7 +1,6 @@
 package com.example.elegantcalorietracker.data.repository
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.elegantcalorietracker.data.api.CalorieNinjasApi
 import com.example.elegantcalorietracker.data.database.FoodDatabase
@@ -38,15 +37,10 @@ class FoodRepository(val context: Context) {
 
     fun saveDate() {
         appSettings.edit().putInt(SAVED_DATE, today).apply()
-        val savedDay = appSettings.getInt(SAVED_DATE, 0)
     }
 
     fun isSavedDateToday(): Boolean {
         val savedDay = appSettings.getInt(SAVED_DATE, 0)
-        Log.d(
-            "Repository",
-            "checking if today($today) equals savedDay($savedDay)"
-        )
         return today == savedDay
     }
 
