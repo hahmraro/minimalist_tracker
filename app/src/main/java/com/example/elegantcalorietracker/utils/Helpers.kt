@@ -17,9 +17,10 @@ typealias DialogWithTextFieldClickListener = (
 fun showDialogWithTextField(
     context: Context,
     title: String,
+    inputType: Int? = null,
     hint: String? = null,
-    positiveText: String? = "Ok",
-    negativeText: String? = "Cancel",
+    positiveText: String = "Ok",
+    negativeText: String = "Cancel",
     positiveListener: DialogWithTextFieldClickListener? = null,
     negativeListener: DialogWithTextFieldClickListener? = null
 ) {
@@ -27,6 +28,7 @@ fun showDialogWithTextField(
         .inflate(LayoutInflater.from(context)).textField
     editText.apply {
         this.hint = hint
+        if (inputType != null) this.inputType = inputType
         requestFocus()
     }
     val dialog = AlertDialog.Builder(context)

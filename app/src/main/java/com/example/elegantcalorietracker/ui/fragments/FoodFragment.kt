@@ -1,5 +1,6 @@
 package com.example.elegantcalorietracker.ui.fragments
 
+import android.text.InputType
 import android.util.Log
 import android.view.*
 import androidx.navigation.fragment.findNavController

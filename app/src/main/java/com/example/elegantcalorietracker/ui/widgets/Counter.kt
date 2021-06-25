@@ -2,6 +2,7 @@ package com.example.elegantcalorietracker.ui.widgets
 
 import android.content.Context
 import android.graphics.Color
+import android.text.InputType
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -25,6 +26,7 @@ class Counter(context: Context, attributeSet: AttributeSet) :
                 context,
                 title = "Set calories goal",
                 hint = hint,
+                inputType = InputType.TYPE_CLASS_NUMBER,
                 positiveText = "Save",
                 positiveListener = positiveListener
             )
@@ -35,8 +37,8 @@ class Counter(context: Context, attributeSet: AttributeSet) :
         binding.caloriesValue.text = formatDouble(calories)
     }
 
-    fun setCaloriesGoal(calories: Double) {
-        binding.caloriesGoal.text = formatDouble(calories)
+    fun setCaloriesGoal(calories: Int) {
+        binding.caloriesGoal.text = calories.toString()
     }
 
     fun setCaloriesRemaining(calories: Double) {

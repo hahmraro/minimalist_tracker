@@ -2,6 +2,7 @@ package com.example.elegantcalorietracker.data.repository
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.elegantcalorietracker.data.api.CalorieNinjasApi
 import com.example.elegantcalorietracker.data.database.FoodDatabase
 import com.example.elegantcalorietracker.data.model.Food
@@ -12,6 +13,7 @@ import java.util.*
 
 private const val APP_SETTINGS = "app_settings"
 private const val SAVED_DATE = "saved_date"
+private const val SAVED_GOAL = "saved_goal"
 
 class FoodRepository(val context: Context) {
     private val db = FoodDatabase.getInstance(context).foodDao
@@ -33,6 +35,15 @@ class FoodRepository(val context: Context) {
                 return list
             }
         }
+    }
+
+    fun getSavedGoal(): MutableLiveData<Int> {
+        val savedGoal = appSettings.getInt(SAVED_GOAL, 2000)
+        return MutableLiveData(savedGoal)
+    }
+
+    fun setSavedGoal(newSavedGoal: Int) {
+        appSettings.edit().putInt(SAVED_GOAL, newSavedGoal).apply()
     }
 
     fun saveDate() {
