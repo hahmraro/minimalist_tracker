@@ -5,13 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.elegantcalorietracker.data.model.Nutrient
 import com.example.elegantcalorietracker.databinding.ItemNutrientBinding
-
-typealias NutrientClickListener = (Double) -> Unit
+import com.example.elegantcalorietracker.utils.DialogClickListener
 
 class NutrientAdapter(
     private val nutrients: List<Nutrient>,
     private val requireCalories: Boolean = false,
-    private val clickListener: NutrientClickListener? = null
+    private val clickListener: DialogClickListener? = null
 ) :
     RecyclerView.Adapter<NutrientAdapter.NutrientViewHolder>() {
 

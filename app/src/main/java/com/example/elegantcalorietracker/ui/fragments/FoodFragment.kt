@@ -10,8 +10,8 @@ import com.example.elegantcalorietracker.databinding.FoodDialogBinding
 import com.example.elegantcalorietracker.databinding.FragmentFoodBinding
 import com.example.elegantcalorietracker.ui.ModType
 import com.example.elegantcalorietracker.ui.TrackerViewModel
-import com.example.elegantcalorietracker.ui.adapters.NutrientClickListener
 import com.example.elegantcalorietracker.ui.widgets.FoodListView
+import com.example.elegantcalorietracker.utils.DialogClickListener
 
 private const val TAG = "FoodFragment"
 
@@ -88,7 +88,7 @@ class FoodFragment : BaseFragment<FragmentFoodBinding>(
         return nutrients
     }
 
-    private fun showDialog(): NutrientClickListener = {
+    private fun showDialog(): DialogClickListener = {
         val servingEditText = FoodDialogBinding
             .inflate(LayoutInflater.from(requireContext())).textField
         servingEditText.apply {
