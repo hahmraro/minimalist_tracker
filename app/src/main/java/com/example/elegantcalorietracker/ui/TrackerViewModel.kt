@@ -21,6 +21,19 @@ class TrackerViewModel(application: Application) :
     // Repository
     private val _repository = FoodRepository(application)
 
+    // If the saved foods are from another day, clear the saved foods and
+    // saves today's date
+    init {
+        viewModelScope.launch {
+            _repository.apply {
+                if (!isSavedDateToday()) {
+                    clearFoods()
+                    saveDate()
+                }
+            }
+        }
+    }
+
     // Selected food
     var selectedFood: Food = Food()
 
@@ -29,7 +42,7 @@ class TrackerViewModel(application: Application) :
 
     // Calories
     val calories = _repository.getKcal()
-    val caloriesGoal = MutableLiveData(2560.0)
+    val caloriesGoal = MutableLiveData(2000.0)
     val caloriesRemaining = MediatorLiveData<Double>().apply {
         value = 0.0
         val subtract: (x: Double, y: Double) -> Double = { x, y -> x - y }
