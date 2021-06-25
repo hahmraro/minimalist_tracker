@@ -2,10 +2,7 @@ package com.example.elegantcalorietracker.ui
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.elegantcalorietracker.data.model.Food
 import com.example.elegantcalorietracker.data.model.ListType
 import com.example.elegantcalorietracker.data.repository.FoodRepository
@@ -32,7 +29,13 @@ class TrackerViewModel(application: Application) :
 
     // Calories
     val calories = _repository.getKcal()
-    val caloriesGoal = 2560.0
+    val caloriesGoal = MutableLiveData(2560.0)
+    val caloriesRemaining = MediatorLiveData<Double>().apply {
+        value = 0.0
+        val subtract: (x: Double, y: Double) -> Double = { x, y -> x - y }
+        addSource(caloriesGoal) { value = subtract(it, calories.value ?: 0.0) }
+        addSource(calories) { value = subtract(caloriesGoal.value ?: 0.0, it) }
+    }
 
     // Meal
     var listType = ListType.BREAKFAST.ordinal

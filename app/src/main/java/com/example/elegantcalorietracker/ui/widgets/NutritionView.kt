@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.example.elegantcalorietracker.databinding.CardViewNutritionBinding
 import com.example.elegantcalorietracker.ui.adapters.NutrientAdapter
-import com.example.elegantcalorietracker.utils.DialogClickListener
 
 class NutritionView(context: Context, attributeSet: AttributeSet?) :
     LinearLayoutCompat(context, attributeSet) {
@@ -32,7 +31,7 @@ class NutritionView(context: Context, attributeSet: AttributeSet?) :
     fun makeAdapter(
         nutrients: List<Double>,
         requireCalories: Boolean = false,
-        clickListener: DialogClickListener? = null,
+        clickListener: OnClickListener? = null,
         swap: Boolean = false,
     ) {
         val nutrientsNames = mutableListOf<String>()

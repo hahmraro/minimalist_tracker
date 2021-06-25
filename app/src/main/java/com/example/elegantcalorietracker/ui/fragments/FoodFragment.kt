@@ -1,17 +1,15 @@
 package com.example.elegantcalorietracker.ui.fragments
 
-import android.app.AlertDialog
 import android.util.Log
 import android.view.*
 import androidx.navigation.fragment.findNavController
 import com.example.elegantcalorietracker.R
 import com.example.elegantcalorietracker.data.model.Food
-import com.example.elegantcalorietracker.databinding.FoodDialogBinding
 import com.example.elegantcalorietracker.databinding.FragmentFoodBinding
 import com.example.elegantcalorietracker.ui.ModType
 import com.example.elegantcalorietracker.ui.TrackerViewModel
 import com.example.elegantcalorietracker.ui.widgets.FoodListView
-import com.example.elegantcalorietracker.utils.DialogClickListener
+import com.example.elegantcalorietracker.utils.showDialogWithTextField
 
 private const val TAG = "FoodFragment"
 
@@ -88,17 +86,13 @@ class FoodFragment : BaseFragment<FragmentFoodBinding>(
         return nutrients
     }
 
-    private fun showDialog(): DialogClickListener = {
-        val servingEditText = FoodDialogBinding
-            .inflate(LayoutInflater.from(requireContext())).textField
-        servingEditText.apply {
-            hint = "%.1f".format(selectedFood.servingSize.toDouble())
-            requestFocus()
-        }
-        val dialog = AlertDialog.Builder(requireContext())
-            .setTitle("Serving Size")
-            .setView(servingEditText.rootView)
-            .setPositiveButton("Save") { _, _ ->
+    private fun showDialog(): (View) -> Unit = {
+        showDialogWithTextField(
+            requireContext(),
+            title = "Serving Size",
+            hint = "%.1f".format(selectedFood.servingSize.toDouble()),
+            positiveText = "Save",
+            positiveListener = { _, _, servingEditText ->
                 val newServingSize = servingEditText.text.toString().toDouble()
                 val newFood = selectedFood.copy().edit(newServingSize)
                 val nutrients = makeNutrients(newFood)
@@ -107,15 +101,6 @@ class FoodFragment : BaseFragment<FragmentFoodBinding>(
                     showDialog(), true
                 )
             }
-            .setNegativeButton("Cancel", null)
-            .create()
-        dialog.window?.clearFlags(
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM
         )
-        dialog.window?.setSoftInputMode(
-            WindowManager.LayoutParams
-                .SOFT_INPUT_STATE_VISIBLE
-        )
-        dialog.show()
     }
 }

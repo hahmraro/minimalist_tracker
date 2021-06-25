@@ -6,6 +6,8 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.elegantcalorietracker.databinding.ClCounterBinding
+import com.example.elegantcalorietracker.utils.DialogWithTextFieldClickListener
+import com.example.elegantcalorietracker.utils.showDialogWithTextField
 
 class Counter(context: Context, attributeSet: AttributeSet) :
     ConstraintLayout(context, attributeSet) {
@@ -13,6 +15,21 @@ class Counter(context: Context, attributeSet: AttributeSet) :
     private val binding: ClCounterBinding = ClCounterBinding.inflate(
         LayoutInflater.from(context), this, true
     )
+
+    fun setMoreClickListener(
+        hint: String,
+        positiveListener: DialogWithTextFieldClickListener? = null
+    ) {
+        binding.moreIcon.setOnClickListener {
+            showDialogWithTextField(
+                context,
+                title = "Set calories goal",
+                hint = hint,
+                positiveText = "Save",
+                positiveListener = positiveListener
+            )
+        }
+    }
 
     fun setCalories(calories: Double) {
         binding.caloriesValue.text = formatDouble(calories)

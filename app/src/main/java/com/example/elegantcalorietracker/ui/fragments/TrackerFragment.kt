@@ -30,11 +30,18 @@ class TrackerFragment : BaseFragment<FragmentTrackerBinding>(
         // Assign the TrackerViewModel to the binding viewModel property
         counter.apply {
             setOnClickListener { navigateToNutrients() }
-            val caloriesGoal = sharedViewModel.caloriesGoal
-            setCaloriesGoal(caloriesGoal)
+            sharedViewModel.caloriesGoal.observe(viewLifecycleOwner) { goal ->
+                setCaloriesGoal(goal)
+                setMoreClickListener("%.1f".format(goal)) { _, _, editText ->
+                    sharedViewModel.caloriesGoal.value = editText.text
+                        .toString().toDouble()
+                }
+            }
             sharedViewModel.calories.observe(viewLifecycleOwner) { calories ->
                 setCalories(calories)
-                setCaloriesRemaining(caloriesGoal - calories)
+            }
+            sharedViewModel.caloriesRemaining.observe(viewLifecycleOwner) { remaining ->
+                setCaloriesRemaining(remaining)
             }
         }
         //

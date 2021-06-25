@@ -5,29 +5,39 @@ import android.content.Context
 import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.WindowManager
-import com.example.elegantcalorietracker.databinding.FoodDialogBinding
+import androidx.appcompat.widget.AppCompatEditText
+import com.example.elegantcalorietracker.databinding.DialogEditTextBinding
 
-private fun showDialogWithTextField(
+typealias DialogWithTextFieldClickListener = (
+    dialog: DialogInterface,
+    which: Int,
+    editText: AppCompatEditText
+) -> Unit
+
+fun showDialogWithTextField(
     context: Context,
     title: String,
     hint: String? = null,
     positiveText: String? = "Ok",
     negativeText: String? = "Cancel",
-    positiveListener: DialogInterface.OnClickListener? = null,
-    negativeListener: DialogInterface.OnClickListener? = null,
-):
-    DialogClickListener = {
-    val servingEditText = FoodDialogBinding
+    positiveListener: DialogWithTextFieldClickListener? = null,
+    negativeListener: DialogWithTextFieldClickListener? = null
+) {
+    val editText = DialogEditTextBinding
         .inflate(LayoutInflater.from(context)).textField
-    servingEditText.apply {
+    editText.apply {
         this.hint = hint
         requestFocus()
     }
     val dialog = AlertDialog.Builder(context)
         .setTitle(title)
-        .setView(servingEditText.rootView)
-        .setPositiveButton(positiveText, positiveListener)
-        .setNegativeButton(negativeText, negativeListener)
+        .setView(editText.rootView)
+        .setPositiveButton(positiveText) { dialog, which ->
+            positiveListener?.invoke(dialog, which, editText)
+        }
+        .setNegativeButton(negativeText) { dialog, which ->
+            negativeListener?.invoke(dialog, which, editText)
+        }
         .create()
     dialog.window?.clearFlags(
         WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM
