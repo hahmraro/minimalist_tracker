@@ -4,7 +4,7 @@ import android.content.Context
 import java.io.IOException
 
 object ConnectionChecker {
-    fun isOnline(context: Context): Boolean {
+    fun isOnline(): Boolean {
         val runtime = Runtime.getRuntime()
         try {
             val ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8")

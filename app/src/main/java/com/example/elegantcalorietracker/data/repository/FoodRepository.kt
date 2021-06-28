@@ -23,7 +23,7 @@ class FoodRepository(val context: Context) {
     private val today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
 
     suspend fun searchFood(query: String, mealType: Int): List<Food> {
-        if (!ConnectionChecker.isOnline(context)) throw NoConnection()
+        if (!ConnectionChecker.isOnline()) throw NoConnection()
         val list = CalorieNinjasApi.retrofitService.getFoodList(query).items
         when {
             list.isEmpty() -> throw FoodNotFound()
