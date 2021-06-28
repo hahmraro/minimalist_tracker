@@ -15,8 +15,9 @@
     <string name="equals"> = </string>
     <string name="remaining">Remaining</string>
     <string name="remaining_value">%.0f kcal</string>
-    <!-- Color -->
-    <string name="color">#</string>
+    <!-- Food -->
+    <string name="food_calories">%.1f kcal</string>
+    <string name="food_serving_size">%.1f g</string>
     <!-- Units -->
     <string name="kcal">kcal</string>
     <!-- Dialog -->

@@ -30,7 +30,6 @@
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:contentDescription="@string/add_food"
-            android:outlineProvider="background"
             android:focusable="true"
             android:padding="@dimen/default_padding"
             app:layout_constraintBottom_toBottomOf="@id/list_text"
