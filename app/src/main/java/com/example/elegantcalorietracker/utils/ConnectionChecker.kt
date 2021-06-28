@@ -1,6 +1,5 @@
 package com.example.elegantcalorietracker.utils
 
-import android.content.Context
 import java.io.IOException
 
 object ConnectionChecker {
