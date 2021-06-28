@@ -3,6 +3,8 @@ package com.example.elegantcalorietracker.data.repository
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.preference.PreferenceManager
+import com.example.elegantcalorietracker.R
 import com.example.elegantcalorietracker.data.api.CalorieNinjasApi
 import com.example.elegantcalorietracker.data.database.FoodDatabase
 import com.example.elegantcalorietracker.data.model.Food
@@ -11,15 +13,16 @@ import com.example.elegantcalorietracker.utils.FoodNotFound
 import com.example.elegantcalorietracker.utils.NoConnection
 import java.util.*
 
-private const val APP_SETTINGS = "app_settings"
-private const val SAVED_DATE = "saved_date"
-private const val SAVED_GOAL = "saved_goal"
-
 class FoodRepository(val context: Context) {
-    private val db = FoodDatabase.getInstance(context).foodDao
-    private val appSettings =
-        context.getSharedPreferences(APP_SETTINGS, Context.MODE_PRIVATE)
 
+    private val sharedPreferences = PreferenceManager
+        .getDefaultSharedPreferences(context)
+    private val datePreferencesKey =
+        context.getString(R.string.date_preferences_key)
+    private val goalPreferencesKey =
+        context.getString(R.string.goal_preferences_key)
+
+    private val db = FoodDatabase.getInstance(context).foodDao
     private val today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
 
     suspend fun searchFood(query: String, mealType: Int): List<Food> {
@@ -38,20 +41,21 @@ class FoodRepository(val context: Context) {
     }
 
     fun getSavedGoal(): MutableLiveData<Int> {
-        val savedGoal = appSettings.getInt(SAVED_GOAL, 2000)
+        val savedGoal = sharedPreferences.getInt(goalPreferencesKey, 2000)
         return MutableLiveData(savedGoal)
     }
 
     fun setSavedGoal(newSavedGoal: Int) {
-        appSettings.edit().putInt(SAVED_GOAL, newSavedGoal).apply()
+        sharedPreferences.edit().putInt(goalPreferencesKey, newSavedGoal)
+            .apply()
     }
 
     fun saveDate() {
-        appSettings.edit().putInt(SAVED_DATE, today).apply()
+        sharedPreferences.edit().putInt(datePreferencesKey, today).apply()
     }
 
     fun isSavedDateToday(): Boolean {
-        val savedDay = appSettings.getInt(SAVED_DATE, 0)
+        val savedDay = sharedPreferences.getInt(datePreferencesKey, 0)
         return today == savedDay
     }
 

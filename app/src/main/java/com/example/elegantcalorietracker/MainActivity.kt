@@ -3,11 +3,13 @@ package com.example.elegantcalorietracker
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
+import com.example.elegantcalorietracker.utils.ThemeProvider
 import com.google.android.material.navigation.NavigationView
 
 private const val TAG = "MainActivity"
@@ -27,6 +29,9 @@ class MainActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val theme = ThemeProvider(this).getThemeFromPreferences()
+        AppCompatDelegate.setDefaultNightMode(theme)
 
         // Retrieve NavController from NavHostFragment
         val navHostFragment = supportFragmentManager
