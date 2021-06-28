@@ -1,5 +1,6 @@
 package com.example.elegantcalorietracker.ui.adapters
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import android.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.elegantcalorietracker.R
 import com.example.elegantcalorietracker.data.model.Food
 import com.example.elegantcalorietracker.databinding.ItemFoodBinding
 
@@ -22,11 +24,16 @@ class FoodListAdapter(
     class FoodViewHolder(
         private var binding: ItemFoodBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
+        private val resources: Resources? = itemView.resources
         fun bind(food: Food) {
             binding.foodName.text =
                 food.name.replaceFirstChar { it.titlecase() }
-            binding.foodCalories.text = "${food.calories} kcal"
-            binding.servingSize.text = "${food.servingSize} g"
+            binding.foodCalories.text = resources?.getString(
+                R.string.food_calories, food.calories.toFloat()
+            )
+            binding.servingSize.text = resources?.getString(
+                R.string.food_serving_size, food.servingSize.toFloat()
+            )
         }
     }
 
@@ -71,12 +78,12 @@ class FoodListAdapter(
     override fun onBindViewHolder(holder: FoodViewHolder, position: Int) {
         val food = getItem(position)
         if (clickListener != null) {
-            holder.itemView.setOnClickListener { clickListener!!(food) }
+            holder.itemView.setOnClickListener { clickListener.invoke(food) }
         }
         if (longClickListener != null) {
             holder.itemView.setOnLongClickListener {
                 val menu = PopupMenu(it.context, it)
-                longClickListener!!(menu, food, it)
+                longClickListener.invoke(menu, food, it)
                 menu.show()
                 true
             }
