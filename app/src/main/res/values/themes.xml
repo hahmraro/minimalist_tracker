@@ -1,5 +1,16 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="Theme.ElegantCalorieTracker" parent="Theme.MaterialComponents.DayNight.DarkActionBar.Bridge">
+    <style name="Theme.ElegantCalorieTracker" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <!--Material color attributes (light theme) -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
+        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>
+        <!--"On" colors define how text, icons and strokes are colored in relation to the surface-->
+        <!--on which they appear.-->
+        <item name="colorOnPrimary">@color/primaryTextColor</item>
+        <item name="colorOnSecondary">@color/secondaryTextColor</item>
+        <item name="colorOnBackground">@color/primaryTextColor</item>
+        <item name="colorOnSurface">@color/primaryTextColor</item>
     </style>
 </resources>

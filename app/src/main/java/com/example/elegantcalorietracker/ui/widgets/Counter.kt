@@ -1,11 +1,12 @@
 package com.example.elegantcalorietracker.ui.widgets
 
 import android.content.Context
-import android.graphics.Color
 import android.text.InputType
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import com.example.elegantcalorietracker.R
 import com.example.elegantcalorietracker.databinding.ClCounterBinding
 import com.example.elegantcalorietracker.utils.DialogWithTextFieldClickListener
 import com.example.elegantcalorietracker.utils.showDialogWithTextField
@@ -24,10 +25,10 @@ class Counter(context: Context, attributeSet: AttributeSet) :
         binding.moreIcon.setOnClickListener {
             showDialogWithTextField(
                 context,
-                title = "Set calories goal",
+                title = context.getString(R.string.set_calories_goal),
                 hint = hint,
                 inputType = InputType.TYPE_CLASS_NUMBER,
-                positiveText = "Save",
+                positiveText = context.getString(R.string.save),
                 positiveListener = positiveListener
             )
         }
@@ -42,11 +43,16 @@ class Counter(context: Context, attributeSet: AttributeSet) :
     }
 
     fun setCaloriesRemaining(calories: Double) {
-        binding.caloriesRemaining.text = formatDouble(calories) + " kcal"
+        binding.caloriesRemaining.text =
+            context.getString(R.string.remaining_value, calories)
         if (calories >= 0) {
-            binding.caloriesRemaining.setTextColor(Color.parseColor("#99cc01"))
+            binding.caloriesRemaining.setTextColor(
+                ContextCompat.getColor(context, R.color.safe_color)
+            )
         } else {
-            binding.caloriesRemaining.setTextColor(Color.parseColor("#fe4445"))
+            binding.caloriesRemaining.setTextColor(
+                ContextCompat.getColor(context, R.color.danger_color)
+            )
         }
     }
 
