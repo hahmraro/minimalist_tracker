@@ -71,7 +71,7 @@
         android:id="@+id/settingsFragment"
         android:name="com.example.elegantcalorietracker.ui.fragments.SettingsFragment"
         android:label="@string/settings"
-        tools:layout="@layout/fragment_settings">
+        tools:layout="@xml/preferences">
         <action
             android:id="@+id/action_settingsFragment_to_trackerFragment"
             app:destination="@id/trackerFragment"
