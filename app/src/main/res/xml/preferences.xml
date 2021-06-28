@@ -11,7 +11,7 @@
         app:key="@string/theme_preferences_key"
         app:title="Theme" />
 
-    <Preference
+    <EditTextPreference
         android:icon="@drawable/ic_calories_goal"
         app:key="@string/goal_preferences_key"
         app:summary="Change the daily calories goal"

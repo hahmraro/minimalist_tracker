@@ -26,7 +26,6 @@ class Counter(context: Context, attributeSet: AttributeSet) :
                 context,
                 title = "Set calories goal",
                 hint = hint,
-                unit = "kcal",
                 inputType = InputType.TYPE_CLASS_NUMBER,
                 positiveText = "Save",
                 positiveListener = positiveListener

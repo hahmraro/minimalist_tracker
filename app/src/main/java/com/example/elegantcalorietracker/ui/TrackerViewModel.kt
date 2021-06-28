@@ -42,7 +42,7 @@ class TrackerViewModel(application: Application) :
 
     // Calories
     val calories = _repository.getKcal()
-    val caloriesGoal = _repository.getSavedGoal()
+    val caloriesGoal = MutableLiveData(_repository.getSavedGoal())
     val caloriesRemaining = MediatorLiveData<Double>().apply {
         value = 0.0
         val subtract: (x: Double, y: Double) -> Double = { x, y -> x - y }
@@ -59,7 +59,6 @@ class TrackerViewModel(application: Application) :
 
     // Status of the request
     private val _status = MutableLiveData<ApiStatus>()
-    val status: LiveData<ApiStatus> = _status
 
     // Food lists
     private val _breakfastList =
@@ -110,9 +109,12 @@ class TrackerViewModel(application: Application) :
         _repository.setSavedGoal(newGoal)
     }
 
-    suspend
+    fun refreshGoal() {
+        val refreshedGoal = _repository.getSavedGoal()
+        caloriesGoal.value = refreshedGoal
+    }
 
-    fun getFoods(query: String) {
+    suspend fun getFoods(query: String) {
         val foods = _repository.searchFood(query, listType)
         setHistory(foods)
     }

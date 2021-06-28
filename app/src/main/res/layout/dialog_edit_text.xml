@@ -5,32 +5,18 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="?dialogPreferredPadding">
+    android:paddingHorizontal="?dialogPreferredPadding">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/text_field"
-        style="@style/Widget.AppCompat.EditText"
-        android:layout_width="wrap_content"
-        android:textStyle="bold"
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edit"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:focusable="true"
         android:inputType="numberDecimal"
         android:maxLength="5"
-        android:paddingHorizontal="@dimen/default_padding"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="100.0" />
-
-    <TextView
-        android:id="@+id/dialog_unit_text"
-        style="@style/TextAppearance.AppCompat.Body1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:paddingHorizontal="@dimen/default_small_padding"
-        android:text="grams"
-        app:layout_constraintBottom_toBottomOf="@id/text_field"
-        app:layout_constraintStart_toEndOf="@id/text_field"
-        app:layout_constraintTop_toTopOf="@id/text_field" />
 </androidx.constraintlayout.widget.ConstraintLayout>

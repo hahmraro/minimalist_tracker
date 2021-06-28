@@ -18,7 +18,6 @@ fun showDialogWithTextField(
     context: Context,
     title: String,
     inputType: Int? = null,
-    unit: String? = null,
     hint: String? = null,
     positiveText: String = "Ok",
     negativeText: String = "Cancel",
@@ -27,8 +26,7 @@ fun showDialogWithTextField(
 ) {
     val dialogLayout =
         DialogEditTextBinding.inflate(LayoutInflater.from(context))
-    if (unit != null) dialogLayout.dialogUnitText.text = unit
-    val editText = dialogLayout.textField
+    val editText = dialogLayout.edit
     editText.apply {
         this.hint = hint
         if (inputType != null) this.inputType = inputType

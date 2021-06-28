@@ -1,7 +1,9 @@
 package com.example.elegantcalorietracker.ui.fragments
 
 import android.os.Bundle
+import android.text.InputType
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -23,6 +25,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     ) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
         setThemePreference()
+        setGoalPreference()
     }
 
     private fun setThemePreference() {
@@ -34,5 +37,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 }
                 true
             }
+    }
+
+    private fun setGoalPreference() {
+        val editTextPreference = preferenceManager
+            .findPreference<EditTextPreference>(getString(R.string.goal_preferences_key))
+        editTextPreference?.setOnBindEditTextListener { editText ->
+            editText.inputType = InputType.TYPE_CLASS_NUMBER
+        }
     }
 }

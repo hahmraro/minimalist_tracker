@@ -2,7 +2,6 @@ package com.example.elegantcalorietracker.data.repository
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.preference.PreferenceManager
 import com.example.elegantcalorietracker.R
 import com.example.elegantcalorietracker.data.api.CalorieNinjasApi
@@ -40,13 +39,14 @@ class FoodRepository(val context: Context) {
         }
     }
 
-    fun getSavedGoal(): MutableLiveData<Int> {
-        val savedGoal = sharedPreferences.getInt(goalPreferencesKey, 2000)
-        return MutableLiveData(savedGoal)
+    fun getSavedGoal(): Int {
+        val savedGoal = sharedPreferences.getString(goalPreferencesKey, "2000")
+        return savedGoal?.toInt() ?: 2000
     }
 
     fun setSavedGoal(newSavedGoal: Int) {
-        sharedPreferences.edit().putInt(goalPreferencesKey, newSavedGoal)
+        sharedPreferences.edit()
+            .putString(goalPreferencesKey, newSavedGoal.toString())
             .apply()
     }
 
