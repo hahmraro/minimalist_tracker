@@ -14,15 +14,6 @@
         android:indeterminate="true"
         android:visibility="gone" />
 
-    <com.google.android.material.textview.MaterialTextView
-        style="@style/TextAppearance.MaterialComponents.Headline5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/default_small_padding"
-        android:paddingHorizontal="@dimen/default_padding"
-        android:text="History"
-        android:textStyle="bold" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/history_list"
         android:layout_width="match_parent"
