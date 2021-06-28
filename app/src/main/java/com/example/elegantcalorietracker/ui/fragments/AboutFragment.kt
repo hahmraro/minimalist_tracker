@@ -20,7 +20,7 @@ class AboutFragment : Fragment() {
             .setDescription(
                 "Minimalist calorie tracker with natural language API"
             )
-            .setImage(R.drawable.ic_error)
+            .setImage(R.mipmap.ic_launcher)
             .addGitHub("hahmraro", "GitHub Page")
             .create()
     }
