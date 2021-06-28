@@ -46,7 +46,8 @@ class MainActivity :
             setOf(
                 R.id.trackerFragment,
                 R.id.nutrientFragment,
-                R.id.settingsFragment
+                R.id.settingsFragment,
+                R.id.aboutFragment
             ),
             drawerLayout
         )

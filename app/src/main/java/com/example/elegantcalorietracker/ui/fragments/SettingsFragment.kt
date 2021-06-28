@@ -2,6 +2,7 @@ package com.example.elegantcalorietracker.ui.fragments
 
 import android.os.Bundle
 import android.text.InputType
+import android.text.TextUtils
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
@@ -42,6 +43,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private fun setGoalPreference() {
         val editTextPreference = preferenceManager
             .findPreference<EditTextPreference>(getString(R.string.goal_preferences_key))
+        editTextPreference?.summaryProvider =
+            Preference.SummaryProvider<EditTextPreference> { preference ->
+                val text = preference.text
+                if (TextUtils.isEmpty(text)) {
+                    "Not set"
+                } else {
+                    "Current goal: $text kcal"
+                }
+            }
         editTextPreference?.setOnBindEditTextListener { editText ->
             editText.inputType = InputType.TYPE_CLASS_NUMBER
         }

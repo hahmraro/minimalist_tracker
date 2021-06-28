@@ -14,7 +14,15 @@
     <EditTextPreference
         android:icon="@drawable/ic_calories_goal"
         app:key="@string/goal_preferences_key"
-        app:summary="Change the daily calories goal"
+        app:summary="@string/goal_summary"
         app:title="Calories goal" />
+
+    <Preference
+        android:icon="@drawable/ic_bugs"
+        app:title="Report bugs">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="https://github.com/hahmraro/elegant_calorie_tracker_android/issues" />
+    </Preference>
 
 </PreferenceScreen>
