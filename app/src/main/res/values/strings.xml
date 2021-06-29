@@ -17,7 +17,8 @@
     <string name="remaining_value">%.0f kcal</string>
     <!-- Food -->
     <string name="food_calories">%.1f kcal</string>
-    <string name="food_serving_size">%.1f g</string>
+    <string name="food_nutrient">%.1f g</string>
+    <string name="food_micronutrient">%.1f mg</string>
     <!-- Units -->
     <string name="kcal">kcal</string>
     <!-- Dialog -->

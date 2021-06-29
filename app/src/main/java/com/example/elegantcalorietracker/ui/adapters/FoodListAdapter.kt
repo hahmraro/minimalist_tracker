@@ -51,7 +51,7 @@ class FoodListAdapter(
                 R.string.food_calories, food.calories.toFloat()
             )
             binding.servingSize.text = resources?.getString(
-                R.string.food_serving_size, food.servingSize.toFloat()
+                R.string.food_nutrient, food.servingSize.toFloat()
             )
         }
     }
