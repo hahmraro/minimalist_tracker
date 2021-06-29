@@ -6,6 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.elegantcalorietracker.data.model.Food
 
+/**
+ * Room Database with [Food] data class as the entity and [FoodDao] as the dao
+ */
 @Database(entities = [Food::class], version = 24, exportSchema = false)
 abstract class FoodDatabase : RoomDatabase() {
     abstract val foodDao: FoodDao

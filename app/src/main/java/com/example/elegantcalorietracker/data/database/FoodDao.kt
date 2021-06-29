@@ -5,6 +5,11 @@ import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
 import com.example.elegantcalorietracker.data.model.Food
 
+/**
+ * Data access object used by [FoodDatabase]
+ *
+ * Has all the methods for reading and manipulating [FoodDatabase]
+ */
 @Dao
 interface FoodDao {
     // Suspend methods
