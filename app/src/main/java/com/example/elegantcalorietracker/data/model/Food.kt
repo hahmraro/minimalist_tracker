@@ -1,29 +1,69 @@
 package com.example.elegantcalorietracker.data.model
 
+import androidx.recyclerview.widget.RecyclerView
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.elegantcalorietracker.data.api.CalorieNinjasService
+import com.example.elegantcalorietracker.data.database.FoodDatabase
 import com.squareup.moshi.Json
 import kotlin.random.Random
 
+/**
+ * Enum class that contains all the possible [Food] list types used by the app
+ */
 enum class ListType { BREAKFAST, LUNCH, DINNER, SNACKS, HISTORY }
 
+/**
+ * Alias for the [Pair]<*Nutrient name*, *Nutrient value*> used by nutrient
+ * lists
+ * throughout the app
+ */
 typealias Nutrient = Pair<String, Double>
 
+/**
+ * The object that is converted from the json file retrieved by [CalorieNinjasService]
+ *
+ * Contains a [List] of [Food]
+ */
 data class FoodList(val items: List<Food>)
 
+/**
+ * The domain model of the app
+ *
+ * Represents a Food object, containing its [name], its [ListType], its
+ * nutrients as specified by the json retrieved from [CalorieNinjasService], as
+ * well as an unique ID
+ */
 @Entity(tableName = "saved_foods_table")
 data class Food(
+
+    /**
+     * The unique ID of the object. Used to differentiate it from other
+     * [Food] objects both from the [FoodDatabase] and from the various
+     * [RecyclerView] adapters used by the app
+     */
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var id: Int = Random.nextInt(),
 
+    /**
+     * The [ListType] of the food. Used to determine on which list this [Food]
+     * object should be placed in the app
+     */
     @ColumnInfo(name = "list_type")
     var listType: Int = ListType.BREAKFAST.ordinal,
 
+    /**
+     * Its name. Retrieved from the "name" key from the
+     * [CalorieNinjasService] json file. Used together with its [id] to
+     * differentiate itself from other [Food] objects from the various
+     * [RecyclerView] adapters used by the app
+     */
     @ColumnInfo(name = "name")
     val name: String = "",
 
+    /* Food Nutrients */
     @ColumnInfo(name = "serving_size")
     @Json(name = "serving_size_g")
     var servingSize: String = "0.0",
@@ -69,6 +109,11 @@ data class Food(
 
 ) {
 
+    /**
+     * Plus operator (+) function that lets two or more [Food] objets be
+     * added, in which the operation will return a new [Food] object
+     * containing the sum of all its nutrients
+     */
     @Override
     operator fun plus(food: Food) =
         Food(
@@ -94,6 +139,10 @@ data class Food(
                 .toString(),
         )
 
+    /**
+     * Returns a [List] containing all the [Food] nutrients, each converted to
+     * [Double]
+     */
     fun getNutrients() = listOf(
         sugar.toDouble(),
         fiber.toDouble(),
@@ -106,6 +155,9 @@ data class Food(
         cholesterol.toDouble()
     )
 
+    /**
+     * Modifies the [Food] nutrients based on a new [servingSize] and [listType]
+     */
     fun edit(newServingSize: Double, newListType: Int? = null):
         Food {
         listType = newListType ?: listType
