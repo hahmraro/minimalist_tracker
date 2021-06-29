@@ -1,5 +1,6 @@
 package com.example.elegantcalorietracker.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,12 @@ import androidx.fragment.app.Fragment
 import com.example.elegantcalorietracker.R
 import mehdi.sakout.aboutpage.AboutPage
 
+/** GitHub username to be used in the *About Page* */
+private const val GITHUB_USERNAME = "hahmraro"
+
+/**
+ * Shows an *About Page* using the [AboutPage] library
+ */
 class AboutFragment : Fragment() {
 
     override fun onCreateView(
@@ -15,13 +22,23 @@ class AboutFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return AboutPage(requireContext())
+        return createAboutPage(requireContext())
+    }
+
+    /**
+     * Creates the *About Page* with the app's description, its icon, and a
+     * link to my GitHub account
+     */
+    private fun createAboutPage(context: Context): View? =
+        AboutPage(context)
             .isRTL(false)
             .setDescription(
-                "Minimalist calorie tracker with natural language API"
+                resources.getString(R.string.about_description)
             )
             .setImage(R.mipmap.ic_launcher)
-            .addGitHub("hahmraro", "GitHub Page")
+            .addGitHub(
+                GITHUB_USERNAME,
+                resources.getString(R.string.github_page)
+            )
             .create()
-    }
 }
