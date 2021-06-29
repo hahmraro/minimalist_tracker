@@ -29,8 +29,10 @@ private val retrofit = Retrofit.Builder()
     .build()
 
 /**
- * Calls the CalorieNinjas API with the private [API_KEY], returns a [FoodList]
- * object
+ * Interface with a function that calls the CalorieNinjas API with the private
+ * [API_KEY]
+ *
+ * Returns a [FoodList] object
  */
 interface CalorieNinjasService {
     @Headers(

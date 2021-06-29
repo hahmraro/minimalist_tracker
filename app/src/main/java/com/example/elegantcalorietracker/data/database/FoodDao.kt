@@ -43,7 +43,7 @@ interface FoodDao {
      * Retrieves every food which [ListType] isn't [ListType.HISTORY]
      */
     @Query("SELECT * FROM saved_foods_table WHERE list_type != 4")
-    suspend fun getAll(): List<Food>
+    suspend fun getAllExceptHistory(): List<Food>
 
     // Non-suspend methods
 
