@@ -1,6 +1,5 @@
 package com.example.elegantcalorietracker.ui.fragments
 
-import android.text.InputType
 import android.util.Log
 import android.view.*
 import androidx.navigation.fragment.findNavController
@@ -15,6 +14,8 @@ import com.example.elegantcalorietracker.utils.showDialogWithTextField
 private const val TAG = "FoodFragment"
 
 /**
+ * Implements [BaseFragment], with [lockDrawer] and [hasOptionsMenu] set to true
+ *
  * The screen that shows when the user selects a food item from [FoodListView]
  *
  * Displays the complete nutritional information for the food, the option to
@@ -33,7 +34,7 @@ class FoodFragment : BaseFragment<FragmentFoodBinding>(
     private lateinit var selectedFood: Food
 
     override fun applyBinding(v: View): ApplyTo<FragmentFoodBinding> = {
-        // Assigns the selected food and the default serving size editText value
+        // Assigns the view model selected food to the Fragment selectedFood
         selectedFood = sharedViewModel.selectedFood
 
         // Set up the NutritionView
@@ -59,7 +60,11 @@ class FoodFragment : BaseFragment<FragmentFoodBinding>(
     // Helper Methods
 
     /**
-     * Set the [FragmentFoodBinding] *add button* click listener
+     * The [FragmentFoodBinding] *add button* click listener
+     *
+     * Adds or edits the [selectedFood] depending on whether or not the
+     * [TrackerViewModel.modType] is [ModType.ADD] or [ModType.EDIT], and
+     * navigates back to [TrackerFragment]
      */
     private fun setAddButtonClickListener(
         binding: FragmentFoodBinding,
@@ -80,6 +85,10 @@ class FoodFragment : BaseFragment<FragmentFoodBinding>(
         }
     }
 
+    /**
+     * Retrieves a [MutableList] containing the nutrients of the [selectedFood]
+     * @return a [MutableList] of type [Double]
+     */
     private fun makeNutrients(food: Food): MutableList<Double> {
         val nutrients = mutableListOf<Double>()
         nutrients.add(food.servingSize.toDouble())
@@ -87,12 +96,24 @@ class FoodFragment : BaseFragment<FragmentFoodBinding>(
         return nutrients
     }
 
+    /**
+     * Method that is called when the [Food.servingSize] is clicked inside
+     * the [binding] recycler view
+     *
+     * Shows a dialog with an EditText that can change the value of the
+     * [selectedFood] serving size
+     */
     private fun showDialog(): (View) -> Unit = {
         showDialogWithTextField(
             requireContext(),
-            title = "Serving Size",
-            hint = "%.1f".format(selectedFood.servingSize.toDouble()),
-            positiveText = "Save",
+            title = resources.getString(R.string.serving_size),
+            hint = resources.getString(
+                R.string.food_nutrient,
+                selectedFood.servingSize.toDouble()
+            ),
+            positiveText = resources.getString(R.string.save),
+            // Changes the selectedFood serving size and updates the recycler
+            // view with the new values
             positiveListener = { _, _, servingEditText ->
                 val newServingSize = servingEditText.text.toString().toDouble()
                 val newFood = selectedFood.copy().edit(newServingSize)

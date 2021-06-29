@@ -27,6 +27,7 @@
     <!-- Dialog -->
     <string name="set_calories_goal">Set calories goal</string>
     <string name="save">Save</string>
+    <string name="serving_size">Serving Size</string>
 
     <string name="add_food">Add Food</string>
     <string name="edit_food">Edit Food</string>
