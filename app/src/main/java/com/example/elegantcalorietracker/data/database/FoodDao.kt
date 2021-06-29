@@ -13,6 +13,7 @@ import com.example.elegantcalorietracker.data.model.ListType
  */
 @Dao
 interface FoodDao {
+
     // Suspend methods
 
     @Insert(onConflict = REPLACE)
@@ -28,19 +29,21 @@ interface FoodDao {
     suspend fun delete(food: Food)
 
     /**
-     * Deletes every food which [ListType] isn't [ListType.HISTORY]
+     * Deletes every food of which [ListType] doesn't equals [ListType.HISTORY]
      */
     @Query("DELETE FROM saved_foods_table WHERE list_type != 4")
     suspend fun clearAllExceptHistory()
 
     /**
-     * Deletes only the foods which [ListType] is [ListType.HISTORY]
+     * Deletes only the foods of which [ListType] equals [ListType.HISTORY]
      */
     @Query("DELETE FROM saved_foods_table WHERE list_type = 4")
     suspend fun clearHistory()
 
     /**
-     * Retrieves every food which [ListType] isn't [ListType.HISTORY]
+     * Retrieves every food of which [ListType] doesn't equals [ListType.HISTORY]
+     *
+     * @return a [List] of [Food]
      */
     @Query("SELECT * FROM saved_foods_table WHERE list_type != 4")
     suspend fun getAllExceptHistory(): List<Food>
@@ -49,6 +52,8 @@ interface FoodDao {
 
     /**
      * Retrieves all the foods that match the specified [ListType]
+     *
+     * @param listType an integer that represents a [ListType.ordinal]
      */
     @Query("SELECT * FROM saved_foods_table WHERE list_type = :listType")
     fun get(listType: Int): LiveData<List<Food>>
@@ -56,6 +61,9 @@ interface FoodDao {
     /**
      * Retrieves the sum of the [Food.calories] of all the foods which
      * [ListType] isn't [ListType.HISTORY]
+     *
+     * @return a [LiveData] object of type [Double] that represents the sum
+     * of the [Food.calories]
      */
     @Query("SELECT TOTAL(calories) FROM saved_foods_table WHERE list_type != 4")
     fun getKcal(): LiveData<Double>

@@ -18,6 +18,8 @@ import java.util.*
  *
  * Every communication with the application local and remote data sources is
  * mediated by this class
+ *
+ * @param context The application context used to initialize [localDataSource]
  */
 class FoodRepository(val context: Context) {
 
@@ -43,13 +45,17 @@ class FoodRepository(val context: Context) {
     // Public suspend methods
 
     /**
-     * Searches for the [query] on the [remoteDataSource]
+     * Searches for the [query] on the [remoteDataSource]. If a [List] of [Food]
+     * is returned from that [query], assigns each [Food.listType] present on the
+     * list to the specified [listType] and saves the list to the [localDataSource]
      *
-     * If no internet connection is found, throws [NoConnectionException], and
-     * if the search turns up empty, throws [FoodNotFoundException]
-     *
-     * Returns a [List] of [Food] and saves it to the [localDataSource],
-     * setting each [Food.listType] to the specified [listType]
+     * @param query The query that will be searched on the [remoteDataSource]
+     * @param listType an [Int] that represents the [ListType.ordinal] that will
+     * be set to each [Food.listType] of the returning [List]
+     * @return The [List] of [Food] returned from the [remoteDataSource] with
+     * each [Food.listType] set to [listType]
+     * @throws NoConnectionException if no internet connection is found
+     * @throws FoodNotFoundException if the search turns up empty
      */
     suspend fun searchFood(query: String, listType: Int): List<Food> {
         if (!ConnectionChecker.isOnline()) throw NoConnectionException()
@@ -66,18 +72,27 @@ class FoodRepository(val context: Context) {
         }
     }
 
-    /** Adds the [food] to the [localDataSource] */
+    /**
+     * Adds the [food] to the [localDataSource]
+     *
+     * @param food The [Food] to be added to the [localDataSource]
+     */
     suspend fun addFood(food: Food) {
         localDataSource.insertOne(food)
     }
 
-    /** Deletes the [food] from the [localDataSource] */
+    /**
+     * Deletes the [food] from the [localDataSource]
+     *
+     * @param food The [Food] to be deleted from the [localDataSource]
+     */
     suspend fun deleteFood(food: Food) {
         localDataSource.delete(food)
     }
 
-    /** If the [food] is saved in the [localDataSource], replace it and return
-     * it
+    /** If the [food] is saved in the [localDataSource], replace it and return it
+     *
+     * @param food The [Food] to be edited in the [localDataSource]
      */
     suspend fun editFood(food: Food): Food {
         localDataSource.update(food)
@@ -111,6 +126,8 @@ class FoodRepository(val context: Context) {
     /**
      * Retrieves the value stored in the [goalPreferencesKey] saved in the
      * default [sharedPreferences]
+     *
+     * @return an [Int] that represents the saved goal
      */
     fun getSavedGoal(): Int {
         val savedGoal = sharedPreferences.getString(
@@ -123,6 +140,8 @@ class FoodRepository(val context: Context) {
     /**
      * Sets the value of the [goalPreferencesKey] saved in the default
      * [sharedPreferences]
+     *
+     * @param newSavedGoal an [Int] that will replace the value saved in [goalPreferencesKey]
      */
     fun setSavedGoal(newSavedGoal: Int) {
         sharedPreferences.edit()
@@ -141,6 +160,8 @@ class FoodRepository(val context: Context) {
     /**
      * Returns whether or not the value of [datePreferencesKey] is equal to
      * [today]
+     *
+     * @return a [Boolean]
      */
     fun isSavedDateToday(): Boolean {
         val savedDay = sharedPreferences.getInt(datePreferencesKey, 0)
@@ -151,6 +172,8 @@ class FoodRepository(val context: Context) {
      * Returns a [LiveData] with the sum of all [Food.calories] of the every
      * [Food] object saved in the [localDataSource] that don't have its
      * [ListType] set to [ListType.HISTORY]
+     *
+     * @return a [LiveData] object of type [Double]
      */
     fun getKcal(): LiveData<Double> {
         return localDataSource.getKcal()
@@ -159,6 +182,8 @@ class FoodRepository(val context: Context) {
     /**
      * Returns a [LiveData] with a [List] of every [Food] object saved in the
      * [localDataSource] that have its [ListType] set to the specified [listType]
+     *
+     * @return a [LiveData] object of type [List] of [Food]
      */
     fun getFoodList(listType: Int): LiveData<List<Food>> {
         return localDataSource.get(listType)

@@ -16,50 +16,45 @@ enum class ListType { BREAKFAST, LUNCH, DINNER, SNACKS, HISTORY }
 
 /**
  * Alias for the [Pair]<*Nutrient name*, *Nutrient value*> used by nutrient
- * lists
- * throughout the app
+ * lists throughout the app
  */
 typealias Nutrient = Pair<String, Double>
 
 /**
  * The object that is converted from the json file retrieved by [CalorieNinjasService]
  *
- * Contains a [List] of [Food]
+ * Only contains an [items] property
+ *
+ * @property items a [List] of [Food]
  */
 data class FoodList(val items: List<Food>)
 
 /**
- * The domain model of the app
+ * The domain model of the app, as well as the [Entity] of the [FoodDatabase]
  *
  * Represents a Food object, containing its [name], its [ListType], its
  * nutrients as specified by the json retrieved from [CalorieNinjasService], as
  * well as an unique ID
+ *
+ * @property id The unique ID of the object. Used to differentiate it from other
+ * [Food] objects both from the [FoodDatabase] and from the various [RecyclerView]
+ * adapters used by the app
+ * @property listType The [ListType.ordinal] of the food. Used to determine on which
+ * list this [Food] object should be placed in the app
+ * @property name Its name. Retrieved from the "name" key from the [CalorieNinjasService]
+ * json file. Used together with its [id] to differentiate itself from other [Food]
+ * objects from the various [RecyclerView] adapters used by the app
  */
 @Entity(tableName = "saved_foods_table")
 data class Food(
 
-    /**
-     * The unique ID of the object. Used to differentiate it from other
-     * [Food] objects both from the [FoodDatabase] and from the various
-     * [RecyclerView] adapters used by the app
-     */
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var id: Int = Random.nextInt(),
 
-    /**
-     * The [ListType] of the food. Used to determine on which list this [Food]
-     * object should be placed in the app
-     */
     @ColumnInfo(name = "list_type")
     var listType: Int = ListType.BREAKFAST.ordinal,
 
-    /**
-     * Its name. Retrieved from the "name" key from the
-     * [CalorieNinjasService] json file. Used together with its [id] to
-     * differentiate itself from other [Food] objects from the various
-     * [RecyclerView] adapters used by the app
-     */
     @ColumnInfo(name = "name")
     val name: String = "",
 
@@ -110,9 +105,11 @@ data class Food(
 ) {
 
     /**
-     * Plus operator (+) function that lets two or more [Food] objets be
-     * added, in which the operation will return a new [Food] object
-     * containing the sum of all its nutrients
+     * Plus operator (+) function that lets two or more [Food] objets be added,
+     * in which the operation will return a new [Food] object containing the sum
+     * of all its nutrients
+     *
+     * @param food The [Food] object to do the operation on
      */
     @Override
     operator fun plus(food: Food) =
@@ -142,6 +139,8 @@ data class Food(
     /**
      * Returns a [List] containing all the [Food] nutrients, each converted to
      * [Double]
+     *
+     * @return a [List] of [Double]
      */
     fun getNutrients() = listOf(
         sugar.toDouble(),
@@ -157,6 +156,15 @@ data class Food(
 
     /**
      * Modifies the [Food] nutrients based on a new [servingSize] and [listType]
+     *
+     * Calculates the ratio between the old [Food.servingSize] and the new
+     * one, and multiply each [Food] nutrient against it
+     *
+     * @param newServingSize a [Double] representing the new [Food.servingSize]
+     * of which the ratio will be calculated from
+     * @param newListType Optional [Int] that represents a [ListType.ordinal]
+     * that replaces the current [Food.listType]
+     * @return the modified [Food]
      */
     fun edit(newServingSize: Double, newListType: Int? = null):
         Food {
