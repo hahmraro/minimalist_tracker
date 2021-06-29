@@ -1,5 +1,6 @@
 package com.example.elegantcalorietracker.data.api
 
+import com.example.elegantcalorietracker.BuildConfig
 import com.example.elegantcalorietracker.data.model.FoodList
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -9,7 +10,7 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
 
-private const val API_KEY = "ZDa8pkzWCggjSktFI3wT4Q==sojF8YEf4NHiKVoW"
+private const val API_KEY = BuildConfig.API_KEY
 private const val BASE_URL = "https://api.calorieninjas.com/v1/"
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
