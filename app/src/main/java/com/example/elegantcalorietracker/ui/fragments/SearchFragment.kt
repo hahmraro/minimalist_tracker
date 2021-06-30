@@ -20,8 +20,6 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import java.util.*
 
-private const val TAG = "SearchFragment"
-
 class SearchFragment :
     BaseFragment<FragmentSearchBinding>(
         FragmentSearchBinding::inflate,

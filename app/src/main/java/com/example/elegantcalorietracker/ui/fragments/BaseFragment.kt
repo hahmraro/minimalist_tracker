@@ -32,7 +32,7 @@ typealias Inflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
  * like to participate in populating the options menu
  * @param topLevelAndCanHaveUpButton a [Boolean] that communicates to whether or
  * not the [Fragment] is a top level destination of the navigation but would
- * still like to show a *Up* button when the means to navigating to it don't
+ * still like to show an *Up* button when the means to navigating to it don't
  * involve the navigation drawer
  */
 abstract class BaseFragment<BindingType : ViewBinding>(

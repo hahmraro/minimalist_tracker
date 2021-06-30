@@ -13,14 +13,7 @@ import com.example.elegantcalorietracker.data.model.Food
 import com.example.elegantcalorietracker.databinding.ItemFoodBinding
 import com.example.elegantcalorietracker.ui.adapters.FoodListAdapter.FoodViewHolder
 
-/**
- * Click Listener that manipulates a [Food], used by the [FoodListAdapter]
- */
 typealias FoodClickListener = (Food) -> Unit
-/**
- * Long click listener that manipulates a [Food], a [PopupMenu] and a [View],
- * used by the [FoodListAdapter]
- */
 typealias FoodLongClickListener = (PopupMenu, Food, View) -> Boolean
 
 /**

@@ -29,10 +29,8 @@ private val retrofit = Retrofit.Builder()
     .build()
 
 /**
- * Interface with a function that calls the CalorieNinjas API with the private
- * [API_KEY]
- *
- * @return a [FoodList] object
+ * Returns a [FoodList] object because the returning json file from the API
+ * has only one hey value called *items*, which is a list of foods
  */
 interface CalorieNinjasService {
     @Headers(
@@ -46,9 +44,6 @@ interface CalorieNinjasService {
  * Singleton object that implements [CalorieNinjasService] through [httpClient]
  */
 object RemoteDataSource {
-    /**
-     * Lazy declaration of [CalorieNinjasService] implementation by [retrofit]
-     */
     val httpClient: CalorieNinjasService by lazy {
         retrofit.create(CalorieNinjasService::class.java)
     }

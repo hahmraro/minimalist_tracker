@@ -27,8 +27,8 @@ class TrackerViewModel(application: Application) :
         viewModelScope.launch {
             _repository.apply {
                 if (!isSavedDateToday()) {
-                    clearFoods()
-                    saveDate()
+                    clearNonHistoryFoods()
+                    saveTodayDateInPreferences()
                 }
             }
         }
@@ -41,8 +41,9 @@ class TrackerViewModel(application: Application) :
     var modType = ModType.EDIT
 
     // Calories
-    val calories = _repository.getKcal()
-    val caloriesGoal = MutableLiveData(_repository.getSavedGoal())
+    val calories = _repository.getKcalSum()
+    val caloriesGoal =
+        MutableLiveData(_repository.getSavedGoalFromPreferences())
     val caloriesRemaining = MediatorLiveData<Double>().apply {
         value = 0.0
         val subtract: (x: Double, y: Double) -> Double = { x, y -> x - y }
@@ -62,11 +63,15 @@ class TrackerViewModel(application: Application) :
 
     // Food lists
     private val _breakfastList =
-        _repository.getFoodList(ListType.BREAKFAST.ordinal)
-    private val _lunchList = _repository.getFoodList(ListType.LUNCH.ordinal)
-    private val _dinnerList = _repository.getFoodList(ListType.DINNER.ordinal)
-    private val _snacksList = _repository.getFoodList(ListType.SNACKS.ordinal)
-    private val _historyList = _repository.getFoodList(ListType.HISTORY.ordinal)
+        _repository.getAllFoodsWithListType(ListType.BREAKFAST.ordinal)
+    private val _lunchList =
+        _repository.getAllFoodsWithListType(ListType.LUNCH.ordinal)
+    private val _dinnerList =
+        _repository.getAllFoodsWithListType(ListType.DINNER.ordinal)
+    private val _snacksList =
+        _repository.getAllFoodsWithListType(ListType.SNACKS.ordinal)
+    private val _historyList =
+        _repository.getAllFoodsWithListType(ListType.HISTORY.ordinal)
 
     // Public methods
     fun getList(listType: ListType): LiveData<List<Food>> {
@@ -81,42 +86,46 @@ class TrackerViewModel(application: Application) :
 
     fun clearFoods() {
         viewModelScope.launch {
-            _repository.clearFoods()
+            _repository.clearNonHistoryFoods()
         }
     }
 
     fun clearHistory() {
         viewModelScope.launch {
-            _repository.clearHistory()
+            _repository.clearOnlyHistoryFoods()
         }
     }
 
     fun deleteFood(food: Food) {
         viewModelScope.launch {
-            _repository.deleteFood(food)
+            _repository.deleteFoodFromTheDatabase(food)
         }
     }
 
     fun moveFood(food: Food, listType: ListType) {
         viewModelScope.launch {
-            _repository.deleteFood(food)
-            _repository.addFood(food.copy(listType = listType.ordinal))
+            _repository.deleteFoodFromTheDatabase(food)
+            _repository.addFoodToDatabase(food.copy(listType = listType.ordinal))
         }
     }
 
     fun setNewGoal(newGoal: Int) {
         caloriesGoal.value = newGoal
-        _repository.setSavedGoal(newGoal)
+        _repository.setSavedGoalFromPreferences(newGoal)
     }
 
     fun refreshGoal() {
-        val refreshedGoal = _repository.getSavedGoal()
+        val refreshedGoal = _repository.getSavedGoalFromPreferences()
         caloriesGoal.value = refreshedGoal
     }
 
     suspend fun getFoods(query: String) {
-        val foods = _repository.searchFood(query, listType)
-        setHistory(foods)
+        _repository.apply {
+            val foods = searchFoodsThatMatchQuery(query)
+            setFoodsListType(foods, listType)
+            addFoodsToDatabase(foods)
+            setHistory(foods)
+        }
     }
 
     fun getFood(food: Food, servingSize: Double) {
@@ -125,7 +134,7 @@ class TrackerViewModel(application: Application) :
         viewModelScope.launch {
             _status.value = ApiStatus.LOADING
             try {
-                _repository.addFood(newFood)
+                _repository.addFoodToDatabase(newFood)
                 _status.value = ApiStatus.DONE
             } catch (e: Exception) {
                 _status.value = ApiStatus.ERROR
@@ -139,7 +148,7 @@ class TrackerViewModel(application: Application) :
         viewModelScope.launch {
             _status.value = ApiStatus.LOADING
             try {
-                _repository.editFood(food)
+                _repository.editFoodFromTheDatabase(food)
                 _status.value = ApiStatus.DONE
             } catch (e: Exception) {
                 _status.value = ApiStatus.ERROR
@@ -153,7 +162,8 @@ class TrackerViewModel(application: Application) :
     }
 
     fun getDailyNutrition(): List<Double> {
-        val totalNutrition = runBlocking { _repository.getAll() }.sum()
+        val totalNutrition =
+            runBlocking { _repository.getAllExceptHistoryFoods() }.sum()
         return totalNutrition.getNutrients()
     }
 
@@ -164,7 +174,7 @@ class TrackerViewModel(application: Application) :
             if (!_historyList.value!!.any { it.name == food.name }) {
                 viewModelScope.launch {
                     try {
-                        _repository.addFood(
+                        _repository.addFoodToDatabase(
                             food.copy(
                                 id = Random.nextInt(),
                                 listType = ListType.HISTORY.ordinal
@@ -176,5 +186,12 @@ class TrackerViewModel(application: Application) :
                 }
             }
         }
+    }
+
+    private fun setFoodsListType(foods: List<Food>, listType: Int): List<Food> {
+        for (food in foods) {
+            food.listType = listType
+        }
+        return foods
     }
 }

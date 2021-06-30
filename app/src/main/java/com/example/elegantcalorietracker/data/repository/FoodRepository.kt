@@ -33,10 +33,8 @@ class FoodRepository(val context: Context) {
     private val goalPreferencesKey =
         context.getString(R.string.goal_preferences_key)
 
-    // Local Data Source
+    // Data Sources
     private val localDataSource = FoodDatabase.getInstance(context).foodDao
-
-    // Remote Data Source
     private val remoteDataSource = RemoteDataSource.httpClient
 
     // Variable that stores the current day of the week as an integer
@@ -45,91 +43,58 @@ class FoodRepository(val context: Context) {
     // Public suspend methods
 
     /**
-     * Searches for the [query] on the [remoteDataSource]. If a [List] of [Food]
-     * is returned from that [query], assigns each [Food.listType] present on the
-     * list to the specified [listType] and saves the list to the [localDataSource]
-     *
-     * @param query The query that will be searched on the [remoteDataSource]
-     * @param listType an [Int] that represents the [ListType.ordinal] that will
-     * be set to each [Food.listType] of the returning [List]
-     * @return The [List] of [Food] returned from the [remoteDataSource] with
-     * each [Food.listType] set to [listType]
+     * Searches for the [query] on the [remoteDataSource]
+     * @return The [List] of [Food] returned from the [remoteDataSource]
      * @throws NoConnectionException if no internet connection is found
      * @throws FoodNotFoundException if the search turns up empty
      */
-    suspend fun searchFood(query: String, listType: Int): List<Food> {
+    suspend fun searchFoodsThatMatchQuery(query: String): List<Food> {
         if (!ConnectionChecker.isOnline()) throw NoConnectionException()
         val list = remoteDataSource.getFoodList(query).items
-        when {
-            list.isEmpty() -> throw FoodNotFoundException()
-            else -> {
-                for (food in list) {
-                    food.listType = listType
-                }
-                localDataSource.insertAll(list)
-                return list
-            }
-        }
+        if (list.isEmpty()) throw FoodNotFoundException()
+        return list
     }
 
-    /**
-     * Adds the [food] to the [localDataSource]
-     *
-     * @param food The [Food] to be added to the [localDataSource]
-     */
-    suspend fun addFood(food: Food) {
-        localDataSource.insertOne(food)
+    suspend fun addFoodsToDatabase(foods: List<Food>) {
+        localDataSource.insertFoods(foods)
     }
 
-    /**
-     * Deletes the [food] from the [localDataSource]
-     *
-     * @param food The [Food] to be deleted from the [localDataSource]
-     */
-    suspend fun deleteFood(food: Food) {
-        localDataSource.delete(food)
+    suspend fun addFoodToDatabase(food: Food) {
+        localDataSource.insertFood(food)
     }
 
-    /** If the [food] is saved in the [localDataSource], replace it and return it
-     *
-     * @param food The [Food] to be edited in the [localDataSource]
-     */
-    suspend fun editFood(food: Food): Food {
-        localDataSource.update(food)
+    suspend fun deleteFoodFromTheDatabase(food: Food) {
+        localDataSource.deleteFood(food)
+    }
+
+    suspend fun editFoodFromTheDatabase(food: Food): Food {
+        localDataSource.updateFood(food)
         return food
     }
 
-    /** Clear all the [Food] objects in the [localDataSource] that don't have
-     * its [ListType] set as [ListType.HISTORY]
-     */
-    suspend fun clearFoods() {
-        localDataSource.clearAllExceptHistory()
+    suspend fun clearNonHistoryFoods() {
+        localDataSource.clearAllExceptHistoryFoods()
     }
 
-    /** Clear all the [Food] objects in the [localDataSource] that have
-     * its [ListType] set as [ListType.HISTORY]
-     */
-    suspend fun clearHistory() {
-        localDataSource.clearHistory()
+    suspend fun clearOnlyHistoryFoods() {
+        localDataSource.clearOnlyHistoryFoods()
     }
 
-    /** Returns a [List] of all the [Food] objects saved in the
-     * [localDataSource] that don't have its [ListType] set as
-     * [ListType.HISTORY]
-     */
-    suspend fun getAll(): List<Food> {
-        return localDataSource.getAllExceptHistory()
+    suspend fun getAllExceptHistoryFoods(): List<Food> {
+        return localDataSource.getAllExceptHistoryFoods()
     }
 
     // Public synchronous methods
 
     /**
-     * Retrieves the value stored in the [goalPreferencesKey] saved in the
-     * default [sharedPreferences]
-     *
-     * @return an [Int] that represents the saved goal
+     * Returns a [LiveData] with a [List] of every [Food] object saved in the
+     * [localDataSource] that have its [ListType] set to the specified [listType]
      */
-    fun getSavedGoal(): Int {
+    fun getAllFoodsWithListType(listType: Int): LiveData<List<Food>> {
+        return localDataSource.getAllFoodsWithListType(listType)
+    }
+
+    fun getSavedGoalFromPreferences(): Int {
         val savedGoal = sharedPreferences.getString(
             goalPreferencesKey,
             "2000"
@@ -137,55 +102,29 @@ class FoodRepository(val context: Context) {
         return savedGoal?.toInt() ?: 2000
     }
 
-    /**
-     * Sets the value of the [goalPreferencesKey] saved in the default
-     * [sharedPreferences]
-     *
-     * @param newSavedGoal an [Int] that will replace the value saved in [goalPreferencesKey]
-     */
-    fun setSavedGoal(newSavedGoal: Int) {
+    fun setSavedGoalFromPreferences(newSavedGoal: Int) {
         sharedPreferences.edit()
             .putString(goalPreferencesKey, newSavedGoal.toString())
             .apply()
     }
 
-    /**
-     * Assigns [today] to the value of the [datePreferencesKey] saved in the
-     * default [sharedPreferences]
-     */
-    fun saveDate() {
+    fun saveTodayDateInPreferences() {
         sharedPreferences.edit().putInt(datePreferencesKey, today).apply()
     }
 
-    /**
-     * Returns whether or not the value of [datePreferencesKey] is equal to
-     * [today]
-     *
-     * @return a [Boolean]
-     */
     fun isSavedDateToday(): Boolean {
         val savedDay = sharedPreferences.getInt(datePreferencesKey, 0)
         return today == savedDay
     }
 
     /**
-     * Returns a [LiveData] with the sum of all [Food.calories] of the every
-     * [Food] object saved in the [localDataSource] that don't have its
-     * [ListType] set to [ListType.HISTORY]
+     * Returns a [LiveData] with the sum of all [Food.calories] of every [Food]
+     * object saved in the [localDataSource] that don't have its [ListType] set
+     * to [ListType.HISTORY]
      *
      * @return a [LiveData] object of type [Double]
      */
-    fun getKcal(): LiveData<Double> {
-        return localDataSource.getKcal()
-    }
-
-    /**
-     * Returns a [LiveData] with a [List] of every [Food] object saved in the
-     * [localDataSource] that have its [ListType] set to the specified [listType]
-     *
-     * @return a [LiveData] object of type [List] of [Food]
-     */
-    fun getFoodList(listType: Int): LiveData<List<Food>> {
-        return localDataSource.get(listType)
+    fun getKcalSum(): LiveData<Double> {
+        return localDataSource.getKcalSum()
     }
 }

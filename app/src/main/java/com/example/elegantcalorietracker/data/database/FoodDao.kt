@@ -17,46 +17,30 @@ interface FoodDao {
     // Suspend methods
 
     @Insert(onConflict = REPLACE)
-    suspend fun insertAll(foodList: List<Food>)
+    suspend fun insertFoods(foodList: List<Food>)
 
     @Insert(onConflict = REPLACE)
-    suspend fun insertOne(food: Food)
+    suspend fun insertFood(food: Food)
 
     @Update
-    suspend fun update(food: Food)
+    suspend fun updateFood(food: Food)
 
     @Delete
-    suspend fun delete(food: Food)
+    suspend fun deleteFood(food: Food)
 
-    /**
-     * Deletes every food of which [ListType] doesn't equals [ListType.HISTORY]
-     */
     @Query("DELETE FROM saved_foods_table WHERE list_type != 4")
-    suspend fun clearAllExceptHistory()
+    suspend fun clearAllExceptHistoryFoods()
 
-    /**
-     * Deletes only the foods of which [ListType] equals [ListType.HISTORY]
-     */
     @Query("DELETE FROM saved_foods_table WHERE list_type = 4")
-    suspend fun clearHistory()
+    suspend fun clearOnlyHistoryFoods()
 
-    /**
-     * Retrieves every food of which [ListType] doesn't equals [ListType.HISTORY]
-     *
-     * @return a [List] of [Food]
-     */
     @Query("SELECT * FROM saved_foods_table WHERE list_type != 4")
-    suspend fun getAllExceptHistory(): List<Food>
+    suspend fun getAllExceptHistoryFoods(): List<Food>
 
     // Non-suspend methods
 
-    /**
-     * Retrieves all the foods that match the specified [ListType]
-     *
-     * @param listType an integer that represents a [ListType.ordinal]
-     */
     @Query("SELECT * FROM saved_foods_table WHERE list_type = :listType")
-    fun get(listType: Int): LiveData<List<Food>>
+    fun getAllFoodsWithListType(listType: Int): LiveData<List<Food>>
 
     /**
      * Retrieves the sum of the [Food.calories] of all the foods which
@@ -66,5 +50,5 @@ interface FoodDao {
      * of the [Food.calories]
      */
     @Query("SELECT TOTAL(calories) FROM saved_foods_table WHERE list_type != 4")
-    fun getKcal(): LiveData<Double>
+    fun getKcalSum(): LiveData<Double>
 }

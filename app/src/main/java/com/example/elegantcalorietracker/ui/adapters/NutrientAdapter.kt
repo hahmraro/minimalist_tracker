@@ -10,12 +10,14 @@ import com.example.elegantcalorietracker.data.model.Food
 import com.example.elegantcalorietracker.data.model.Nutrient
 import com.example.elegantcalorietracker.databinding.ItemNutrientBinding
 
+private const val MICRONUTRIENTS = 3
+
 /**
  * [RecyclerView.Adapter] class that displays a specified list of nutrients of
  * a [Food] object
  *
  * Through [requireCalories], it can choose to whether or not to show the
- * [Food.calories] property
+ * [Food.calories] property together with the nutrients
  *
  * Can take a [View.OnClickListener] that reacts to user clicks on each item
  */
@@ -26,10 +28,6 @@ class NutrientAdapter(
 ) :
     RecyclerView.Adapter<NutrientAdapter.NutrientViewHolder>() {
 
-    /**
-     * If [requireCalories] is true, returns the value of the first element of
-     * [nutrients], else return 0.0
-     */
     fun getCalories(): Double = if (requireCalories) {
         nutrients.first().second
     } else {
@@ -90,13 +88,13 @@ class NutrientAdapter(
          * The micronutrients are: [Food.sodium], [Food.potassium] and
          * [Food.cholesterol]
          */
-        return NutrientViewHolder(view, nutrients.takeLast(3))
+        return NutrientViewHolder(view, nutrients.takeLast(MICRONUTRIENTS))
     }
 
     override fun onBindViewHolder(holder: NutrientViewHolder, position: Int) {
         val nutrient = nutrients[position]
-        // The click listener is only set on the first item and only if
-        // requireCalories is enabled
+        // The click listener is only set on the first item, because that is the
+        // position where the calories are if requireCalories is enabled
         if (position == 0 && requireCalories) {
             holder.itemView.setOnClickListener(clickListener)
         }

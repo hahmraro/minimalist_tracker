@@ -21,20 +21,13 @@ enum class ListType { BREAKFAST, LUNCH, DINNER, SNACKS, HISTORY }
 typealias Nutrient = Pair<String, Double>
 
 /**
- * The object that is converted from the json file retrieved by [CalorieNinjasService]
- *
- * Only contains an [items] property
- *
- * @property items a [List] of [Food]
+ * Needs to exists because the returning json file from the API only has one
+ * key called "items", which is a list of food
  */
 data class FoodList(val items: List<Food>)
 
 /**
  * The domain model of the app, as well as the [Entity] of the [FoodDatabase]
- *
- * Represents a Food object, containing its [name], its [ListType], its
- * nutrients as specified by the json retrieved from [CalorieNinjasService], as
- * well as an unique ID
  *
  * @property id The unique ID of the object. Used to differentiate it from other
  * [Food] objects both from the [FoodDatabase] and from the various [RecyclerView]
