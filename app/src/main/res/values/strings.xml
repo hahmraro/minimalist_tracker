@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Elegant Calorie Tracker</string>
+    <string name="app_name">Minimalist Tracker</string>
     <!-- Fragment Labels -->
     <string name="diary">Diary</string>
     <string name="daily_nutrition">Daily Nutrition</string>
