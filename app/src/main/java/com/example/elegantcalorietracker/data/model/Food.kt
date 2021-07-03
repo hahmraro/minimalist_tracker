@@ -107,26 +107,16 @@ data class Food(
     @Override
     operator fun plus(food: Food) =
         Food(
-            calories = (this.calories.toDouble() + food.calories.toDouble())
-                .toString(),
-            fiber = (this.fiber.toDouble() + food.fiber.toDouble())
-                .toString(),
-            sugar = (this.sugar.toDouble() + food.sugar.toDouble())
-                .toString(),
-            totalCarbs = (this.totalCarbs.toDouble() + food.totalCarbs.toDouble())
-                .toString(),
-            saturatedFat = (this.saturatedFat.toDouble() + food.saturatedFat.toDouble())
-                .toString(),
-            totalFat = (this.totalFat.toDouble() + food.totalFat.toDouble())
-                .toString(),
-            protein = (this.protein.toDouble() + food.protein.toDouble())
-                .toString(),
-            sodium = (this.sodium.toDouble() + food.sodium.toDouble())
-                .toString(),
-            potassium = (this.potassium.toDouble() + food.potassium.toDouble())
-                .toString(),
-            cholesterol = (this.cholesterol.toDouble() + food.cholesterol.toDouble())
-                .toString(),
+            calories = (this.calories.toDouble() + food.calories.toDouble()).toString(),
+            fiber = (this.fiber.toDouble() + food.fiber.toDouble()).toString(),
+            sugar = (this.sugar.toDouble() + food.sugar.toDouble()).toString(),
+            totalCarbs = (this.totalCarbs.toDouble() + food.totalCarbs.toDouble()).toString(),
+            saturatedFat = (this.saturatedFat.toDouble() + food.saturatedFat.toDouble()).toString(),
+            totalFat = (this.totalFat.toDouble() + food.totalFat.toDouble()).toString(),
+            protein = (this.protein.toDouble() + food.protein.toDouble()).toString(),
+            sodium = (this.sodium.toDouble() + food.sodium.toDouble()).toString(),
+            potassium = (this.potassium.toDouble() + food.potassium.toDouble()).toString(),
+            cholesterol = (this.cholesterol.toDouble() + food.cholesterol.toDouble()).toString(),
         )
 
     /**
@@ -160,9 +150,9 @@ data class Food(
      * that replaces the current [Food.listType]
      * @return the modified [Food]
      */
-    fun edit(newServingSize: Double, newListType: Int? = null):
+    fun edit(newServingSize: Double, newListType: ListType? = null):
         Food {
-        listType = newListType ?: listType
+        listType = newListType?.ordinal ?: listType
         val ratio = newServingSize / servingSize.toDouble()
         servingSize = (servingSize.toDouble() * ratio).toString()
         calories = (calories.toDouble() * ratio).toString()

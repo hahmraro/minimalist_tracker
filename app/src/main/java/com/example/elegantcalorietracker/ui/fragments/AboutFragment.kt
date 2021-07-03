@@ -32,13 +32,8 @@ class AboutFragment : Fragment() {
     private fun createAboutPage(context: Context): View? =
         AboutPage(context)
             .isRTL(false)
-            .setDescription(
-                resources.getString(R.string.about_description)
-            )
+            .setDescription(resources.getString(R.string.about_description))
             .setImage(R.mipmap.ic_launcher)
-            .addGitHub(
-                GITHUB_USERNAME,
-                resources.getString(R.string.github_page)
-            )
+            .addGitHub(GITHUB_USERNAME, resources.getString(R.string.github_page))
             .create()
 }

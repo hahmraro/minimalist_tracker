@@ -1,6 +1,9 @@
 package com.example.elegantcalorietracker.ui.fragments
 
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.example.elegantcalorietracker.R
 import com.example.elegantcalorietracker.data.model.Food
@@ -9,8 +12,6 @@ import com.example.elegantcalorietracker.ui.ModType
 import com.example.elegantcalorietracker.ui.TrackerViewModel
 import com.example.elegantcalorietracker.ui.widgets.FoodListView
 import com.example.elegantcalorietracker.utils.showDialogWithTextField
-
-private const val TAG = "FoodFragment"
 
 /**
  * Implements [BaseFragment], with [lockDrawer] and [hasOptionsMenu] set to true

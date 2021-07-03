@@ -38,8 +38,7 @@ class FoodListAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
         private val resources: Resources? = itemView.resources
         fun bind(food: Food) {
-            binding.foodName.text =
-                food.name.replaceFirstChar { it.titlecase() }
+            binding.foodName.text = food.name.replaceFirstChar { it.titlecase() }
             binding.foodCalories.text = resources?.getString(
                 R.string.food_calories, food.calories.toFloat()
             )

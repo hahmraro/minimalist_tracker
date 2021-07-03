@@ -1,7 +1,10 @@
 package com.example.elegantcalorietracker.ui.fragments
 
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import android.widget.PopupMenu
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
@@ -12,7 +15,6 @@ import com.example.elegantcalorietracker.databinding.FragmentTrackerBinding
 import com.example.elegantcalorietracker.ui.ModType
 import com.example.elegantcalorietracker.ui.adapters.FoodListAdapter
 import com.example.elegantcalorietracker.ui.widgets.FoodListView
-import java.util.*
 
 class TrackerFragment : BaseFragment<FragmentTrackerBinding>(
     FragmentTrackerBinding::inflate,
@@ -139,9 +141,7 @@ class TrackerFragment : BaseFragment<FragmentTrackerBinding>(
             setButtonClickListener {
                 navigateToSearch(listType)
             }
-            val listTitle = listType.toString().lowercase().replaceFirstChar {
-                it.titlecase()
-            }
+            val listTitle = listType.toString().lowercase().replaceFirstChar { it.titlecase() }
             setListTitle(listTitle)
             sharedViewModel.getList(listType)
                 .observe(viewLifecycleOwner) { list ->

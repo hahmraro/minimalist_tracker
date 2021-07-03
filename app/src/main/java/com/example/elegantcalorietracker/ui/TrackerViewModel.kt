@@ -1,24 +1,29 @@
 package com.example.elegantcalorietracker.ui
 
 import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.elegantcalorietracker.data.model.Food
 import com.example.elegantcalorietracker.data.model.ListType
 import com.example.elegantcalorietracker.data.repository.FoodRepository
+import com.example.elegantcalorietracker.utils.changeListType
 import com.example.elegantcalorietracker.utils.sum
+import kotlin.random.Random
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlin.random.Random
 
 enum class ModType { EDIT, ADD }
 
 class TrackerViewModel(application: Application) :
     AndroidViewModel(application) {
+
     // Repository
     private val _repository = FoodRepository(application)
 
-    // If the saved foods are from another day, clear the saved foods and
-    // saves today's date
+    // If the saved foods are from another day, clear the saved foods and save today's date
     init {
         viewModelScope.launch {
             _repository.apply {
@@ -39,36 +44,18 @@ class TrackerViewModel(application: Application) :
 
     // Calories values
     val calories = _repository.getKcalSum()
-    val caloriesGoal =
-        MutableLiveData(_repository.getSavedGoalFromPreferences())
-
-    // Dynamically set the remaining calories of the day
-    // (Calories goal - Calories eaten) when any of these two variables change
-    val caloriesRemaining = MediatorLiveData<Double>().apply {
-        value = 0.0
-        val subtract: (x: Double, y: Double) -> Double = { x, y -> x - y }
-        addSource(caloriesGoal) {
-            value = subtract(it.toDouble(), calories.value ?: 0.0)
-        }
-        addSource(calories) {
-            value = subtract(caloriesGoal.value?.toDouble() ?: 0.0, it)
-        }
-    }
+    val caloriesGoal = MutableLiveData(_repository.getSavedGoalFromPreferences())
+    val caloriesRemaining = createRemainingCalories()
 
     // Which list should the selected food be added to
-    private var _listType = ListType.BREAKFAST.ordinal
+    private var _listType = ListType.BREAKFAST
 
     // Food lists
-    private val _breakfastList =
-        _repository.getAllFoodsWithListType(ListType.BREAKFAST)
-    private val _lunchList =
-        _repository.getAllFoodsWithListType(ListType.LUNCH)
-    private val _dinnerList =
-        _repository.getAllFoodsWithListType(ListType.DINNER)
-    private val _snacksList =
-        _repository.getAllFoodsWithListType(ListType.SNACKS)
-    private val _historyList =
-        _repository.getAllFoodsWithListType(ListType.HISTORY)
+    private val _breakfastList = _repository.getAllFoodsWithListType(ListType.BREAKFAST)
+    private val _lunchList = _repository.getAllFoodsWithListType(ListType.LUNCH)
+    private val _dinnerList = _repository.getAllFoodsWithListType(ListType.DINNER)
+    private val _snacksList = _repository.getAllFoodsWithListType(ListType.SNACKS)
+    private val _historyList = _repository.getAllFoodsWithListType(ListType.HISTORY)
 
     // Public methods
 
@@ -97,8 +84,7 @@ class TrackerViewModel(application: Application) :
     fun moveFoodToAnotherList(food: Food, newListType: ListType) {
         viewModelScope.launch {
             _repository.deleteFoodFromTheDatabase(food)
-            _repository
-                .addFoodToDatabase(food.copy(listType = newListType.ordinal))
+            _repository.addFoodToDatabase(food.copy(listType = newListType.ordinal))
         }
     }
 
@@ -114,17 +100,15 @@ class TrackerViewModel(application: Application) :
 
     suspend fun searchFoodsWithQuery(query: String) {
         _repository.apply {
-            val foods = searchFoodsThatMatchQuery(query)
-            setFoodsListType(foods, _listType)
+            val foods = searchFoodsThatMatchQuery(query).changeListType(_listType)
             addFoodsToDatabase(foods)
             addFoodsToHistory(foods)
         }
     }
 
     fun addFood(food: Food, servingSize: Double) {
-        // Id change needed to not conflict with foods saved in history
-        val foodWithDifferentId =
-            food.copy(id = Random.nextInt()).edit(servingSize, _listType)
+        // Id change needed to not cause conflict with foods saved in history
+        val foodWithDifferentId = food.copy(id = Random.nextInt()).edit(servingSize, _listType)
         viewModelScope.launch {
             _repository.addFoodToDatabase(foodWithDifferentId)
         }
@@ -132,30 +116,45 @@ class TrackerViewModel(application: Application) :
 
     fun editFood(food: Food, newServingSize: Double) {
         food.edit(newServingSize, _listType)
-        viewModelScope.launch { _repository.editFoodFromTheDatabase(food) }
+        viewModelScope.launch {
+            _repository.editFoodFromTheDatabase(food)
+        }
     }
 
     fun setSearchListType(newListType: ListType) {
-        _listType = newListType.ordinal
+        _listType = newListType
     }
 
     fun getNutrientSumOfSavedFoods(): List<Double> {
-        val totalNutrition =
-            runBlocking { _repository.getAllExceptHistoryFoods() }.sum()
+        val totalNutrition = runBlocking { _repository.getAllExceptHistoryFoods() }.sum()
         return totalNutrition.getNutrients()
     }
 
     // Private methods
 
+    private fun createRemainingCalories(): MediatorLiveData<Double> {
+        // Uses MediatorLiveData to dynamically set the remaining calories of the day 
+        // (Calories goal - Calories eaten) when any of these two variables change
+        return MediatorLiveData<Double>().apply {
+            value = 0.0
+            val subtract: (x: Double, y: Double) -> Double = { x, y -> x - y }
+            addSource(caloriesGoal) { goal ->
+                value = subtract(goal.toDouble(), calories.value ?: 0.0)
+            }
+            addSource(calories) { calories ->
+                value = subtract(caloriesGoal.value?.toDouble() ?: 0.0, calories)
+            }
+        }
+    }
+
     private fun addFoodsToHistory(foodList: List<Food>) {
         val historyList = _historyList.value ?: listOf()
-        for (food in foodList) {
-            val historyAlreadyContainsThisFood =
-                historyList.any { it.name == food.name }
+        foodList.map { food ->
+            val historyAlreadyContainsThisFood = historyList.any { it.name == food.name }
             if (!historyAlreadyContainsThisFood) {
                 viewModelScope.launch {
-                    // Adds a copy of the food but with its listType set to 
-                    // HISTORY, and different ID, so there is no conflict
+                    // Adds a copy of the food but with its listType set to HISTORY, and different 
+                    // ID, so there is no conflict
                     _repository.addFoodToDatabase(
                         food.copy(
                             id = Random.nextInt(),
@@ -165,12 +164,5 @@ class TrackerViewModel(application: Application) :
                 }
             }
         }
-    }
-
-    private fun setFoodsListType(foods: List<Food>, listType: Int): List<Food> {
-        for (food in foods) {
-            food.listType = listType
-        }
-        return foods
     }
 }

@@ -43,7 +43,7 @@ abstract class BaseFragment<BindingType : ViewBinding>(
 ) : Fragment() {
     // Binding and container
     protected lateinit var binding: BindingType
-    protected var container: ViewGroup? = null
+    private var container: ViewGroup? = null
 
     // ViewModel
     protected val sharedViewModel: TrackerViewModel by activityViewModels()
@@ -62,8 +62,7 @@ abstract class BaseFragment<BindingType : ViewBinding>(
         // Modifies upButtonNeeded depending on whether or not the fragment 
         // needs to forcefully use an *Up* button
         if (topLevelAndCanHaveUpButton) {
-            upButtonNeeded =
-                arguments?.getBoolean("upButtonNeeded") ?: false
+            upButtonNeeded = arguments?.getBoolean("upButtonNeeded") ?: false
             if (upButtonNeeded) {
                 (activity as MainActivity).useUpButton()
             }

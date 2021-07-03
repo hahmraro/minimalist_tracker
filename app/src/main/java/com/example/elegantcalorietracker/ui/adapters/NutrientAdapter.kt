@@ -54,10 +54,7 @@ class NutrientAdapter(
             // Sets the nutrient name and its respective serving size to the 
             // binding nutritionName and nutritionSize
             binding.nutritionName.text = nutrient.first
-            binding.nutritionSize.text = resources?.getString(
-                nutrientString,
-                nutrient.second
-            )
+            binding.nutritionSize.text = resources?.getString(nutrientString, nutrient.second)
         }
     }
 

@@ -15,9 +15,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private val themeProvider by lazy { ThemeProvider(requireContext()) }
     private val themePreference by lazy {
-        findPreference<ListPreference>(
-            getString(R.string.theme_preferences_key)
-        )
+        findPreference<ListPreference>(getString(R.string.theme_preferences_key))
     }
 
     override fun onCreatePreferences(

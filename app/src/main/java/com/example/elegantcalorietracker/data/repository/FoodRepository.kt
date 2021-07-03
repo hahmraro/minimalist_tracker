@@ -11,7 +11,7 @@ import com.example.elegantcalorietracker.data.model.ListType
 import com.example.elegantcalorietracker.utils.ConnectionChecker
 import com.example.elegantcalorietracker.utils.FoodNotFoundException
 import com.example.elegantcalorietracker.utils.NoConnectionException
-import java.util.*
+import java.util.Calendar
 
 /**
  * Single source of truth of the app
@@ -28,10 +28,8 @@ class FoodRepository(val context: Context) {
         .getDefaultSharedPreferences(context)
 
     // Shared Preferences Keys
-    private val datePreferencesKey =
-        context.getString(R.string.date_preferences_key)
-    private val goalPreferencesKey =
-        context.getString(R.string.goal_preferences_key)
+    private val datePreferencesKey = context.getString(R.string.date_preferences_key)
+    private val goalPreferencesKey = context.getString(R.string.goal_preferences_key)
 
     // Data Sources
     private val localDataSource = FoodDatabase.getInstance(context).foodDao

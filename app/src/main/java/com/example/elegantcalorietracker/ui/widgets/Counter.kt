@@ -45,8 +45,7 @@ class Counter(context: Context, attributeSet: AttributeSet) :
     }
 
     fun setCaloriesRemaining(calories: Double) {
-        binding.caloriesRemaining.text =
-            context.getString(R.string.remaining_value, calories)
+        binding.caloriesRemaining.text = context.getString(R.string.remaining_value, calories)
         // If the calorie goal is not surpassed, make the remaining calories 
         // Green 
         if (calories >= 0) {
@@ -61,7 +60,5 @@ class Counter(context: Context, attributeSet: AttributeSet) :
         }
     }
 
-    private fun formatDouble(double: Double): String {
-        return "%.0f".format(double)
-    }
+    private fun formatDouble(double: Double) = "%.0f".format(double)
 }
