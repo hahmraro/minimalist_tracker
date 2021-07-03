@@ -28,10 +28,11 @@
     <string name="set_calories_goal">Set calories goal</string>
     <string name="save">Save</string>
     <string name="serving_size">Serving Size</string>
-
+    <!-- Food List View -->
     <string name="add_food">Add Food</string>
-    <string name="edit_food">Edit Food</string>
+    <!-- Settings -->
     <string name="goal_summary">Change the daily calories goal</string>
+    <!-- Shared Preferences -->
     <string name="date_preferences_key">SAVED_DATE</string>
     <string name="goal_preferences_key">SAVED_GOAL</string>
     <string name="theme_preferences_key">THEME_SETTINGS</string>

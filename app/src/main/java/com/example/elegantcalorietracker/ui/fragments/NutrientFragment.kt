@@ -1,16 +1,16 @@
 package com.example.elegantcalorietracker.ui.fragments
 
 import android.view.View
-import com.example.elegantcalorietracker.databinding.FragmentNutrientBinding
+import com.example.elegantcalorietracker.databinding.FoodNutrientViewBinding
 
 class NutrientFragment :
-    BaseFragment<FragmentNutrientBinding>(
-        FragmentNutrientBinding::inflate,
+    BaseFragment<FoodNutrientViewBinding>(
+        FoodNutrientViewBinding::inflate,
         topLevelAndCanHaveUpButton = true
     ) {
 
-    override fun applyBinding(v: View): ApplyTo<FragmentNutrientBinding> = {
+    override fun applyBinding(v: View): ApplyTo<FoodNutrientViewBinding> = {
         val nutrients = sharedViewModel.getNutrientSumOfSavedFoods()
-        nutrientNutritionLl.makeAdapter(nutrients)
+        nutrition.makeAdapter(nutrients)
     }
 }

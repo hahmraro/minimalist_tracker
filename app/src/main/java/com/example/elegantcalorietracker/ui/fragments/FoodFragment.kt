@@ -7,7 +7,7 @@ import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.example.elegantcalorietracker.R
 import com.example.elegantcalorietracker.data.model.Food
-import com.example.elegantcalorietracker.databinding.FragmentFoodBinding
+import com.example.elegantcalorietracker.databinding.FoodNutrientViewBinding
 import com.example.elegantcalorietracker.ui.ModType
 import com.example.elegantcalorietracker.ui.TrackerViewModel
 import com.example.elegantcalorietracker.ui.widgets.FoodListView
@@ -22,8 +22,8 @@ import com.example.elegantcalorietracker.utils.showDialogWithTextField
  * change its serving size, and a button that calls [TrackerViewModel] to
  * either save or edit it
  */
-class FoodFragment : BaseFragment<FragmentFoodBinding>(
-    FragmentFoodBinding::inflate,
+class FoodFragment : BaseFragment<FoodNutrientViewBinding>(
+    FoodNutrientViewBinding::inflate,
     lockDrawer = true,
     hasOptionsMenu = true
 ) {
@@ -33,13 +33,13 @@ class FoodFragment : BaseFragment<FragmentFoodBinding>(
      */
     private lateinit var selectedFood: Food
 
-    override fun applyBinding(v: View): ApplyTo<FragmentFoodBinding> = {
+    override fun applyBinding(v: View): ApplyTo<FoodNutrientViewBinding> = {
         // Assigns the view model selected food to the Fragment selectedFood
         selectedFood = sharedViewModel.selectedFood
 
         // Set up the NutritionView
         val nutrients = makeNutrients(selectedFood)
-        foodNutritionLl.makeAdapter(nutrients, true, showDialog())
+        nutrition.makeAdapter(nutrients, true, showDialog())
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -60,19 +60,19 @@ class FoodFragment : BaseFragment<FragmentFoodBinding>(
     // Helper Methods
 
     /**
-     * The [FragmentFoodBinding] *add button* click listener
+     * The [FoodFragment] *add button* click listener
      *
      * Adds or edits the [selectedFood] depending on whether or not the
      * [TrackerViewModel.modType] is [ModType.ADD] or [ModType.EDIT], and
      * navigates back to [TrackerFragment]
      */
     private fun setAddButtonClickListener(
-        binding: FragmentFoodBinding,
+        binding: FoodNutrientViewBinding,
         modType: ModType
     ) {
         // If the NutritionView is from a individual food, the serving size 
         // is always the first value
-        val newServingSize = binding.foodNutritionLl.getFirstNutrientValue()
+        val newServingSize = binding.nutrition.getFirstNutrientValue()
         if (modType == ModType.ADD)
             sharedViewModel.addFood(selectedFood, newServingSize)
         else {
@@ -115,7 +115,7 @@ class FoodFragment : BaseFragment<FragmentFoodBinding>(
                 val newServingSize = servingEditText.text.toString().toDouble()
                 val newFood = selectedFood.copy().edit(newServingSize)
                 val nutrients = makeNutrients(newFood)
-                binding.foodNutritionLl.makeAdapter(
+                binding.nutrition.makeAdapter(
                     nutrients, true,
                     showDialog(), true
                 )

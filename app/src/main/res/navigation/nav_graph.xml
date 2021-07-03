@@ -30,7 +30,7 @@
         android:id="@+id/foodFragment"
         android:name="com.example.elegantcalorietracker.ui.fragments.FoodFragment"
         android:label="{foodName}"
-        tools:layout="@layout/fragment_food">
+        tools:layout="@layout/food_nutrient_view">
         <action
             android:id="@+id/action_foodFragment_to_trackerFragment"
             app:destination="@id/trackerFragment"
@@ -59,7 +59,7 @@
         android:id="@+id/nutrientFragment"
         android:name="com.example.elegantcalorietracker.ui.fragments.NutrientFragment"
         android:label="@string/daily_nutrition"
-        tools:layout="@layout/fragment_nutrient">
+        tools:layout="@layout/food_nutrient_view">
         <action
             android:id="@+id/action_nutrientFragment_to_trackerFragment"
             app:destination="@id/trackerFragment"
