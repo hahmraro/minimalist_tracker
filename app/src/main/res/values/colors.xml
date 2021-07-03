@@ -2,7 +2,6 @@
 <resources>
     <color name="primaryColor">#2c0c0f</color>
     <color name="primaryLightColor">#573235</color>
-    <color name="primarySuperLightColor">#b59693</color>
     <color name="ic_launcher_background">#2c0c0f</color>
     <color name="primaryDarkColor">#0c0000</color>
     <color name="secondaryColor">#2c0c1f</color>

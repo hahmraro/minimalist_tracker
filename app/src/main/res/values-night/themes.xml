@@ -1,4 +1,7 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="Theme.ElegantCalorieTracker" parent="Theme.AppCompat.DayNight.DarkActionBar"></style>
+    <style name="Theme.ElegantCalorieTracker" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <item name="itemIconTint">@color/secondaryTextColor</item>
+        <item name="itemTextColor">@color/secondaryTextColor</item>
+    </style>
 </resources>
