@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.appcompat.widget.LinearLayoutCompat
+import com.example.elegantcalorietracker.R
 import com.example.elegantcalorietracker.databinding.CardViewNutritionBinding
 import com.example.elegantcalorietracker.ui.adapters.NutrientAdapter
 
@@ -16,30 +17,26 @@ class NutritionView(context: Context, attributeSet: AttributeSet?) :
         true
     )
 
-    private val defaultNames = listOf(
-        "Sugar",
-        "Fiber",
-        "Total Carbs",
-        "Saturated Fat",
-        "Total Fat",
-        "Protein",
-        "Sodium",
-        "Potassium",
-        "Cholesterol"
-    )
+    private val defaultNutrientNames =
+        resources.getStringArray(R.array.default_nutrients)
 
     fun makeAdapter(
         nutrients: List<Double>,
-        requireCalories: Boolean = false,
+        isListFromIndividualFood: Boolean = false,
         clickListener: OnClickListener? = null,
         swap: Boolean = false,
     ) {
         val nutrientsNames = mutableListOf<String>()
-        if (nutrients.size > 9) nutrientsNames.add("Serving Size")
-        nutrientsNames.addAll(defaultNames)
+        val servingSizeText = resources.getString(R.string.serving_size)
+        if (isListFromIndividualFood) nutrientsNames.add(servingSizeText)
+        nutrientsNames.addAll(defaultNutrientNames)
         val nutrientInformation = nutrientsNames.zip(nutrients)
         val adapter =
-            NutrientAdapter(nutrientInformation, requireCalories, clickListener)
+            NutrientAdapter(
+                nutrientInformation,
+                isListFromIndividualFood,
+                clickListener
+            )
         if (swap) {
             binding.nutrientList.swapAdapter(adapter, false)
         } else {
@@ -47,8 +44,8 @@ class NutritionView(context: Context, attributeSet: AttributeSet?) :
         }
     }
 
-    fun getServingSize(): Double {
+    fun getFirstNutrientValue(): Double {
         val adapter = binding.nutrientList.adapter as NutrientAdapter
-        return adapter.getCalories()
+        return adapter.getFirstElementValue()
     }
 }

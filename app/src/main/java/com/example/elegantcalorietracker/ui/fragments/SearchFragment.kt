@@ -1,9 +1,7 @@
 package com.example.elegantcalorietracker.ui.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.view.*
-import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
@@ -35,7 +33,6 @@ class SearchFragment :
     }
 
     override fun applyBinding(v: View): ApplyTo<FragmentSearchBinding> = {
-        //
         historyList.apply {
             sharedViewModel.getList(ListType.HISTORY)
                 .observe(viewLifecycleOwner) { list ->
@@ -46,14 +43,17 @@ class SearchFragment :
         }
         searchQuery.observe(viewLifecycleOwner) { query ->
             if (query != null) {
+                // Set loading state
                 searchLoading.show()
                 historyList.alpha = 0.5f
                 lifecycleScope.launch {
                     try {
-                        sharedViewModel.getFoods(query)
+                        // If food is found, navigate back
+                        sharedViewModel.searchFoodsWithQuery(query)
                         this@SearchFragment.findNavController()
                             .navigate(R.id.action_searchFragment_to_trackerFragment)
                     } catch (e: Exception) {
+                        // Else reset loading state and have snackbar show error
                         Snackbar.make(
                             requireView(),
                             e.toString(),
@@ -98,16 +98,12 @@ class SearchFragment :
         }
     }
 
-    private fun View.hideKeyboard() {
-        val imm =
-            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(windowToken, 0)
-    }
-
+    // Listener of clicks made to the food items of history list
     private val clickListener: (Food) -> (Unit) = { food ->
         sharedViewModel.apply {
             selectedFood = food
         }
+        // Set the label of FoodFragment to the selected foods name
         val argument = bundleOf(
             "foodName" to food.name.replaceFirstChar {
                 if (it.isLowerCase()) it.titlecase(
@@ -119,6 +115,7 @@ class SearchFragment :
             .navigate(R.id.action_searchFragment_to_foodFragment, argument)
     }
 
+    // Listener of long clicks made to the food items of history list
     private val longClickListener: (PopupMenu, Food, View) -> (Boolean) =
         { menu, food, _ ->
             menu.inflate(R.menu.search_options_menu)

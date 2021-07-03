@@ -28,7 +28,7 @@ class FoodListView(
         binding.listButton.setOnClickListener(buttonClickListener)
     }
 
-    fun setListText(listText: String) {
+    fun setListTitle(listText: String) {
         binding.listText.text = listText
     }
 

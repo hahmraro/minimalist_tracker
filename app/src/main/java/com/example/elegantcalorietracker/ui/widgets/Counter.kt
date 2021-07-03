@@ -18,6 +18,8 @@ class Counter(context: Context, attributeSet: AttributeSet) :
         LayoutInflater.from(context), this, true
     )
 
+    // Sets the "triple dot" (More) button click listener. Opens up a dialog 
+    // that modifies the saved calories goal
     fun setMoreClickListener(
         hint: String,
         positiveListener: DialogWithTextFieldClickListener? = null
@@ -45,10 +47,13 @@ class Counter(context: Context, attributeSet: AttributeSet) :
     fun setCaloriesRemaining(calories: Double) {
         binding.caloriesRemaining.text =
             context.getString(R.string.remaining_value, calories)
+        // If the calorie goal is not surpassed, make the remaining calories 
+        // Green 
         if (calories >= 0) {
             binding.caloriesRemaining.setTextColor(
                 ContextCompat.getColor(context, R.color.safe_color)
             )
+            // Else, make it red
         } else {
             binding.caloriesRemaining.setTextColor(
                 ContextCompat.getColor(context, R.color.danger_color)

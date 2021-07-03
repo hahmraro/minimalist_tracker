@@ -10,7 +10,7 @@ class NutrientFragment :
     ) {
 
     override fun applyBinding(v: View): ApplyTo<FragmentNutrientBinding> = {
-        val nutrients = sharedViewModel.getDailyNutrition()
+        val nutrients = sharedViewModel.getNutrientSumOfSavedFoods()
         nutrientNutritionLl.makeAdapter(nutrients)
     }
 }

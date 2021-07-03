@@ -136,6 +136,7 @@ data class Food(
      * @return a [List] of [Double]
      */
     fun getNutrients() = listOf(
+        calories.toDouble(),
         sugar.toDouble(),
         fiber.toDouble(),
         totalCarbs.toDouble(),

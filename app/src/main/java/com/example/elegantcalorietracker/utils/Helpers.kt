@@ -24,6 +24,7 @@ fun showDialogWithTextField(
     positiveListener: DialogWithTextFieldClickListener? = null,
     negativeListener: DialogWithTextFieldClickListener? = null
 ) {
+    // EditText settings
     val dialogLayout =
         DialogEditTextBinding.inflate(LayoutInflater.from(context))
     val editText = dialogLayout.edit
@@ -32,6 +33,7 @@ fun showDialogWithTextField(
         if (inputType != null) this.inputType = inputType
         requestFocus()
     }
+    // Dialog settings
     val dialog = AlertDialog.Builder(context)
         .setTitle(title)
         .setView(editText.rootView)
@@ -42,9 +44,11 @@ fun showDialogWithTextField(
             negativeListener?.invoke(dialog, which, editText)
         }
         .create()
+    // Dismiss focus when leaving the dialog
     dialog.window?.clearFlags(
         WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM
     )
+    // Opens keyboard when the dialog appears
     dialog.window?.setSoftInputMode(
         WindowManager.LayoutParams
             .SOFT_INPUT_STATE_VISIBLE

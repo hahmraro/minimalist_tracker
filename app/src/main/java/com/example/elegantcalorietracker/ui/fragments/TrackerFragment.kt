@@ -14,8 +14,6 @@ import com.example.elegantcalorietracker.ui.adapters.FoodListAdapter
 import com.example.elegantcalorietracker.ui.widgets.FoodListView
 import java.util.*
 
-private const val TAG = "TrackerFragment"
-
 class TrackerFragment : BaseFragment<FragmentTrackerBinding>(
     FragmentTrackerBinding::inflate,
     hasOptionsMenu = true
@@ -23,19 +21,20 @@ class TrackerFragment : BaseFragment<FragmentTrackerBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         sharedViewModel.modType = ModType.EDIT
-        sharedViewModel.refreshGoal()
+        // Refresh the saved goal because it may have been changed through 
+        // SettingsFragment
+        sharedViewModel.refreshCalorieGoal()
         super.onViewCreated(view, savedInstanceState)
     }
 
     override fun applyBinding(v: View): ApplyTo<FragmentTrackerBinding> = {
-        // Assign the TrackerViewModel to the binding viewModel property
         counter.apply {
             setOnClickListener { navigateToNutrients() }
             sharedViewModel.caloriesGoal.observe(viewLifecycleOwner) { goal ->
                 setCaloriesGoal(goal)
                 setMoreClickListener(goal.toString()) { _, _, editText ->
                     val newGoal = editText.text.toString().toInt()
-                    sharedViewModel.setNewGoal(newGoal)
+                    sharedViewModel.setNewCalorieGoal(newGoal)
                 }
             }
             sharedViewModel.calories.observe(viewLifecycleOwner) { calories ->
@@ -45,7 +44,6 @@ class TrackerFragment : BaseFragment<FragmentTrackerBinding>(
                 setCaloriesRemaining(remaining)
             }
         }
-        //
         applyFoodListView(breakfast, ListType.BREAKFAST)
         applyFoodListView(lunch, ListType.LUNCH)
         applyFoodListView(dinner, ListType.DINNER)
@@ -64,57 +62,61 @@ class TrackerFragment : BaseFragment<FragmentTrackerBinding>(
                 true
             }
             R.id.clear_button -> {
-                sharedViewModel.clearFoods()
+                sharedViewModel.clearNonHistoryFoods()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
+    // Listener to clicks on food items of the food lists
     private fun clickListener(listType: ListType): (Food) -> (Unit) = { food ->
         sharedViewModel.apply {
             selectedFood = food
-            this.listType = listType.ordinal
+            setSearchListType(listType)
         }
+        // Set the label of FoodFragment to the selected foods name
         val argument = bundleOf(
             "foodName" to food.name.replaceFirstChar {
-                if (it.isLowerCase()) it.titlecase(
-                    Locale.getDefault()
-                ) else it.toString()
+                if (it.isLowerCase()) it.titlecase() else it.toString()
             }
         )
         this@TrackerFragment.findNavController()
             .navigate(R.id.action_trackerFragment_to_foodFragment, argument)
     }
 
+    // Listener to long clicks on food items of the food lists
     private val longClickListener: (PopupMenu, Food, View) -> (Boolean) =
         { menu, food, view ->
             menu.inflate(R.menu.tracker_options_menu)
             menu.setOnMenuItemClickListener { item ->
+                // First menu that opens when long click
                 when (item.itemId) {
                     R.id.remove_from_list -> sharedViewModel.deleteFood(food)
                     R.id.move_to -> {
                         val moveMenu = PopupMenu(view.context, view)
                         moveMenu.inflate(R.menu.move_to_menu)
                         moveMenu.setOnMenuItemClickListener { moveItem ->
+                            // Second menu that opens if user selects the 
+                            // "Move to" option
                             when (moveItem.itemId) {
                                 R.id.move_to_breakfast ->
-                                    sharedViewModel.moveFood(
+                                    sharedViewModel.moveFoodToAnotherList(
                                         food,
                                         ListType.BREAKFAST
                                     )
                                 R.id.move_to_lunch ->
-                                    sharedViewModel.moveFood(
+                                    sharedViewModel.moveFoodToAnotherList(
                                         food,
                                         ListType.LUNCH
                                     )
                                 R.id.move_to_dinner ->
-                                    sharedViewModel.moveFood(
+                                    sharedViewModel.moveFoodToAnotherList(
                                         food,
                                         ListType.DINNER
                                     )
                                 R.id.move_to_snacks ->
-                                    sharedViewModel.moveFood(
+                                    sharedViewModel.moveFoodToAnotherList(
                                         food,
                                         ListType.SNACKS
                                     )
@@ -140,7 +142,7 @@ class TrackerFragment : BaseFragment<FragmentTrackerBinding>(
             val listTitle = listType.toString().lowercase().replaceFirstChar {
                 it.titlecase()
             }
-            setListText(listTitle)
+            setListTitle(listTitle)
             sharedViewModel.getList(listType)
                 .observe(viewLifecycleOwner) { list ->
                     setListData(list)
@@ -155,6 +157,13 @@ class TrackerFragment : BaseFragment<FragmentTrackerBinding>(
     }
 
     private fun navigateToNutrients() {
+        // Since NutrientFragment has the constructor parameter 
+        // "topLevelAndCanHaveUpButton" set to true, passing the argument 
+        // below to it will force it to use the "Up" button instead of the 
+        // navigation drawer. This is desirable because the navigation drawer is
+        // only to be shown if the Fragment is navigated to through it, which
+        // is not the case here, because this function is called through a 
+        // normal button, and not the navigation drawer.
         val argument = bundleOf("upButtonNeeded" to true)
         this@TrackerFragment
             .findNavController()
@@ -165,7 +174,7 @@ class TrackerFragment : BaseFragment<FragmentTrackerBinding>(
     }
 
     private fun navigateToSearch(listType: ListType) {
-        sharedViewModel.setSearchMeal(listType.ordinal)
+        sharedViewModel.setSearchListType(listType)
         findNavController()
             .navigate(R.id.action_trackerFragment_to_searchFragment)
     }

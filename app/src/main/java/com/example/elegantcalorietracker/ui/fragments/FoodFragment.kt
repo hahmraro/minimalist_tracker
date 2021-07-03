@@ -1,6 +1,5 @@
 package com.example.elegantcalorietracker.ui.fragments
 
-import android.util.Log
 import android.view.*
 import androidx.navigation.fragment.findNavController
 import com.example.elegantcalorietracker.R
@@ -70,19 +69,16 @@ class FoodFragment : BaseFragment<FragmentFoodBinding>(
         binding: FragmentFoodBinding,
         modType: ModType
     ) {
-        try {
-            val newServingSize = binding.foodNutritionLl.getServingSize()
-            if (modType == ModType.ADD)
-                sharedViewModel.getFood(selectedFood, newServingSize)
-            else {
-                sharedViewModel.editFood(selectedFood, newServingSize)
-            }
-        } catch (e: Exception) {
-            Log.d(TAG, e.toString())
-        } finally {
-            this@FoodFragment.findNavController()
-                .navigate(R.id.action_foodFragment_to_trackerFragment)
+        // If the NutritionView is from a individual food, the serving size 
+        // is always the first value
+        val newServingSize = binding.foodNutritionLl.getFirstNutrientValue()
+        if (modType == ModType.ADD)
+            sharedViewModel.addFood(selectedFood, newServingSize)
+        else {
+            sharedViewModel.editFood(selectedFood, newServingSize)
         }
+        this@FoodFragment.findNavController()
+            .navigate(R.id.action_foodFragment_to_trackerFragment)
     }
 
     /**

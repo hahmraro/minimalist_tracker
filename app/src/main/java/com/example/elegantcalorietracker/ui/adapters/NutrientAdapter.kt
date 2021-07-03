@@ -16,23 +16,19 @@ private const val MICRONUTRIENTS = 3
  * [RecyclerView.Adapter] class that displays a specified list of nutrients of
  * a [Food] object
  *
- * Through [requireCalories], it can choose to whether or not to show the
- * [Food.calories] property together with the nutrients
+ * Through [isListFromIndividualFood], it can choose to whether or not to show the
+ * [Food.servingSize] property together with the nutrients
  *
  * Can take a [View.OnClickListener] that reacts to user clicks on each item
  */
 class NutrientAdapter(
     private val nutrients: List<Nutrient>,
-    private val requireCalories: Boolean = false,
+    private val isListFromIndividualFood: Boolean = false,
     private val clickListener: View.OnClickListener? = null
 ) :
     RecyclerView.Adapter<NutrientAdapter.NutrientViewHolder>() {
 
-    fun getCalories(): Double = if (requireCalories) {
-        nutrients.first().second
-    } else {
-        0.0
-    }
+    fun getFirstElementValue(): Double = nutrients.first().second
 
     /**
      * [RecyclerView.ViewHolder] class that binds the list nutrient name and
@@ -55,8 +51,8 @@ class NutrientAdapter(
             } else {
                 R.string.food_nutrient
             }
-            // Sets the nutrient name and serving size to the binding 
-            // nutritionName and nutritionSize
+            // Sets the nutrient name and its respective serving size to the 
+            // binding nutritionName and nutritionSize
             binding.nutritionName.text = nutrient.first
             binding.nutritionSize.text = resources?.getString(
                 nutrientString,
@@ -94,8 +90,8 @@ class NutrientAdapter(
     override fun onBindViewHolder(holder: NutrientViewHolder, position: Int) {
         val nutrient = nutrients[position]
         // The click listener is only set on the first item, because that is the
-        // position where the calories are if requireCalories is enabled
-        if (position == 0 && requireCalories) {
+        // position where the servingSize is if the list is from an individual food
+        if (position == 0 && isListFromIndividualFood) {
             holder.itemView.setOnClickListener(clickListener)
         }
         holder.bind(nutrient)

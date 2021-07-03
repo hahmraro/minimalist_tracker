@@ -1,7 +1,6 @@
 package com.example.elegantcalorietracker.ui
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.elegantcalorietracker.data.model.Food
 import com.example.elegantcalorietracker.data.model.ListType
@@ -11,10 +10,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlin.random.Random
 
-enum class ApiStatus { LOADING, ERROR, DONE }
 enum class ModType { EDIT, ADD }
-
-private const val TAG = "TrackerViewModel"
 
 class TrackerViewModel(application: Application) :
     AndroidViewModel(application) {
@@ -34,16 +30,20 @@ class TrackerViewModel(application: Application) :
         }
     }
 
-    // Selected food
+    // Food Item that is clicked through recyclerViews from SearchFragment or
+    // TrackerFragment, and is shown in FoodFragment
     var selectedFood: Food = Food()
 
-    // Mod type
+    // Whether or not the FoodFragment should add or edit the selected food
     var modType = ModType.EDIT
 
-    // Calories
+    // Calories values
     val calories = _repository.getKcalSum()
     val caloriesGoal =
         MutableLiveData(_repository.getSavedGoalFromPreferences())
+
+    // Dynamically set the remaining calories of the day
+    // (Calories goal - Calories eaten) when any of these two variables change
     val caloriesRemaining = MediatorLiveData<Double>().apply {
         value = 0.0
         val subtract: (x: Double, y: Double) -> Double = { x, y -> x - y }
@@ -55,25 +55,23 @@ class TrackerViewModel(application: Application) :
         }
     }
 
-    // Meal
-    var listType = ListType.BREAKFAST.ordinal
-
-    // Status of the request
-    private val _status = MutableLiveData<ApiStatus>()
+    // Which list should the selected food be added to
+    private var _listType = ListType.BREAKFAST.ordinal
 
     // Food lists
     private val _breakfastList =
-        _repository.getAllFoodsWithListType(ListType.BREAKFAST.ordinal)
+        _repository.getAllFoodsWithListType(ListType.BREAKFAST)
     private val _lunchList =
-        _repository.getAllFoodsWithListType(ListType.LUNCH.ordinal)
+        _repository.getAllFoodsWithListType(ListType.LUNCH)
     private val _dinnerList =
-        _repository.getAllFoodsWithListType(ListType.DINNER.ordinal)
+        _repository.getAllFoodsWithListType(ListType.DINNER)
     private val _snacksList =
-        _repository.getAllFoodsWithListType(ListType.SNACKS.ordinal)
+        _repository.getAllFoodsWithListType(ListType.SNACKS)
     private val _historyList =
-        _repository.getAllFoodsWithListType(ListType.HISTORY.ordinal)
+        _repository.getAllFoodsWithListType(ListType.HISTORY)
 
     // Public methods
+
     fun getList(listType: ListType): LiveData<List<Food>> {
         return when (listType) {
             ListType.BREAKFAST -> _breakfastList
@@ -84,105 +82,86 @@ class TrackerViewModel(application: Application) :
         }
     }
 
-    fun clearFoods() {
-        viewModelScope.launch {
-            _repository.clearNonHistoryFoods()
-        }
+    fun clearNonHistoryFoods() {
+        viewModelScope.launch { _repository.clearNonHistoryFoods() }
     }
 
     fun clearHistory() {
-        viewModelScope.launch {
-            _repository.clearOnlyHistoryFoods()
-        }
+        viewModelScope.launch { _repository.clearOnlyHistoryFoods() }
     }
 
     fun deleteFood(food: Food) {
+        viewModelScope.launch { _repository.deleteFoodFromTheDatabase(food) }
+    }
+
+    fun moveFoodToAnotherList(food: Food, newListType: ListType) {
         viewModelScope.launch {
             _repository.deleteFoodFromTheDatabase(food)
+            _repository
+                .addFoodToDatabase(food.copy(listType = newListType.ordinal))
         }
     }
 
-    fun moveFood(food: Food, listType: ListType) {
-        viewModelScope.launch {
-            _repository.deleteFoodFromTheDatabase(food)
-            _repository.addFoodToDatabase(food.copy(listType = listType.ordinal))
-        }
+    fun setNewCalorieGoal(newCalorieGoal: Int) {
+        caloriesGoal.value = newCalorieGoal
+        _repository.setSavedGoalFromPreferences(newCalorieGoal)
     }
 
-    fun setNewGoal(newGoal: Int) {
-        caloriesGoal.value = newGoal
-        _repository.setSavedGoalFromPreferences(newGoal)
+    fun refreshCalorieGoal() {
+        val refreshedCalorieGoal = _repository.getSavedGoalFromPreferences()
+        caloriesGoal.value = refreshedCalorieGoal
     }
 
-    fun refreshGoal() {
-        val refreshedGoal = _repository.getSavedGoalFromPreferences()
-        caloriesGoal.value = refreshedGoal
-    }
-
-    suspend fun getFoods(query: String) {
+    suspend fun searchFoodsWithQuery(query: String) {
         _repository.apply {
             val foods = searchFoodsThatMatchQuery(query)
-            setFoodsListType(foods, listType)
+            setFoodsListType(foods, _listType)
             addFoodsToDatabase(foods)
-            setHistory(foods)
+            addFoodsToHistory(foods)
         }
     }
 
-    fun getFood(food: Food, servingSize: Double) {
-        val newFood = food.copy(id = Random.nextInt())
-            .edit(servingSize, listType)
+    fun addFood(food: Food, servingSize: Double) {
+        // Id change needed to not conflict with foods saved in history
+        val foodWithDifferentId =
+            food.copy(id = Random.nextInt()).edit(servingSize, _listType)
         viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _repository.addFoodToDatabase(newFood)
-                _status.value = ApiStatus.DONE
-            } catch (e: Exception) {
-                _status.value = ApiStatus.ERROR
-                Log.d(TAG, e.toString())
-            }
+            _repository.addFoodToDatabase(foodWithDifferentId)
         }
     }
 
     fun editFood(food: Food, newServingSize: Double) {
-        food.edit(newServingSize, listType)
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _repository.editFoodFromTheDatabase(food)
-                _status.value = ApiStatus.DONE
-            } catch (e: Exception) {
-                _status.value = ApiStatus.ERROR
-                Log.d(TAG, e.toString())
-            }
-        }
+        food.edit(newServingSize, _listType)
+        viewModelScope.launch { _repository.editFoodFromTheDatabase(food) }
     }
 
-    fun setSearchMeal(mealType: Int) {
-        this.listType = mealType
+    fun setSearchListType(newListType: ListType) {
+        _listType = newListType.ordinal
     }
 
-    fun getDailyNutrition(): List<Double> {
+    fun getNutrientSumOfSavedFoods(): List<Double> {
         val totalNutrition =
             runBlocking { _repository.getAllExceptHistoryFoods() }.sum()
         return totalNutrition.getNutrients()
     }
 
     // Private methods
-    private fun setHistory(foodList: List<Food>) {
-        if (_historyList.value == null || foodList.isEmpty()) return
+
+    private fun addFoodsToHistory(foodList: List<Food>) {
+        val historyList = _historyList.value ?: listOf()
         for (food in foodList) {
-            if (!_historyList.value!!.any { it.name == food.name }) {
+            val historyAlreadyContainsThisFood =
+                historyList.any { it.name == food.name }
+            if (!historyAlreadyContainsThisFood) {
                 viewModelScope.launch {
-                    try {
-                        _repository.addFoodToDatabase(
-                            food.copy(
-                                id = Random.nextInt(),
-                                listType = ListType.HISTORY.ordinal
-                            )
+                    // Adds a copy of the food but with its listType set to 
+                    // HISTORY, and different ID, so there is no conflict
+                    _repository.addFoodToDatabase(
+                        food.copy(
+                            id = Random.nextInt(),
+                            listType = ListType.HISTORY.ordinal
                         )
-                    } catch (e: Exception) {
-                        Log.d(TAG, e.toString())
-                    }
+                    )
                 }
             }
         }

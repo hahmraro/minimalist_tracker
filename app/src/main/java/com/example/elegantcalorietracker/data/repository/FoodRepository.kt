@@ -90,8 +90,8 @@ class FoodRepository(val context: Context) {
      * Returns a [LiveData] with a [List] of every [Food] object saved in the
      * [localDataSource] that have its [ListType] set to the specified [listType]
      */
-    fun getAllFoodsWithListType(listType: Int): LiveData<List<Food>> {
-        return localDataSource.getAllFoodsWithListType(listType)
+    fun getAllFoodsWithListType(listType: ListType): LiveData<List<Food>> {
+        return localDataSource.getAllFoodsWithListType(listType.ordinal)
     }
 
     fun getSavedGoalFromPreferences(): Int {
