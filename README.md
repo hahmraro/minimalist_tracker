@@ -5,12 +5,14 @@ Just search your food, and the API will automatically understand your query and 
 No fuss.
 
 ## Screenshots
-![Diary](https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot1.jpeg)
-![Search/History](https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot2.jpeg)
-![Food nutrition](https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot3.jpeg)
-![Total Nutrition](https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot4.jpeg)
-![Ate too much calories for the day](https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot5.jpeg)
-![Dark mode](https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot6.jpeg)
+<p float="left">
+  <img src="https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot1.jpeg" width="15%" />
+  <img src="https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot2.jpeg" width="15%" />
+  <img src="https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot3.jpeg" width="15%" />
+  <img src="https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot4.jpeg" width="15%" />
+  <img src="https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot5.jpeg" width="15%" />
+  <img src="https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot6.jpeg" width="15%" />
+</p>
 
 ## Installation
 Clone this repository and import into **Android Studio**
