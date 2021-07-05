@@ -1,2 +1,2 @@
-rootProject.name = "Elegant Calorie Tracker"
+rootProject.name = "Minimalist Tracker"
 include ':app'

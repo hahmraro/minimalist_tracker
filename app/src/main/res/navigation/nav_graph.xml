@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/trackerFragment"
-        android:name="com.example.elegantcalorietracker.ui.fragments.TrackerFragment"
+        android:name="com.pegoraro.minimalisttracker.ui.fragments.TrackerFragment"
         android:label="@string/diary"
         tools:layout="@layout/fragment_tracker">
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/foodFragment"
-        android:name="com.example.elegantcalorietracker.ui.fragments.FoodFragment"
+        android:name="com.pegoraro.minimalisttracker.ui.fragments.FoodFragment"
         android:label="{foodName}"
         tools:layout="@layout/food_nutrient_view">
         <action
@@ -43,7 +43,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.elegantcalorietracker.ui.fragments.SearchFragment"
+        android:name="com.pegoraro.minimalisttracker.ui.fragments.SearchFragment"
         android:label="@string/search_food"
         tools:layout="@layout/fragment_search">
         <action
@@ -57,7 +57,7 @@
     </fragment>
     <fragment
         android:id="@+id/nutrientFragment"
-        android:name="com.example.elegantcalorietracker.ui.fragments.NutrientFragment"
+        android:name="com.pegoraro.minimalisttracker.ui.fragments.NutrientFragment"
         android:label="@string/daily_nutrition"
         tools:layout="@layout/food_nutrient_view">
         <action
@@ -72,7 +72,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.elegantcalorietracker.ui.fragments.SettingsFragment"
+        android:name="com.pegoraro.minimalisttracker.ui.fragments.SettingsFragment"
         android:label="@string/settings"
         tools:layout="@xml/preferences">
         <action
@@ -83,6 +83,6 @@
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"
-        android:name="com.example.elegantcalorietracker.ui.fragments.AboutFragment"
+        android:name="com.pegoraro.minimalisttracker.ui.fragments.AboutFragment"
         android:label="@string/about" />
 </navigation>

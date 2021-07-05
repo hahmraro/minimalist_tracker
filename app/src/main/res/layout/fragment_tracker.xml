@@ -13,7 +13,7 @@
         android:orientation="vertical"
         android:paddingVertical="@dimen/default_padding">
 
-        <com.example.elegantcalorietracker.ui.widgets.Counter
+        <com.pegoraro.minimalisttracker.ui.widgets.Counter
             android:id="@+id/counter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -21,28 +21,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.example.elegantcalorietracker.ui.widgets.FoodListView
+        <com.pegoraro.minimalisttracker.ui.widgets.FoodListView
             android:id="@+id/breakfast"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/counter" />
 
-        <com.example.elegantcalorietracker.ui.widgets.FoodListView
+        <com.pegoraro.minimalisttracker.ui.widgets.FoodListView
             android:id="@+id/lunch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/breakfast" />
 
-        <com.example.elegantcalorietracker.ui.widgets.FoodListView
+        <com.pegoraro.minimalisttracker.ui.widgets.FoodListView
             android:id="@+id/dinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/lunch" />
 
-        <com.example.elegantcalorietracker.ui.widgets.FoodListView
+        <com.pegoraro.minimalisttracker.ui.widgets.FoodListView
             android:id="@+id/snacks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

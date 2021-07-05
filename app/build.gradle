@@ -17,7 +17,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.elegantcalorietracker"
+        applicationId "com.pegoraro.minimalisttracker"
         minSdkVersion 19
         multiDexEnabled true
         targetSdkVersion 30
