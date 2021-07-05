@@ -6,12 +6,14 @@ No fuss.
 
 ## Screenshots
 <p float="left">
-  <img src="https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot1.jpeg" width="15%" />
-  <img src="https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot2.jpeg" width="15%" />
-  <img src="https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot3.jpeg" width="15%" />
-  <img src="https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot4.jpeg" width="15%" />
-  <img src="https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot5.jpeg" width="15%" />
-  <img src="https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot6.jpeg" width="15%" />
+  <img src="https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot1.jpeg" width="32%" />
+  <img src="https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot2.jpeg" width="32%" />
+  <img src="https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot3.jpeg" width="32%" />
+</p>
+<p float="left">
+  <img src="https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot4.jpeg" width="32%" />
+  <img src="https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot5.jpeg" width="32%" />
+  <img src="https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot6.jpeg" width="32%" />
 </p>
 
 ## Installation
