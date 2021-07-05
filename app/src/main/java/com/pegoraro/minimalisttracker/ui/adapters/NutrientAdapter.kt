@@ -43,13 +43,20 @@ class NutrientAdapter(
         private val resources: Resources? = itemView.resources
 
         // Bind function
-        fun bind(nutrient: Nutrient) {
+        fun bind(nutrient: Nutrient, isCalorie: Boolean = false) {
             // If the nutrient is a micronutrient, use the micronutrient 
-            // string, else use the normal nutrient string
-            val nutrientString = if (micronutrients.contains(nutrient)) {
-                R.string.food_micronutrient
-            } else {
-                R.string.food_nutrient
+            // string, else if the nutrient is calories, use the calories string, else use the 
+            // normal nutrient string
+            val nutrientString = when {
+                micronutrients.contains(nutrient) -> {
+                    R.string.food_micronutrient
+                }
+                isCalorie -> {
+                    R.string.food_calories
+                }
+                else -> {
+                    R.string.food_nutrient
+                }
             }
             // Sets the nutrient name and its respective serving size to the 
             // binding nutritionName and nutritionSize
@@ -86,11 +93,29 @@ class NutrientAdapter(
 
     override fun onBindViewHolder(holder: NutrientViewHolder, position: Int) {
         val nutrient = nutrients[position]
-        // The click listener is only set on the first item, because that is the
-        // position where the servingSize is if the list is from an individual food
-        if (position == 0 && isListFromIndividualFood) {
-            holder.itemView.setOnClickListener(clickListener)
+        when {
+            isListFromIndividualFood -> {
+                when (position) {
+                    // The click listener is only set on the first item, because that is the
+                    // position where the servingSize is if the list is from an individual food
+                    0 -> {
+                        holder.itemView.setOnClickListener(clickListener)
+                        holder.bind(nutrient)
+                    }
+                    // If the list is from an individual food, this is the position where the 
+                    // calories are
+                    1 -> holder.bind(nutrient, isCalorie = true)
+                    else -> holder.bind(nutrient)
+                }
+            }
+            position == 0 -> {
+                // If the list is not from an individual food, this is the position where the 
+                // calories are
+                holder.bind(nutrient, isCalorie = true)
+            }
+            else -> {
+                holder.bind(nutrient)
+            }
         }
-        holder.bind(nutrient)
     }
 }
