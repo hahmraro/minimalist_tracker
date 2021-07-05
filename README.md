@@ -4,6 +4,14 @@ This is a minimalist calorie tracker app with *natural language* API from Calori
 Just search your food, and the API will automatically understand your query and add it to the tracker.
 No fuss.
 
+## Screenshots
+![Diary](https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot1.jpeg)
+![Search/History](https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot2.jpeg)
+![Food nutrition](https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot3.jpeg)
+![Total Nutrition](https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot4.jpeg)
+![Ate too much calories for the day](https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot5.jpeg)
+![Dark mode](https://github.com/hahmraro/minimalist_tracker/blob/master/screenshots/Screenshot6.jpeg)
+
 ## Installation
 Clone this repository and import into **Android Studio**
 ```bash
