@@ -1,4 +1,5 @@
-# Minimalist Tracker
+# Minimalist Tracker  
+[![License: MIT](https://img.shields.io/badge/License-MIT-red.svg)](https://opensource.org/licenses/MIT)
 
 This is a minimalist calorie tracker app with *natural language* API from CalorieNinjas.
 Just search your food, and the API will automatically understand your query and add it to the tracker.
