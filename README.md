@@ -24,13 +24,13 @@ git clone git@github.com:hahmraro/minimalist_tracker.git
 
 ## Configuration
 ### API key:
-Go to the [CalorieNinjas API site](https://calorieninjas.com/api) and get your free API key.
-Create `local.properties` in the root of the project and add this line:
-```gradle
-apiKey="*YOUR API KEY HERE*"
+The app uses its own API key, but it is advised that you go to the [CalorieNinjas API site](https://calorieninjas.com/api) and get your own free API key.
+Then just replace the variable "API_KEY" in the module build.gradle file:
 ```
-Replacing where it says "YOUR API KEY HERE" with your own key that you got from the API site.
-Now just build the project and everything should work fine.
+// Replace this string with your own key
+def API_KEY = "YOUR API KEY HERE"
+```
+Or just change it in the settings page inside the app.
 
 ## Maintainers
 This project is maintained by:

@@ -4,6 +4,9 @@ plugins {
     id 'kotlin-kapt'
 }
 
+// Replace this string with your own key
+def API_KEY = "ZDa8pkzWCggjSktFI3wT4Q==sojF8YEf4NHiKVoW"
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -21,7 +24,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         // Creates the API_KEY variable inside BuildConfig
-        resValue "string", "api_key", "ZDa8pkzWCggjSktFI3wT4Q==sojF8YEf4NHiKVoW"
+        resValue "string", "api_key", API_KEY
     }
 
     buildTypes {
