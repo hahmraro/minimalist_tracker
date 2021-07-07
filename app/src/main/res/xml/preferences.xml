@@ -13,9 +13,17 @@
 
     <EditTextPreference
         android:icon="@drawable/ic_calories_goal"
+        android:defaultValue="2000"
         app:key="@string/goal_preferences_key"
         app:summary="@string/goal_summary"
         app:title="Calories goal" />
+
+    <EditTextPreference
+        android:icon="@drawable/ic_key"
+        app:key="@string/api_preferences_key"
+        android:dialogTitle="@string/api_dialog_title"
+        app:summary="@string/api_key_summary"
+        app:title="API key" />
 
     <Preference
         android:icon="@drawable/ic_bugs"

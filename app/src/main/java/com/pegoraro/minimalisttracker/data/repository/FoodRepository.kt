@@ -28,6 +28,7 @@ class FoodRepository(val context: Context) {
         .getDefaultSharedPreferences(context)
 
     // Shared Preferences Keys
+    private val apiPreferencesKey = context.getString(R.string.api_preferences_key)
     private val datePreferencesKey = context.getString(R.string.date_preferences_key)
     private val goalPreferencesKey = context.getString(R.string.goal_preferences_key)
 
@@ -37,6 +38,11 @@ class FoodRepository(val context: Context) {
 
     // Variable that stores the current day of the week as an integer
     private val today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+
+    // API key, either the default one or the one set by the user in the app settings
+    private val defaultApiKey = context.getString(R.string.api_key)
+    private val apiKey =
+        sharedPreferences.getString(apiPreferencesKey, defaultApiKey) ?: defaultApiKey
 
     // Public suspend methods
 
@@ -48,7 +54,7 @@ class FoodRepository(val context: Context) {
      */
     suspend fun searchFoodsThatMatchQuery(query: String): List<Food> {
         if (!ConnectionChecker.isOnline()) throw NoConnectionException()
-        val list = remoteDataSource.getFoodList(query).items
+        val list = remoteDataSource.getFoodList(apiKey, query).items
         if (list.isEmpty()) throw FoodNotFoundException()
         return list
     }
