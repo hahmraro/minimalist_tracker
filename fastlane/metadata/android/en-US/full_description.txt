@@ -1,0 +1,2 @@
+Calorie tracker with natural language API from CalorieNinjas. Just search your food, and the API will automatically understand your query and add it to the tracker. No fuss.
+Has support for users own private API keys.

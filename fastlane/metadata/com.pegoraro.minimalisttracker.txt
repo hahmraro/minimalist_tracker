@@ -1,0 +1,23 @@
+Categories:
+ - Sports & Health
+License: MIT
+AuthorName: João Pegoraro
+SourceCode: https://github.com/hahmraro/minimalist_tracker
+IssueTracker: https://github.com/hahmraro/minimalist_tracker/issues
+
+AutoName: Minimalist Tracker
+Summary: Minimalist calorie tracker with natural language API
+Description: Calorie tracker with natural language API from CalorieNinjas. Just search your food, and the API will automatically understand your query and add it to the tracker. No fuss.
+Has support for users own private API keys.
+RepoType: git
+Repo: https://github.com/hahmraro/minimalist_tracker
+
+Builds:
+ - versionName: '1.0'
+   versionCode: 10
+   commit: 'v1.0'
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+CurrentVersion: 1.0
+CurrentVersionCode: 10
